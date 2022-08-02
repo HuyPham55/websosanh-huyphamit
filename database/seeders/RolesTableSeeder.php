@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -16,8 +17,8 @@ class RolesTableSeeder extends Seeder
     {
         //
         $data = [
-            ['name' => 'Admin', 'guard_name' => 'web'],
-//            ['name' => 'Member', 'guard_name' => 'web'],
+            ['name' => RoleEnum::Admin, 'guard_name' => 'web'],
+//            ['name' => RoleEnum::Member, 'guard_name' => 'web'],
         ];
 
         foreach ($data as $role) {
