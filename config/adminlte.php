@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin/dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -232,41 +232,57 @@ return [
             'topnav_right' => true,
         ],
         [
-            'type'         => 'fullscreen-widget',
+            'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'text' => 'Search',
         ],
         [
             'text' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'fa fa-home',
         ],
+        [
+            'text' => 'blog',
+            'url' => 'admin/blog',
+            'can' => 'manage-blog',
+        ],
+        [
+            'text' => 'pages',
+            'url' => 'admin/pages',
+            'icon' => 'far fa-fw fa-file',
+            'label' => 4,
+            'label_color' => 'success',
+        ],
+        ['header' => 'labels'],
+        [
+            'text' => 'important',
+            'icon_color' => 'red',
+            'url' => '#',
+        ],
+        [
+            'text' => 'warning',
+            'icon_color' => 'yellow',
+            'url' => '#',
+        ],
+        [
+            'text' => 'information',
+            'icon_color' => 'cyan',
+            'url' => '#',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url' => 'admin/users/edit-profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'route' => 'users.change_password',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
@@ -306,22 +322,6 @@ return [
                     'url'  => '#',
                 ],
             ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
         ],
     ],
 
