@@ -1,4 +1,4 @@
-@if(session()->has('message'))
+@if(session()->has('flash_message'))
     <div class="alert alert-{{ session()->get('status') }}">
         <h5>
             @switch(session('status'))
@@ -13,7 +13,7 @@
             @endswitch
             Alert!
         </h5>
-        {{ session()->get('message') }}
+        {{ session()->get('flash_message') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
         </button>
     </div>
