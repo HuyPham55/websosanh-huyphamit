@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::post('edit-profile', [UserController::class, 'postEditProfile']);
         Route::get('change-password', [UserController::class, 'getChangePassword'])->name('users.change_password');
         Route::post('change-password', [UserController::class, 'postChangePassword']);
-
         Route::post('delete', [UserController::class, 'delete'])->middleware('can:delete_users')->name('users.delete');
+    });
+
+    //Roles
+    Route::group(['prefix' => 'role'], function () {
+        Route::get('list', [RoleController::class, 'index'])->middleware('can:show_list_roles')->name('role.list');
+        Route::group(['middleware' => 'can:add_roles'], function () {
+            Route::get('add', [RoleController::class, 'getAdd'])->name('role.add');
+            Route::post('add', [RoleController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'can:edit_roles'], function () {
+            Route::get('edit/{id}', [RoleController::class, 'getEdit'])->name('role.edit')
+                ->where(['id' => '[0-9]+']);
+            Route::post('edit/{id}', [RoleController::class, 'postEdit'])
+                ->where(['id' => '[0-9]+']);
+        });
+        Route::post('delete', [RoleController::class, 'delete'])->middleware('can:delete_roles')->name('role.delete');
     });
 
 });

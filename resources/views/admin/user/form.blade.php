@@ -19,7 +19,6 @@
             <div class="col-sm-10">
                 <input type="email" id="email" name="email" value="{{ old('email') ?? $data->email }}"
                        class="form-control" required>
-                <i class="fa fa-user"></i>
                 @error('email')
                 <p class="text-danger">{{ $message }}</p>
                 @enderror

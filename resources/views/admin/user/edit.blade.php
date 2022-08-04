@@ -1,18 +1,20 @@
 @extends('admin.layout')
-
-@section('title', trans('label.action.edit'))
-
-
+@php
+    $targetLabel = __('backend.user_list');
+    $actionLabel = trans('label.action.edit');
+    $title = $targetLabel." - ".$actionLabel;
+@endphp
+@section('title', $title)
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>{{ trans('label.action.edit') }}</h1>
+            <h1>{{ $actionLabel }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('label.home') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('users.list') }}">{{ __('backend.user_list') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('label.action.add') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('users.list') }}">{{ $targetLabel }}</a></li>
+                <li class="breadcrumb-item active">{{ $actionLabel }}</li>
             </ol>
         </div>
     </div>

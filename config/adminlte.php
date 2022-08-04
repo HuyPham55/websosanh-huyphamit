@@ -291,12 +291,14 @@ return [
             'route' => 'users.list',
             'icon' => 'fas fa-users',
             'can' => 'show_list_users',
+            'active' => ['admin/users/*']
         ],
         [
-            'text' => 'user_list',
-            'route' => 'users.list',
+            'text' => 'role',
+            'route' => 'role.list',
             'icon' => 'fas fa-fw fa-shield-alt',
-            'can' => 'show_list_users',
+            'can' => 'show_list_roles',
+            'active' => ['admin/role/*']
         ],
 
         [

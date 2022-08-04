@@ -41,7 +41,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($data as $user)
+                            @forelse($data as $user)
                                 <tr id="row-id-{{ $user->id }}">
                                     <td>{{ $user->name }}</td>
                                     <td>
@@ -68,7 +68,11 @@
                                         @endif
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="10" style="text-align: center"><i>No record</i></td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                         <hr>

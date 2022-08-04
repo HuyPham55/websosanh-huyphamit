@@ -9,7 +9,7 @@
                                class="custom-control-input {{$key?:'custom-control-input-danger'}}"
                                value="{{ $key }}"
                             {{ (old($name)!==null && old($name) == $key) || $value == $key ? 'checked' : '' }}>
-                        <label class="custom-control-label {{ $key?"text-primary":"text-danger" }}"
+                        <label class="custom-control-label {{ $key?"text-primary":"text-danger" }} user-select-none"
                                for="{{$name}}-{{ $key }}">{{ $statusName }}</label>
                     </div>
                 </div>

@@ -1,3 +1,4 @@
+//Delete confirmation
 function confirmDelete(url, itemId, token) {
     Swal.fire({
         title: labels.action.confirm_action,
@@ -33,3 +34,9 @@ function confirmDelete(url, itemId, token) {
         }
     });
 }
+
+//check all
+//Used at role/form
+$("#check-all").change(function () {
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});
