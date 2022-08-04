@@ -274,6 +274,12 @@ return [
             'icon_color' => 'cyan',
             'url' => '#',
         ],
+        ['header' => 'WEBSITE SETTINGS'],
+        [
+            'text' => 'Banner',
+            'url' => 'admin/users/edit-profile',
+            'icon' => 'fas fa-image',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -285,7 +291,7 @@ return [
             'route' => 'users.change_password',
             'icon' => 'fas fa-fw fa-lock',
         ],
-        ['header' => 'WEBSITE SETTINGS'],
+        ['header' => 'accounts_and_permissions'],
         [
             'text' => 'user_list',
             'route' => 'users.list',
