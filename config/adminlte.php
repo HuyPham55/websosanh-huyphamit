@@ -277,8 +277,9 @@ return [
         ['header' => 'WEBSITE SETTINGS'],
         [
             'text' => 'Banner',
-            'url' => 'admin/users/edit-profile',
+            'route' => 'settings.banner',
             'icon' => 'fas fa-image',
+            'can' => 'change_banners'
         ],
         ['header' => 'account_settings'],
         [

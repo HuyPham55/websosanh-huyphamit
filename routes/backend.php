@@ -1,11 +1,23 @@
 <?php
 
+use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+    //Settings
+    Route::group(['prefix' => 'settings'], function () {
+        //Banners
+        Route::group(['prefix' => 'banner'], function () {
+            Route::group(['middleware' => 'can:change_banners'], function () {
+                Route::get('/', [BannerController::class, 'getEdit'])->name('settings.banner');
+                Route::post('/', [BannerController::class, 'postEdit']);
+            });
+        });
+    });
 
     //User
     Route::group(['prefix' => 'users'], function () {

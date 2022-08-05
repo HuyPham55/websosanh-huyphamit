@@ -18,7 +18,7 @@
     <div class="card">
         <div class="card-body">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="check-all" class="custom-control-input" }}>
+                <input type="checkbox" id="check-all" class="custom-control-input">
                 <label class="custom-control-label" for="check-all">{{__('label.all')}}</label>
             </div>
         </div>

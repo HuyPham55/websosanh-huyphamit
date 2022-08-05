@@ -163,8 +163,8 @@ return [
     'settings' => [
         'title' => 'Settings',
         'permissions' => [
-            'setting_website' => 'Setting website',
-            'setting_banner' => 'Setting banners',
+            'change_website_settings' => 'Change website settings',
+            'change_banners' => 'Change banners',
             'setting_email_notification' => 'Setting email notification',
         ]
     ],
