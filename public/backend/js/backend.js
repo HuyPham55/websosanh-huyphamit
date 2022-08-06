@@ -40,3 +40,8 @@ function confirmDelete(url, itemId, token) {
 $("#check-all").change(function () {
     $('input:checkbox').not(this).prop('checked', this.checked);
 });
+
+function resetInput(id) {
+    $("input#" + id).val('');
+    $("#image-preview-" + id).find('img').attr("src", "/images/no-image.png");
+}

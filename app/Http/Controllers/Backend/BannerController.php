@@ -17,7 +17,7 @@ class BannerController extends BaseController
         $this->optionKeys = [
             'banner_contact_us' => [
                 'label' => trans('frontend.contact_us'),
-                'note' => '',
+                'note' => 'width x height',
             ],
             'banner_about_us' => [
                 'label' => trans('frontend.about_us'),

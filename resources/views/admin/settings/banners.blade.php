@@ -21,8 +21,6 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-
-
             <form action="" method="POST" class="form-horizontal pt-3">
                 @csrf
                 <div class="card">
@@ -38,8 +36,6 @@
                                         'inputName' => $bannerKey,
                                         'inputValue' => old($bannerKey) ?? option($bannerKey),
                                         'lfmType' => 'image',
-                                        'classPreview' => '',
-                                        'classInput' => '',
                                         'note' => data_get($banner, 'note'),
                                     ])
                                 </div>

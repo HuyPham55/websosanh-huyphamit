@@ -12,7 +12,9 @@
                 confirm_action: '{{trans('label.action.confirm_action')}}',
             }
         }
-        $('#lfm').filemanager('image');
+
+        $('.lfm-image').filemanager('image');
+        $('.lfm-file').filemanager('file');
     </script>
     <script src="{{asset('/backend/js/backend.js')}}"></script>
 @endpush
