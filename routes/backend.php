@@ -6,6 +6,15 @@ use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
+
+
+    //Only uncomment if config/lfm->use_package_routes set to false
+    /*
+    Route::group(['prefix' => 'laravel-filemanager'], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+    */
+
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     //Settings
