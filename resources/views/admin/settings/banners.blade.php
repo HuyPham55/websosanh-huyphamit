@@ -23,6 +23,7 @@
             @includeIf('components.notification')
             <form action="" method="POST" class="form-horizontal pt-3">
                 @csrf
+                @method('PUT')
                 <div class="card">
                     <div class="card-body">
                         @foreach($bannerKeys as $bannerKey => $banner)

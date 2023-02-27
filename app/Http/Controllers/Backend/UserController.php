@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\User\UserAddRequest;
+use App\Http\Requests\User\UserEditProfileRequest;
 use App\Http\Requests\User\UserEditRequest;
-use App\Http\Requests\UserEditProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +49,7 @@ class UserController extends BaseController
             $user->save();
             $user->assignRole($request->input('role'));
         });
-        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.add_success')]);
+        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function getEdit($id = 0)
@@ -79,7 +79,7 @@ class UserController extends BaseController
 
         $user->syncRoles($request->input('role'));
 
-        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.update_success')]);
+        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     //Edit profile
@@ -103,7 +103,7 @@ class UserController extends BaseController
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->save();
-        return redirect()->back()->with(['status' => 'success', 'flash_message' => trans('label.notification.update_success')]);
+        return redirect()->back()->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function delete(Request $request)
@@ -121,7 +121,7 @@ class UserController extends BaseController
             return response()->json([
                 'status' => 'success',
                 'title' => trans('label.deleted'),
-                'message' => trans('label.notification.delete_success'),
+                'message' => trans('label.notification.success'),
                 'reload' => true
             ]);
         }
@@ -166,7 +166,7 @@ class UserController extends BaseController
             ]);
             $user->password = bcrypt($request->input('password'));
             $user->save();
-            return redirect()->back()->with(['status' => 'success', 'flash_message' => trans('label.notification.update_success')]);
+            return redirect()->back()->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
         }
         return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
     }

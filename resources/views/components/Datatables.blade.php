@@ -1,0 +1,1 @@
+@section('plugins.Datatables', true)

@@ -2,7 +2,6 @@
 function confirmDelete(url, itemId, token) {
     Swal.fire({
         title: labels.action.confirm_action,
-        text: "You won't be able to revert this!",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -12,13 +11,16 @@ function confirmDelete(url, itemId, token) {
         closeOnConfirm: false,
         closeOnCancel: false
     }).then((isConfirm) => {
+        if (typeof Swal == 'undefined') {
+            return
+        }
         if (isConfirm.value) {
-            $.post(url, {
+            jQuery.post(url, {
                 item_id: itemId,
                 _token: token
             }, function (data) {
                 if (data.status === 'success') {
-                    $("#row-id-" + itemId).slideUp();
+                    jQuery("#row-id-" + itemId).slideUp();
                     Swal.fire(data.title + "!", data.message, "success");
                 } else {
                     Swal.fire(data.title + "!", data.message, data.status);
@@ -37,11 +39,36 @@ function confirmDelete(url, itemId, token) {
 
 //check all
 //Used at role/form
-$("#check-all").change(function () {
-    $('input:checkbox').not(this).prop('checked', this.checked);
+jQuery("#check-all").change(function () {
+    jQuery('input:checkbox').not(this).prop('checked', this.checked);
 });
 
 function resetInput(id) {
-    $("input#" + id).val('');
-    $("#image-preview-" + id).find('img').attr("src", "/images/no-image.png");
+    jQuery("input#" + id).val('');
+    jQuery("#image-preview-" + id).find('img').attr("src", "/images/no-image.png");
+}
+
+function postData(route, dataPost) {
+    jQuery.post(route, dataPost)
+        .done(function (data) {
+            if (typeof toastr != 'undefined') {
+                if (data.status && data.status === 'success') {
+                    toastr.success(data.message, 'Success');
+                } else {
+                    if (data.status && data.status === 'error') {
+                        toastr.error(data.message, 'Error');
+                    }
+                }
+            }
+        })
+        .fail(function (data) {
+            if (data.status === 422) {
+                let response = data.responseJSON;
+                if (typeof toastr != 'undefined') {
+                    jQuery.each(response.errors, function (key, value) {
+                        toastr.error(value, 'Error');
+                    });
+                }
+            }
+        });
 }

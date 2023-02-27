@@ -246,10 +246,24 @@ return [
             'route' => 'dashboard',
             'icon' => 'fa fa-home',
         ],
+        ['header' =>    'content'],
         [
             'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
+            'icon' => 'fas fa-rss',
+            'submenu' => [
+                [
+                    'text' => 'Categories',
+                    'route' => 'blog_categories.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/blog/categories/*'],
+                ],
+                [
+                    'text'    => 'Posts',
+                    'route'     => 'blog_posts.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/blog/posts/*'],
+                ]
+            ],
         ],
         [
             'text' => 'pages',
@@ -258,23 +272,7 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],
-        ['header' => 'WEBSITE SETTINGS'],
+        ['header' => 'website_settings'],
         [
             'text' => 'Banner',
             'route' => 'settings.banner',
@@ -298,7 +296,7 @@ return [
             'route' => 'users.list',
             'icon' => 'fas fa-users',
             'can' => 'show_list_users',
-            'active' => ['admin/users/*']
+            'active' => ['admin/users/list*', 'admin/users/add', 'admin/users/edit/*']
         ],
         [
             'text' => 'role',
@@ -306,45 +304,6 @@ return [
             'icon' => 'fas fa-fw fa-shield-alt',
             'can' => 'show_list_roles',
             'active' => ['admin/role/*']
-        ],
-
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
         ],
     ],
 
@@ -455,6 +414,36 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'bootstrapSwitch' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.min.js',
+                ],
+            ],
+        ],
+        'toastr' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '/vendor/toastr/toastr.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/toastr/toastr.min.js',
                 ],
             ],
         ],

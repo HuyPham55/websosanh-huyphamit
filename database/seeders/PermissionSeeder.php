@@ -30,9 +30,6 @@ class PermissionSeeder extends Seeder
                     'slug' => $slugGroup
                 ]);
             }
-//            elseif ($permissionGroup->name <> $group['title']) {
-//                $permissionGroup->update(['name' => $group['title']]);
-//            }
             foreach ($group['permissions'] as $permissionKey => $permissionTitle) {
                 $permission = Permission::where(
                     [
@@ -48,9 +45,6 @@ class PermissionSeeder extends Seeder
                         'guard_name' => 'web',
                     ]);
                 }
-//                elseif($permission->title <> $permissionTitle){
-//                    $permission->update(['title' => $permissionTitle]);
-//                }
             }
 
         }

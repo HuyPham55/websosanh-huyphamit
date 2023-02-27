@@ -24,10 +24,13 @@
         <div class="col-12">
             @includeIf('components.notification')
             <div class="card">
-                @include('admin.user.form')
+                <form action="" method="POST" class="form-horizontal pt-3">
+                    @csrf
+                    @method('PUT')
+                    @include('admin.user.form')
+                </form>
             </div>
         </div>
     </div>
 @endsection
-@section('plugins.Select2', true)
 

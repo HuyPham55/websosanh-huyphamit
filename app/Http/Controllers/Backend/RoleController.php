@@ -49,7 +49,7 @@ class RoleController extends BaseController
                 $role->syncPermissions($permissions);
             }
         });
-        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.add_success')]);
+        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     private function isExistRole(mixed $roleName, string $string): bool
@@ -96,7 +96,7 @@ class RoleController extends BaseController
                 $role->syncPermissions($permissions);
             }
         });
-        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.update_success')]);
+        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function delete(Request $request)
@@ -117,7 +117,7 @@ class RoleController extends BaseController
             return response()->json([
                 'status' => 'success',
                 'title' => trans('label.deleted'),
-                'message' => trans('label.notification.delete_success'),
+                'message' => trans('label.notification.success'),
                 'reload' => true
             ]);
         }

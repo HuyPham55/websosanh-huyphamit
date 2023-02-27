@@ -1,5 +1,4 @@
-<form action="" method="POST">
-    @csrf
+
     <div class="card">
         <div class="card-body">
             <div class="form-group row">
@@ -61,4 +60,3 @@
             </div>
         </div>
     </div>
-</form>

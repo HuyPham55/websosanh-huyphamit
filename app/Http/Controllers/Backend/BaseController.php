@@ -13,7 +13,8 @@ class BaseController extends Controller
 
     public function __construct()
     {
-        $this->lang = array_column(config('lang'), 'title');
+
+        $this->lang = array_map(function($item) { return $item['title']; }, config('lang'));
         $this->middleware(function ($request, $next) {
             View::share([
                 'status' => $this->getStatus(),

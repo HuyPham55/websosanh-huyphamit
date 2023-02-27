@@ -27,6 +27,11 @@
                 @includeIf('components.buttons.add', ['route' => route('users.add')])
             @endcan
             <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h4>{{trans('label.total')}}: {{$data->total()}}</h4>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">

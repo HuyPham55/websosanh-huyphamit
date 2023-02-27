@@ -27,7 +27,10 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-            @include('admin.role.form')
+            <form action="" method="POST">
+                @csrf
+                @include('admin.role.form')
+            </form>
         </div>
     </div>
 @endsection()

@@ -11,12 +11,12 @@ return [
         'flag' => ''
     ],
 
-    'cn_simplified' => [
-        'title' => '简体中文',
-        'flag' => ''
-    ],
-    'vi' => [
-        'title' => 'Vietnam',
-        'flag' => ''
-    ]
+//    'cn_simplified' => [
+//        'title' => '简体中文',
+//        'flag' => ''
+//    ],
+//    'vi' => [
+//        'title' => 'Vietnam',
+//        'flag' => ''
+//    ]
 ];

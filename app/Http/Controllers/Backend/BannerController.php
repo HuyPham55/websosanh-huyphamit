@@ -35,7 +35,7 @@ class BannerController extends BaseController
         return view('admin.settings.banners', ['bannerKeys' => $this->optionKeys]);
     }
 
-    public function postEdit(Request $request): \Illuminate\Http\RedirectResponse
+    public function putEdit(Request $request): \Illuminate\Http\RedirectResponse
     {
         foreach ($this->optionKeys as $optionKey => $optionTitle) {
             if ($request->has($optionKey)) {
@@ -44,6 +44,6 @@ class BannerController extends BaseController
             }
         }
 
-        return back()->with(['status' => 'success', 'flash_message' => __('label.notification.update_success')]);
+        return back()->with(['status' => 'success', 'flash_message' => __('label.notification.success')]);
     }
 }
