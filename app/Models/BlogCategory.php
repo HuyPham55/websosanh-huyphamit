@@ -15,7 +15,7 @@ use Spatie\Translatable\HasTranslations;
  * @property int|mixed $sorting
  * @property bool|mixed $status
  */
-class BlogCategory extends Model
+class BlogCategory extends BaseModel
 {
     use HasFactory;
     use HasTranslations;

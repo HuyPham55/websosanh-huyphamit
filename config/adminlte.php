@@ -256,12 +256,14 @@ return [
                     'route' => 'blog_categories.list',
                     'icon' => 'far fa-fw',
                     'active' => ['admin/blog/categories/*'],
+                    'can' => 'show_list_blog_categories'
                 ],
                 [
                     'text'    => 'Posts',
                     'route'     => 'blog_posts.list',
                     'icon' => 'far fa-fw',
                     'active' => ['admin/blog/posts/*'],
+                    'can' => 'show_list_blog_posts'
                 ]
             ],
         ],

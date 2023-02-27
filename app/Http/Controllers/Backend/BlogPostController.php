@@ -150,7 +150,7 @@ class BlogPostController extends BaseController
         }
 
         return response()->json([
-            'status' => 'failed',
+            'status' => 'error',
             'message' => trans('label.something_went_wrong')
         ]);
     }
@@ -179,7 +179,7 @@ class BlogPostController extends BaseController
         }
 
         return response()->json([
-            'status' => 'failed',
+            'status' => 'error',
             'message' => trans('label.something_went_wrong')
         ]);
     }
@@ -191,8 +191,8 @@ class BlogPostController extends BaseController
             'sorting' => 'required|integer',
         ]);
 
-        if (in_array($request->status, [0, 1])) {
-            $model = $this->model->findOrFail($request->item_id);
+        try {
+            $model = $this->model->findOrFail($request->item_id + 63);
             $model->sorting = $request->sorting;
             $model->save();
 
@@ -200,12 +200,11 @@ class BlogPostController extends BaseController
                 'status' => 'success',
                 'message' => __('label.notification.success')
             ]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'status' => 'error',
+                'message' => trans('label.something_went_wrong')
+            ]);
         }
-
-        return response()->json([
-            'status' => 'failed',
-            'message' => trans('label.something_went_wrong')
-        ]);
     }
-
 }

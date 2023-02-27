@@ -15,8 +15,9 @@ use Spatie\Translatable\HasTranslations;
  * @property int|mixed $sorting
  * @property bool|mixed $is_popular
  * @property bool|mixed $status
+ * @property mixed $created_at
  */
-class BlogPost extends Model
+class BlogPost extends BaseModel
 {
     use HasFactory;
     use HasTranslations;
