@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
+use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +65,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
                 ->where(['id' => '[0-9]+']);
         });
         Route::post('delete', [RoleController::class, 'delete'])->middleware('can:delete_roles')->name('role.delete');
+    });
+
+    //Home slide
+    Route::group(['prefix' => 'home-slides'], function () {
+        Route::get('/', [HomeSlideController::class, 'index'])->middleware('permission:show_list_home_slides')->name('home_slides.list');
+        Route::group(['middleware' => 'permission:add_home_slides'], function () {
+            Route::get('add', [HomeSlideController::class, 'getAdd'])->name('home_slides.add');
+            Route::post('add', [HomeSlideController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'permission:edit_home_slides'], function () {
+            Route::get('edit/{id}', [HomeSlideController::class, 'getEdit'])->name('home_slides.edit');
+            Route::put('edit/{id}', [HomeSlideController::class, 'putEdit']);
+
+            Route::post('change-sorting', [HomeSlideController::class, 'changeSorting'])->name('home_slides.change_sorting');
+            Route::post('change-status', [HomeSlideController::class, 'changeStatus'])->name('home_slides.change_status');
+        });
+        Route::post('delete', [HomeSlideController::class, 'delete'])->middleware('permission:delete_home_slides')->name('home_slides.delete');
     });
 
     //Blog

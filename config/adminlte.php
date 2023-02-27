@@ -244,9 +244,23 @@ return [
         [
             'text' => 'Dashboard',
             'route' => 'dashboard',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa fa-tachometer-alt',
         ],
         ['header' =>    'content'],
+        [
+            'text' => 'home',
+            'url' => '/',
+            'icon' => 'fa fa-home',
+            'submenu' => [
+                [
+                    'text' => 'slides',
+                    'route' => 'home_slides.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/home-slides/*'],
+                    'can' => 'show_list_home_slides'
+                ],
+            ],
+        ],
         [
             'text' => 'blog',
             'icon' => 'fas fa-rss',
