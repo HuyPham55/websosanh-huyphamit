@@ -21,6 +21,14 @@ class RouteServiceProvider extends ServiceProvider
     public const AdminDashboard = '/admin/dashboard';
 
     /**
+     * The path to the "admin login" route for your application.
+     *
+     * @var string
+     */
+    public const ADMIN_LOGIN = '/login';
+
+
+    /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
      * @return void

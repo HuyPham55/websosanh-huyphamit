@@ -59,4 +59,16 @@ class LoginController extends Controller
             'captcha' => 'required|captcha'
         ]);
     }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        //
+        return redirect(RouteServiceProvider::ADMIN_LOGIN);
+    }
 }
