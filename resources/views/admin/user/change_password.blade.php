@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="old_password"
-                                   class="col-sm-2 control-label col-form-label">{{ trans('label.member.old_password') }}</label>
+                                   class="col-sm-2 control-label col-form-label">{{ trans('label.old_password') }}</label>
                             <div class="col-sm-10">
                                 <input type="password" id="old_password" name="old_password" value=""
                                        class="form-control" minlength="8">
@@ -37,7 +37,7 @@
 
                         <div class="form-group row">
                             <label for="password"
-                                   class="col-sm-2 control-label col-form-label">{{ __('label.member.new_password') }}</label>
+                                   class="col-sm-2 control-label col-form-label">{{ __('label.new_password') }}</label>
                             <div class="col-sm-10">
                                 <input type="password" id="password" name="password" value="{{ old('password') }}"
                                        class="form-control" minlength="8">
@@ -49,7 +49,7 @@
 
                         <div class="form-group row">
                             <label for="password"
-                                   class="col-sm-2 control-label col-form-label">{{ __('label.member.password_confirmation') }}</label>
+                                   class="col-sm-2 control-label col-form-label">{{ __('label.password_confirmation') }}</label>
                             <div class="col-sm-10">
                                 <input type="password" id="password" name="password_confirmation"
                                        value="{{ old('password_confirmation') }}"

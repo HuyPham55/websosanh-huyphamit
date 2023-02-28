@@ -65,7 +65,7 @@ class UserController extends BaseController
         $this->__validateUniqueEmailRequest($user, $request);
 
         if ($id === Auth::id()) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
         }
 
         //Update data
@@ -96,7 +96,7 @@ class UserController extends BaseController
 
         //check password
         if (!Hash::check($oldPassword, $user->password)) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.old_password_incorrect')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('validation.current_password')]);
         }
         $this->__validateUniqueEmailRequest($user, $request);
 
@@ -156,7 +156,7 @@ class UserController extends BaseController
 
         //check password
         if (!Hash::check($oldPassword, $user->password)) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.old_password_incorrect')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('validation.current_password')]);
         }
 
         if (!empty($request->input('password')) || !empty($request->input('password_confirmation'))) {
@@ -168,7 +168,7 @@ class UserController extends BaseController
             $user->save();
             return redirect()->back()->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
         }
-        return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+        return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
     }
 
 }

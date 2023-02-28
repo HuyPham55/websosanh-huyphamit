@@ -153,7 +153,7 @@ return [
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
-    'sidebar_nav_animation_speed' => 300,
+    'sidebar_nav_animation_speed' => 150,
 
     /*
     |--------------------------------------------------------------------------
@@ -248,8 +248,7 @@ return [
         ],
         ['header' =>    'content'],
         [
-            'text' => 'home',
-            'url' => '/',
+            'text' => 'homepage',
             'icon' => 'fa fa-fw fa-home',
             'can' => ['show_list_home_slides'],
             'submenu' => [
@@ -289,7 +288,7 @@ return [
             'can' => ['update_home_page', 'update_about_page', 'update_blog_index', 'update_404_page'],
             'submenu' => [
                 [
-                    'text' => 'home_page',
+                    'text' => 'homepage',
                     'route' => ['backend.static_page', ['key' => 'home_page', 'title' => 'label.home_page']],
                     'icon' => 'far fa-fw',
                     'active' => ['admin/static-pages/home_page*'],
@@ -329,7 +328,7 @@ return [
         [
             'text' => 'Banner',
             'route' => 'settings.banner',
-            'icon' => 'fas fa-image',
+            'icon' => 'fas fa-fw fa-image',
             'can' => 'change_banners'
         ],
         ['header' => 'account_settings'],
@@ -345,15 +344,15 @@ return [
         ],
         ['header' => 'accounts_and_permissions'],
         [
-            'text' => 'user_list',
+            'text' => 'users',
             'route' => 'users.list',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-fw fa-users',
             'can' => 'show_list_users',
             'active' => ['admin/users/*']
         ],
         [
-            'text' => 'role',
-            'route' => 'role.list',
+            'text' => 'roles',
+            'route' => 'roles.list',
             'icon' => 'fas fa-fw fa-shield-alt',
             'can' => 'show_list_roles',
             'active' => ['admin/role/*']

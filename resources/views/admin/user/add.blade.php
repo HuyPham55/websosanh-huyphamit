@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @php
-    $targetLabel = __('backend.user_list');
+    $targetLabel = __('backend.user');
     $actionLabel = trans('label.action.add');
     $title = $targetLabel." - ".$actionLabel;
 @endphp

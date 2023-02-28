@@ -9,11 +9,11 @@
              <span class="input-group-btn">
                  <a data-input="{{ $keyId }}" data-preview="image-preview-{{ $keyId }}" class="btn btn-primary lfm-{{$lfmType}}">
                      <i class="fa fa-folder-open"></i>
-                     {{__('backend.select')}}
+                     {{__('label.action.select')}}
                  </a>
                  <button onclick="resetInput('{{ $keyId }}')" class="btn btn-outline-danger" type="button">
                      <i class="fas fa-eraser"></i>
-                     {{__('backend.clear')}}
+                     {{__('label.action.clear')}}
                  </button>
              </span>
             <label for="{{ $keyId }}"></label>
