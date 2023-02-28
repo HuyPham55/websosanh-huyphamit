@@ -4,7 +4,7 @@ namespace App\ModelFilters;
 
 use EloquentFilter\ModelFilter;
 
-class BlogPostFilter extends ModelFilter
+class FaqFilter extends ModelFilter
 {
     /**
      * Related Models that have ModelFilters as well as the method on the ModelFilter

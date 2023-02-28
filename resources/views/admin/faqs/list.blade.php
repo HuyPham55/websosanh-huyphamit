@@ -2,17 +2,17 @@
     use App\Enums\CommonStatus;
 @endphp
 @extends('admin.layout')
-@section('title', trans('label.slide'))
+@section('title', trans('label.faqs'))
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>{{ __('label.slide') }}</h1>
+            <h1>{{ __('label.faqs') }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('label.home') }}</a></li>
-                <li class="breadcrumb-item active">{{ __('label.slide') }}</li>
+                <li class="breadcrumb-item active">{{ __('label.faqs') }}</li>
             </ol>
         </div>
     </div>
@@ -23,13 +23,16 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-            @can('add_home_slides')
-                @includeIf('components.buttons.add', ['route' => route('home_slides.add')])
+            @can('add_faqs')
+                @includeIf('components.buttons.add', ['route' => route('faqs.add')])
             @endcan
+
+            @include('admin.faqs.filter_bar')
+
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <h4>{{trans('label.total')}}: {{$data->total()}}</h4>
+                        <h4>{{trans('label.total')}}: {{$posts->total()}}</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -38,7 +41,7 @@
                             <thead>
                             <tr>
                             <tr>
-                                <th scope="col">{{ __('label.image') }}</th>
+                                <th scope="col">{{ __('label.title') }}</th>
                                 <th scope="col">{{ __('backend.sorting') }}</th>
                                 <th scope="col">{{ __('label.status.status') }}</th>
                                 <th scope="col">{{ __('label.created_at') }}</th>
@@ -46,14 +49,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($data as $item)
+                            @forelse($posts as $item)
                                 <tr id="row-id-{{ $item->id }}">
                                     <td>
-                                        <img src="{{ either($item->image, '/images/no-image.png') }}"
-                                             style="max-width: 125px;" alt="">
+                                        {{$item->title}}
                                     </td>
                                     <td>
-                                        @if(auth()->user()->can('edit_home_slides'))
+                                        @if(auth()->user()->can('edit_faqs'))
                                             <input type="number" value="{{ $item->sorting }}"
                                                    data-item="{{ $item->id }}" title=""
                                                    class="update-sorting" style="max-width: 75px;" min="0" max="e9"
@@ -68,19 +70,19 @@
                                                data-size="normal" data-on-color="success"
                                                data-on-text="{{ __('label.on') }}" data-off-text="{{ __('label.off') }}"
                                                {{ $item->status == 1 ? 'checked' : '' }}
-                                               @cannot('edit_home_slides')
+                                               @cannot('edit_faqs')
                                                    disabled
                                             @endcannot
                                         />
                                     </td>
                                     <td>{{ $item->date_format }}</td>
                                     <td>
-                                        @can('edit_home_slides')
-                                            @includeIf('components.buttons.edit', ['route' => route('home_slides.edit', $item->id)])
+                                        @can('edit_faqs')
+                                            @includeIf('components.buttons.edit', ['route' => route('faqs.edit', $item->id)])
                                         @endcan
 
-                                        @can('edit_home_slides')
-                                            @includeIf('components.buttons.delete', ['route' => route('home_slides.delete'), 'id' => $item->id])
+                                        @can('edit_faqs')
+                                            @includeIf('components.buttons.delete', ['route' => route('faqs.delete'), 'id' => $item->id])
                                         @endcan
                                     </td>
                                 </tr>
@@ -93,7 +95,7 @@
                         </table>
                         <hr>
                         <div class="d-flex justify-content-center">
-                            {{ $data->appends(request()->all())->onEachSide(1)->links() }}
+                            {{ $posts->appends(request()->all())->onEachSide(1)->links() }}
                         </div>
                     </div>
                 </div>
@@ -115,7 +117,7 @@
                 let isChecked = event.target.checked;
 
                 if (itemId) {
-                    postData("{{ route('home_slides.change_status') }}", {
+                    postData("{{ route('faqs.change_status') }}", {
                         'field': field,
                         'item_id': itemId,
                         'status': isChecked ? 1 : 0,
@@ -129,7 +131,7 @@
                 let sorting = jQuery(this).val();
 
                 if (itemId) {
-                    postData("{{ route('home_slides.change_sorting') }}", {
+                    postData("{{ route('faqs.change_sorting') }}", {
                         'item_id': itemId,
                         'sorting': sorting,
                         '_token': '{{ csrf_token() }}'

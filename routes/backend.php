@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
+use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StaticPageController;
@@ -16,7 +17,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
-    */
 
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
@@ -139,6 +139,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             ->name('backend.static_page');
         Route::put('/{key}', [StaticPageController::class, 'putEdit'])
             ->where('key', $arrKey);
+    });
+
+    //Faqs
+    Route::group(['prefix' => 'faqs'], function () {
+        Route::get('/', [FaqController::class, 'index'])->middleware('permission:show_list_faqs')->name('faqs.list');
+        Route::group(['middleware' => 'permission:add_faqs'], function () {
+            Route::get('add', [FaqController::class, 'getAdd'])->name('faqs.add');
+            Route::post('add', [FaqController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'permission:edit_faqs'], function () {
+            Route::get('edit/{id}', [FaqController::class, 'getEdit'])->name('faqs.edit');
+            Route::put('edit/{id}', [FaqController::class, 'putEdit']);
+
+            Route::post('change-sorting', [FaqController::class, 'changeSorting'])->name('faqs.change_sorting');
+            Route::post('change-status', [FaqController::class, 'changeStatus'])->name('faqs.change_status');
+        });
+        Route::post('delete', [FaqController::class, 'delete'])->middleware('permission:delete_faqs')->name('faqs.delete');
     });
 
 });

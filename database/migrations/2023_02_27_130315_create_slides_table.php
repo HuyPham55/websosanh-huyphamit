@@ -20,12 +20,12 @@ return new class extends Migration
             $table->unsignedInteger('sorting')->default(0);
             $table->boolean('status')->default(true);
 
-            $table->string('image')->nullable();
-            $table->string('url')->nullable();
-            $table->string('text_1')->nullable();
-            $table->string('text_2')->nullable();
-            $table->string('text_3')->nullable();
-            $table->text('description')->nullable();
+            $table->json('image')->nullable();
+            $table->json('url')->nullable();
+            $table->json('text_1')->nullable();
+            $table->json('text_2')->nullable();
+            $table->json('text_3')->nullable();
+            $table->json('description')->nullable();
 
             $table->timestamps();
         });

@@ -244,13 +244,13 @@ return [
         [
             'text' => 'Dashboard',
             'route' => 'dashboard',
-            'icon' => 'fa fa-tachometer-alt',
+            'icon' => 'fa fa-fw fa-tachometer-alt',
         ],
         ['header' =>    'content'],
         [
             'text' => 'home',
             'url' => '/',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa fa-fw fa-home',
             'can' => ['show_list_home_slides'],
             'submenu' => [
                 [
@@ -264,7 +264,7 @@ return [
         ],
         [
             'text' => 'blog',
-            'icon' => 'fas fa-rss',
+            'icon' => 'fas fa-fw fa-rss',
             'can' => ['show_list_blog_categories', 'show_list_blog_posts'],
             'submenu' => [
                 [
@@ -312,11 +312,11 @@ return [
             ],
         ],
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
+            'text' => 'faqs',
+            'route' => 'faqs.list',
+            'icon' => 'fas fa-fw fa-question-circle',
+            'can' => ['show_list_faqs'],
+            'active' => ['admin/faqs/*'],
         ],
         ['header' => 'website_settings'],
         [

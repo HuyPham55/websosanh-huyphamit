@@ -13,24 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('blog_posts', function (Blueprint $table) {
+        Schema::create('faqs', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-
-            $table->integer('sorting')->default(0);
-            $table->boolean('is_popular')->default(false);
+            $table->unsignedInteger('sorting')->default(0);
             $table->boolean('status')->default(true);
 
-
-            $table->json('image')->nullable();
             $table->json('title')->nullable();
-            $table->json('slug')->nullable();
             $table->json('content')->nullable();
-            $table->json('short_description')->nullable();
-            $table->json('seo_title')->nullable();
-            $table->json('seo_description')->nullable();
 
             $table->timestamps();
         });
@@ -43,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blog_posts');
+        Schema::dropIfExists('faqs');
     }
 };
