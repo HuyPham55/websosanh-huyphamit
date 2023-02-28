@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
     });
 
-    //User
+    //Users
     Route::group(['prefix' => 'users'], function () {
         Route::get('list', [UserController::class, 'getList'])->middleware('can:show_list_users')->name('users.list');
         Route::group(['middleware' => 'can:add_users'], function () {
@@ -44,12 +45,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::put('edit/{id}', [UserController::class, 'postEdit'])
                 ->where(['id' => '[0-9]+']);
         });
+        Route::post('delete', [UserController::class, 'delete'])->middleware('can:delete_users')->name('users.delete');
+    });
+    //User
+    Route::group(['prefix' => 'user'], function () {
         Route::get('edit-profile', [UserController::class, 'getEditProfile'])->name('users.edit_profile');
         Route::put('edit-profile', [UserController::class, 'postEditProfile']);
         Route::get('change-password', [UserController::class, 'getChangePassword'])->name('users.change_password');
         Route::post('change-password', [UserController::class, 'postChangePassword']);
-        Route::post('delete', [UserController::class, 'delete'])->middleware('can:delete_users')->name('users.delete');
     });
+
 
     //Roles
     Route::group(['prefix' => 'role'], function () {
@@ -122,6 +127,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             });
             Route::post('delete', [BlogPostController::class, 'delete'])->middleware('permission:delete_blog_posts')->name('blog_posts.delete');
         });
+    });
+
+    //Static pages
+    Route::group([
+        'prefix' => 'static-pages',
+        'middleware' => 'permission:update_home_page|update_about_page|update_blog_index|update_404_page'
+    ], function () {
+        $arrKey = 'home_page|about_page|blog_index|404_page';
+        Route::get('/{key}', [StaticPageController::class, 'getEdit'])
+            ->where('key', $arrKey)
+            ->name('backend.static_page');
+        Route::put('/{key}', [StaticPageController::class, 'putEdit'])
+            ->where('key', $arrKey);
     });
 
 });

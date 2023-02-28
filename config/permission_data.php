@@ -156,7 +156,7 @@ return [
         'title' => 'Contacts',
         'permissions' => [
             'show_list_contacts' => 'Show list contacts',
-            'delete_contacts' => 'Delete',
+            'delete_contacts' => 'Delete contacts',
         ]
     ],
 

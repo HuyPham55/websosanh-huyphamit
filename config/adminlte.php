@@ -251,6 +251,7 @@ return [
             'text' => 'home',
             'url' => '/',
             'icon' => 'fa fa-home',
+            'can' => ['show_list_home_slides'],
             'submenu' => [
                 [
                     'text' => 'slides',
@@ -264,6 +265,7 @@ return [
         [
             'text' => 'blog',
             'icon' => 'fas fa-rss',
+            'can' => ['show_list_blog_categories', 'show_list_blog_posts'],
             'submenu' => [
                 [
                     'text' => 'Categories',
@@ -279,6 +281,34 @@ return [
                     'active' => ['admin/blog/posts/*'],
                     'can' => 'show_list_blog_posts'
                 ]
+            ],
+        ],
+        [
+            'text' => 'static_pages',
+            'icon' => 'far fa-fw fa-file',
+            'can' => ['update_home_page', 'update_about_page', 'update_blog_index', 'update_404_page'],
+            'submenu' => [
+                [
+                    'text' => 'home_page',
+                    'route' => ['backend.static_page', ['key' => 'home_page', 'title' => 'label.home_page']],
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/static-pages/home_page*'],
+                    'can' => 'update_home_page'
+                ],
+                [
+                    'text' => 'about_page',
+                    'route' => ['backend.static_page', ['key' => 'about_page', 'title' => 'label.home_page']],
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/static-pages/about_page*'],
+                    'can' => 'update_about_page'
+                ],
+                [
+                    'text' => 'blog',
+                    'route' => ['backend.static_page', ['key' => 'blog_index', 'title' => 'label.home_page']],
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/static-pages/blog_index*'],
+                    'can' => 'update_blog_index'
+                ],
             ],
         ],
         [
@@ -298,7 +328,7 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url' => 'admin/users/edit-profile',
+            'route' => 'users.edit_profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -312,7 +342,7 @@ return [
             'route' => 'users.list',
             'icon' => 'fas fa-users',
             'can' => 'show_list_users',
-            'active' => ['admin/users/list*', 'admin/users/add', 'admin/users/edit/*']
+            'active' => ['admin/users/*']
         ],
         [
             'text' => 'role',
