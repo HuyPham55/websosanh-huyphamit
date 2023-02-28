@@ -13,7 +13,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
 
     //Only uncomment if config/lfm->use_package_routes set to false
-    /*
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
