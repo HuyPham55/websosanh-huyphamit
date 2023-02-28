@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         //Set default string() length for migration
-        Schema::defaultStringLength(512);
+        //Schema::defaultStringLength(512);
 
         //Set Bootstrap as default pagination template
         Paginator::useBootstrap();

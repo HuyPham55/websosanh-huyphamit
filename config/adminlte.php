@@ -318,6 +318,13 @@ return [
             'can' => ['show_list_faqs'],
             'active' => ['admin/faqs/*'],
         ],
+        [
+            'text' => 'contact_requests',
+            'route' => 'contacts.list',
+            'icon' => 'fas fa-fw fa-address-card',
+            'can' => ['show_list_contacts'],
+            'active' => ['admin/contacts/*'],
+        ],
         ['header' => 'website_settings'],
         [
             'text' => 'Banner',

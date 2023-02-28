@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
+use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\RoleController;
@@ -156,6 +157,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::post('change-status', [FaqController::class, 'changeStatus'])->name('faqs.change_status');
         });
         Route::post('delete', [FaqController::class, 'delete'])->middleware('permission:delete_faqs')->name('faqs.delete');
+    });
+
+    //Contact
+    Route::group(['prefix' => 'contacts'], function () {
+        Route::get('/', [ContactController::class, 'index'])->middleware('permission:show_list_contacts')->name('contacts.list');
+        Route::get('/show', [ContactController::class, 'show'])->name('contacts.show');
+        Route::post('delete', [ContactController::class, 'delete'])->middleware('permission:delete_contacts')->name('contacts.delete');
+        Route::post('change-favourite', [ContactController::class, 'changeFavourite'])->name('contacts.change_favourite');
     });
 
 });

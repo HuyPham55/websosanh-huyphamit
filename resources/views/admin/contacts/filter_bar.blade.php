@@ -8,7 +8,7 @@
                            autocomplete="off" name="keyword">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="status">{{__('label.status.status')}}</label>
+                    <label for="status">{{__('label.favourite')}}</label>
                     <select type="text" name="status" id="status" class="form-control">
                         <option value="" selected>{{__('label.all')}}</option>
                         <option
