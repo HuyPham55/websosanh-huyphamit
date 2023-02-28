@@ -67,7 +67,7 @@ class HomeSlideController extends BaseController
         $flag = $this->model::saveModel($model, $this->key, $request);
         if ($flag) {
             $this->forgetCache();
-            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.update_success')]);
+            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
         }
         return redirect()->back()->with([
             'status' => 'danger',
@@ -137,7 +137,7 @@ class HomeSlideController extends BaseController
             $this->forgetCache();
             return response()->json([
                 'status' => 'success',
-                'message' => __('label.notification.update_success')
+                'message' => __('label.notification.success')
             ]);
         }
         return response()->json([

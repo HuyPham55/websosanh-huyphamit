@@ -1,16 +1,16 @@
 @extends('admin.layout')
-@section('title', __('label.role'))
+@section('title', __('label.roles'))
 
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>{{ __('label.role') }}</h1>
+            <h1>{{ __('label.roles') }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('label.home') }}</a></li>
-                <li class="breadcrumb-item active">{{ __('label.role') }}</li>
+                <li class="breadcrumb-item active">{{ __('label.roles') }}</li>
             </ol>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="col-12">
             @includeIf('components.notification')
             @can('add_roles')
-                @includeIf('components.buttons.add', ['route' => route('role.add')])
+                @includeIf('components.buttons.add', ['route' => route('roles.add')])
             @endcan
             <div class="card">
                 <div class="card-body">
@@ -40,11 +40,11 @@
                                     <td>
                                         @if($role->name <> \App\Enums\RoleEnum::Admin)
                                             @can('edit_roles')
-                                                @includeIf('components.buttons.edit', ['route' => route('role.edit', $role->id)])
+                                                @includeIf('components.buttons.edit', ['route' => route('roles.edit', $role->id)])
                                             @endcan
 
                                             @can('edit_roles')
-                                                @includeIf('components.buttons.delete', ['route' => route('role.delete'), 'id' => $role->id])
+                                                @includeIf('components.buttons.delete', ['route' => route('roles.delete'), 'id' => $role->id])
                                             @endcan
                                         @endif
                                     </td>

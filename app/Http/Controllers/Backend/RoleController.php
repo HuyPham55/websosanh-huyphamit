@@ -33,7 +33,7 @@ class RoleController extends BaseController
         $roleName = $request->input('name');
 
         if ($this->isExistRole($roleName, 'web')) {
-            return redirect()->back()->withInput()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+            return redirect()->back()->withInput()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
         }
 
         DB::transaction(function () use ($request, $roleName) {
@@ -49,7 +49,7 @@ class RoleController extends BaseController
                 $role->syncPermissions($permissions);
             }
         });
-        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        return redirect()->route('roles.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     private function isExistRole(mixed $roleName, string $string): bool
@@ -65,7 +65,7 @@ class RoleController extends BaseController
     {
         $data = Role::findOrFail($id);
         if ($data->name == RoleEnum::Admin) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
         }
         $permissionGroups = PermissionGroup::with('permissions')->orderBy('name')->get();
         return view('admin.role.edit', compact('data', 'permissionGroups'));
@@ -80,11 +80,11 @@ class RoleController extends BaseController
         $role = Role::findOrFail($id);
 
         if ($role->name == RoleEnum::Admin) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
         }
 
         if ($role->name <> $roleName && $this->isExistRole($roleName, 'web')) {
-            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.notification.something_went_wrong')]);
+            return redirect()->back()->with(['status' => 'danger', 'flash_message' => trans('label.something_went_wrong')]);
         }
 
         DB::transaction(function () use ($request, $role) {
@@ -96,7 +96,7 @@ class RoleController extends BaseController
                 $role->syncPermissions($permissions);
             }
         });
-        return redirect()->route('role.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        return redirect()->route('roles.list')->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function delete(Request $request)

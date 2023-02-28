@@ -58,18 +58,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
     //Roles
     Route::group(['prefix' => 'role'], function () {
-        Route::get('list', [RoleController::class, 'index'])->middleware('can:show_list_roles')->name('role.list');
+        Route::get('list', [RoleController::class, 'index'])->middleware('can:show_list_roles')->name('roles.list');
         Route::group(['middleware' => 'can:add_roles'], function () {
-            Route::get('add', [RoleController::class, 'getAdd'])->name('role.add');
+            Route::get('add', [RoleController::class, 'getAdd'])->name('roles.add');
             Route::post('add', [RoleController::class, 'postAdd']);
         });
         Route::group(['middleware' => 'can:edit_roles'], function () {
-            Route::get('edit/{id}', [RoleController::class, 'getEdit'])->name('role.edit')
+            Route::get('edit/{id}', [RoleController::class, 'getEdit'])->name('roles.edit')
                 ->where(['id' => '[0-9]+']);
             Route::put('edit/{id}', [RoleController::class, 'postEdit'])
                 ->where(['id' => '[0-9]+']);
         });
-        Route::post('delete', [RoleController::class, 'delete'])->middleware('can:delete_roles')->name('role.delete');
+        Route::post('delete', [RoleController::class, 'delete'])->middleware('can:delete_roles')->name('roles.delete');
     });
 
     //Home slide

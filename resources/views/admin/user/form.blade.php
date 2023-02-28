@@ -54,7 +54,7 @@
     @endphp
     <div class="form-group">
         <label for="role" class="control-label">
-            {{ __('label.role') }}
+            {{ __('label.roles') }}
         </label>
         <div class="input-group">
             <select id="role" name="role[]" class="form-control select2" required multiple>

@@ -79,7 +79,7 @@ class FaqController extends BaseController
             return response()->json([
                 'status' => 'success',
                 'title' => trans('label.deleted'),
-                'message' => trans('label.notification.delete_success')
+                'message' => trans('label.notification.success')
             ]);
         }
 

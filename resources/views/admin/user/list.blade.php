@@ -2,17 +2,17 @@
     use App\Enums\CommonStatus;
 @endphp
 @extends('admin.layout')
-@section('title', trans('backend.user_list'))
+@section('title', trans('backend.user'))
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>{{ __('backend.user_list') }}</h1>
+            <h1>{{ __('backend.user') }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('label.home') }}</a></li>
-                <li class="breadcrumb-item active">{{ __('backend.user_list') }}</li>
+                <li class="breadcrumb-item active">{{ __('backend.user') }}</li>
             </ol>
         </div>
     </div>
@@ -39,7 +39,7 @@
                             <tr>
                             <tr>
                                 <th>{{ __('label.name') }}</th>
-                                <th>{{__('label.role')}}</th>
+                                <th>{{__('label.roles')}}</th>
                                 <th>{{ __('label.status.status') }}</th>
                                 <th>{{ __('label.created_at') }}</th>
                                 <th>{{ __('label.action.action') }}</th>
