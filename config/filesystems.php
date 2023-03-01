@@ -45,8 +45,8 @@ return [
         ],
         'public_relative' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => '/storage',
+            'root' => public_path('upload'),
+            'url' => '/upload',
             'visibility' => 'public',
             'throw' => false,
         ],

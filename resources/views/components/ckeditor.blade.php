@@ -2,10 +2,10 @@
     <script type="text/javascript" src="{{ url('/editor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
         let options = {
-            filebrowserImageBrowseUrl: '/admin/laravel-filemanager?type=Images',
-            filebrowserImageUploadUrl: '/admin/laravel-filemanager/upload?type=Images&_token=',
-            filebrowserBrowseUrl: '/admin/laravel-filemanager?type=Files',
-            filebrowserUploadUrl: '/admin/laravel-filemanager/upload?type=Files&_token='
+            filebrowserImageBrowseUrl: '/filemanager?type=Images',
+            filebrowserImageUploadUrl: '/filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/filemanager?type=Files',
+            filebrowserUploadUrl: '/filemanager/upload?type=Files&_token='
         }
         CKEDITOR.on("instanceReady", function (event) {
             event.editor.on("beforeCommandExec", function (event) {

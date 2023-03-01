@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
 
-    //Only uncomment if config/lfm->use_package_routes set to false
+    /*
+        Only uncomment if config/lfm->use_package_routes set to false
+        Also affect rich text editors
+    */
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
