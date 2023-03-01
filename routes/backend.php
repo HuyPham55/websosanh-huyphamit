@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
+use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
@@ -31,6 +32,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::group(['middleware' => 'can:change_banners'], function () {
                 Route::get('/', [BannerController::class, 'getEdit'])->name('settings.banner');
                 Route::put('/', [BannerController::class, 'putEdit']);
+            });
+        });
+
+        //Options
+        Route::group(['prefix' => 'options'], function () {
+            Route::group(['middleware' => 'permission:change_website_settings'], function () {
+                Route::get('/', [OptionController::class, 'getEdit'])->name('settings.options');
+                Route::put('/', [OptionController::class, 'putEdit']);
             });
         });
     });

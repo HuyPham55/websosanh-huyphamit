@@ -26,7 +26,7 @@
                     <div id="tab_lang_{{ $langKey }}" class="tab-pane container p-0 {{ $loop->first ? 'active' : '' }}">
 
                         <div class="form-group">
-                            <label for="{getTranslation{ $langKey }}[title]"
+                            <label for="{{ $langKey }}[title]"
                                    class="control-label">{{ __('label.title') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
                             <input type="text" name="{{ $langKey }}[title]" id="{{ $langKey }}[title]"
                                    value="{{ old("$langKey.title") ?? $post->getTranslation('title', $langKey) }}"

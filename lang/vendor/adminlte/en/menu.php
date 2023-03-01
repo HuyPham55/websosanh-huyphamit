@@ -26,4 +26,6 @@ return [
     'homepage' => 'Homepage',
     'about_page' => 'About page',
     'content' => 'Content',
+    'banners' => 'Banners',
+    'settings' => 'Settings',
 ];

@@ -326,10 +326,16 @@ return [
         ],
         ['header' => 'website_settings'],
         [
-            'text' => 'Banner',
+            'text' => 'banners',
             'route' => 'settings.banner',
             'icon' => 'fas fa-fw fa-image',
             'can' => 'change_banners'
+        ],
+        [
+            'text' => 'settings',
+            'route' => 'settings.options',
+            'icon' => 'fas fa-fw fa-cogs',
+            'can' => 'change_website_settings'
         ],
         ['header' => 'account_settings'],
         [
