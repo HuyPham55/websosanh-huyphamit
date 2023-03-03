@@ -1,5 +1,5 @@
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
         <div class="col-sm-12">
             @if(count($lang) > 1)
                 <!-- Nav tabs -->
@@ -82,7 +82,7 @@
 
 
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
         <div class="col-md-2">
             <div class="form-group">
                 <label class="control-label" for="sorting">{{ __('backend.sorting') }}</label>

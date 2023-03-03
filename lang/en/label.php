@@ -65,4 +65,8 @@ return array (
   'password_confirmation' => 'Password confirmation',
   'old_password' => 'Old password',
   'new_password' => 'New password',
+  'gender' => 'Gender',
+  'username' => 'Username',
+  'logo' => 'Logo',
+  'tags' => 'Tags',
 );

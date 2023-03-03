@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
+use App\Http\Controllers\Backend\MemberController;
 use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StaticPageController;
@@ -65,6 +66,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::put('edit-profile', [UserController::class, 'postEditProfile']);
         Route::get('change-password', [UserController::class, 'getChangePassword'])->name('users.change_password');
         Route::post('change-password', [UserController::class, 'postChangePassword']);
+    });
+
+    //Members
+    Route::group(['prefix' => 'members'], function () {
+        Route::get('/', [MemberController::class, 'index'])->middleware('permission:show_list_members')->name('members.list');
+        Route::group(['middleware' => 'permission:add_members'], function () {
+            Route::get('add', [MemberController::class, 'getAdd'])->name('members.add');
+            Route::post('add', [MemberController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'permission:edit_members'], function () {
+            Route::get('{id}/edit', [MemberController::class, 'getEdit'])->name('members.edit');
+            Route::put('{id}/edit', [MemberController::class, 'putEdit']);
+        });
+        Route::post('delete', [MemberController::class, 'delete'])->middleware('permission:delete_members')->name('members.delete');
     });
 
 

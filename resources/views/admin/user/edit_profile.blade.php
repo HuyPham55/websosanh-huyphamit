@@ -49,7 +49,7 @@
 
                         <div class="form-group row">
                             <label for="old_password"
-                                   class="col-sm-2 control-label col-form-label">{{ trans('label.member.old_password') }}</label>
+                                   class="col-sm-2 control-label col-form-label">{{ trans('label.old_password') }}</label>
                             <div class="col-sm-10">
                                 <input type="password" id="old_password" name="old_password" value=""
                                        class="form-control" minlength="8">

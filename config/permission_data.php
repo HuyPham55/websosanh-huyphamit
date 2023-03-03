@@ -50,15 +50,15 @@ return [
         ]
     ],
 
-//    'members' => [
-//        'title' => 'Members',
-//        'permissions' => [
-//            'show_list_members' => 'Show list members',
-//            'add_members' => 'Add members',
-//            'edit_members' => 'Edit members',
-//            'delete_members' => 'Delete members',
-//        ]
-//    ],
+    'members' => [
+        'title' => 'Members',
+        'permissions' => [
+            'show_list_members' => 'Show list members',
+            'add_members' => 'Add members',
+            'edit_members' => 'Edit members',
+            'delete_members' => 'Delete members',
+        ]
+    ],
 
 //            'product_categories' => [
 //                'title' => 'Product Categories',

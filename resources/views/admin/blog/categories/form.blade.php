@@ -1,5 +1,5 @@
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
         <div class="col-sm-12">
             @if(count($lang) > 1)
                 <!-- Nav tabs -->
@@ -55,7 +55,7 @@
 @include('components.form_elements.seo', ['data' => $category])
 
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
 
         <div class="col-md-4">
             <div class="form-group">

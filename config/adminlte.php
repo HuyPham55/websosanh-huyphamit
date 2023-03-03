@@ -363,6 +363,13 @@ return [
             'can' => 'show_list_roles',
             'active' => ['admin/role/*']
         ],
+        [
+            'text' => 'members',
+            'route' => 'members.list',
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'show_list_members',
+            'active' => ['admin/members/*']
+        ],
     ],
 
     /*

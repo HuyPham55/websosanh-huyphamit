@@ -28,4 +28,5 @@ return [
     'content' => 'Content',
     'banners' => 'Banners',
     'settings' => 'Settings',
+    'members' => 'Members',
 ];

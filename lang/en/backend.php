@@ -12,4 +12,11 @@ return array (
     'title' => 'SEO - Title',
     'description' => 'SEO - Description',
   ),
+  'members' => 'Members',
+  'favicon' => 'Favicon',
+  'contact_hotline' => 'Contact hotline',
+  'contact_phone' => 'Contact phone',
+  'contact_email' => 'Contact email',
+  'custom_code' => 'Custom code',
+  'email_notification' => 'Email notification',
 );

@@ -1,7 +1,7 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="form-group row">
+            <div class="row">
                 <label for="name"
                        class="col-sm-2 control-label col-form-label">{{ __('label.name') }}</label>
                 <div class="col-sm-10">

@@ -1,5 +1,5 @@
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
         <div class="col-sm-12">
             @if(count($lang) > 1)
                 <!-- Nav tabs -->
@@ -26,8 +26,7 @@
                     <div id="tab_lang_{{ $langKey }}" class="tab-pane container p-0 {{ $loop->first ? 'active' : '' }}">
 
                         <div class="form-group">
-                            <label
-                                class="control-label">{{ __('label.image') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
+                            <label class="control-label">{{ __('label.image') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
                             @includeIf('components.select_file', [
                                 'keyId' => "image-{$langKey}",
                                 'inputName' => "{$langKey}[image]",
@@ -72,7 +71,7 @@
 @include('components.form_elements.seo', ['data' => $post])
 
 <div class="card-body">
-    <div class="form-group row">
+    <div class="row">
 
         <div class="col-md-4">
             <div class="form-group">

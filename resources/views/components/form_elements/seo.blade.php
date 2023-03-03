@@ -1,6 +1,6 @@
 <hr>
 <div class="card-body">
-    <div class="form-group row">
+    <div class="form-row">
         <div class="col-sm-12">
             @if(count($lang) > 1)
                 <!-- Nav tabs -->
