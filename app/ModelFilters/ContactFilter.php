@@ -20,4 +20,8 @@ class ContactFilter extends ModelFilter
             ->orWhere('email', 'LIKE', "%$keyword")
             ->orWhere('subject', 'LIKE', "%$keyword");
     }
+
+    public function favourite($value) {
+        return $this->where('favourite', $value);
+    }
 }
