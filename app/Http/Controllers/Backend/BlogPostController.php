@@ -68,7 +68,7 @@ class BlogPostController extends BaseController
 
     public function getAdd()
     {
-        $post = new BlogPost();
+        $post = $this->model;
         $categories = (new CategoryService(new BlogCategory()))->dropdown();
 
         return view("{$this->pathView}.add", compact('post', 'categories'));

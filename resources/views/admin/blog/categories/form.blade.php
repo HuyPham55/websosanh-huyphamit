@@ -81,12 +81,15 @@
             </div>
         </div>
 
-        @include('components.form_elements.mono_radio',
-   [
-       'value' => $category->status ?? true,
-       'label' => __('label.status.status'),
-       'name' => 'status',
-   ])
+        @php
+        $options = [
+            'value' => $category->status ?? true,
+            'label' => __('label.status.status'),
+            'name' => 'status',
+            ];
+        @endphp
+        @include('components.form_elements.mono_radio', $options)
+
     </div>
 </div>
 
