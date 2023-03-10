@@ -51,13 +51,13 @@ class MemberController extends BaseController
     public function postAdd(MemberAddRequest $request)
     {
         $flag = $this->model->saveModel($this->model, $request);
-        if (!$flag instanceof \Exception) {
-            return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        if ($flag instanceof \Exception) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'flash_message' => env("APP_DEBUG") ? $flag->getMessage() : trans('label.something_went_wrong')
+            ]);
         }
-        return redirect()->back()->with([
-            'status' => 'danger',
-            'flash_message' => trans('label.something_went_wrong')
-        ]);
+        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function getEdit($id)
@@ -71,13 +71,16 @@ class MemberController extends BaseController
         $model = $this->model->findOrFail($id);
         $flag = $this->model::saveModel($model, $request);
 
-        if ($flag) {
-            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        if ($flag instanceof \Exception) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                'status' => 'danger',
+                'flash_message' => env("APP_DEBUG") ? $flag->getMessage() : trans('label.something_went_wrong')
+            ]);
         }
-        return redirect()->back()->with([
-            'status' => 'danger',
-            'flash_message' => trans('label.something_went_wrong')
-        ]);
+        return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function delete(Request $request)

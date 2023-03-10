@@ -49,13 +49,16 @@ class BlogCategoryController extends BaseController
     public function postAdd(Request $request)
     {
         $flag = $this->model->saveModel(new BlogCategory(), $request);
-        if ($flag) {
-            return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        if ($flag instanceof \Exception) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'status' => 'danger',
+                    'flash_message' => env("APP_DEBUG") ? $flag->getMessage() : trans('label.something_went_wrong')
+                ]);
         }
-        return redirect()->back()->with([
-            'status' => 'danger',
-            'flash_message' => trans('label.something_went_wrong')
-        ]);
+        return redirect()->route($this->routeList)->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function getEdit(int $id)
@@ -70,13 +73,17 @@ class BlogCategoryController extends BaseController
     {
         $category = $this->model->findOrFail($id);
         $flag = $this->model->saveModel($category, $request);
-        if ($flag) {
-            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+
+        if ($flag instanceof \Exception) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with([
+                    'status' => 'danger',
+                    'flash_message' => env("APP_DEBUG") ? $flag->getMessage() : trans('label.something_went_wrong')
+                ]);
         }
-        return redirect()->back()->with([
-            'status' => 'danger',
-            'flash_message' => trans('label.something_went_wrong')
-        ]);
+        return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
     }
 
     public function delete(Request $request)

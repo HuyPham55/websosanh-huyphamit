@@ -50,7 +50,7 @@ class Member extends Authenticatable implements CanResetPasswordContract
             return $model;
         } catch (\Exception $exception) {
             DB::rollback();
-            return false;
+            return $exception;
         }
     }
 

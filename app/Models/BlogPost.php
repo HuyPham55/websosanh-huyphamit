@@ -67,7 +67,7 @@ class BlogPost extends BaseModel
             return $model;
         } catch (\Exception $exception) {
             DB::rollback();
-            return false;
+            return $exception;
         }
     }
 
