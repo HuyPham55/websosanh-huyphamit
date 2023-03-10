@@ -40,7 +40,7 @@ class BlogCategoryController extends BaseController
 
     public function getAdd()
     {
-        $category = new BlogCategory();
+        $category = $this->model;
         $categories = $this->categoryService->dropdown(trans('label.root_category'));
 
         return view("{$this->pathView}.add", compact('categories', 'category'));
@@ -60,7 +60,7 @@ class BlogCategoryController extends BaseController
 
     public function getEdit(int $id)
     {
-        $category = BlogCategory::findOrFail($id);
+        $category = $this->model->findOrFail($id);
         $categories = $this->categoryService->dropdown(trans('label.root_category'), $id);
 
         return view("{$this->pathView}.edit", compact('category', 'categories'));
@@ -68,7 +68,7 @@ class BlogCategoryController extends BaseController
 
     public function putEdit(Request $request, int $id)
     {
-        $category = BlogCategory::findOrFail($id);
+        $category = $this->model->findOrFail($id);
         $flag = $this->model->saveModel($category, $request);
         if ($flag) {
             return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
@@ -84,7 +84,7 @@ class BlogCategoryController extends BaseController
         $id = $request->post('item_id');
         DB::beginTransaction();
         try {
-            $category = BlogCategory::findOrFail($id);
+            $category = $this->model->findOrFail($id);
             $subCategories = $this->categoryService->getArrayChildrenId($category->lft, $category->rgt);
 
             //delete all categories where id in $subCategories
