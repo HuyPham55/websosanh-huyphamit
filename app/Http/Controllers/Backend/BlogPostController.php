@@ -198,7 +198,7 @@ class BlogPostController extends BaseController
         ]);
 
         try {
-            $model = $this->model->findOrFail($request->item_id + 63);
+            $model = $this->model->findOrFail($request->item_id);
             $model->sorting = $request->sorting;
             $model->save();
 
