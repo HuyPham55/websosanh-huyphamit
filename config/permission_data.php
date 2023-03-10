@@ -180,7 +180,6 @@ return [
         ]
     ],
 
-
     'products' => [
         'title' => 'Products',
         'permissions' => [
@@ -188,6 +187,17 @@ return [
             'add_products' => 'Add products',
             'edit_products' => 'Edit products',
             'delete_products' => 'Delete product',
+        ]
+    ],
+
+
+    'sellers' => [
+        'title' => 'Sellers',
+        'permissions' => [
+            'show_list_sellers' => 'Show list products',
+            'add_sellers' => 'Add products',
+            'edit_sellers' => 'Edit products',
+            'delete_sellers' => 'Delete product',
         ]
     ],
 ];

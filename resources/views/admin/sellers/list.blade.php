@@ -1,16 +1,16 @@
 @extends('admin.layout')
-@section('title', __('label.products'))
+@section('title', __('label.sellers'))
 
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>{{ trans('label.products') }}</h1>
+            <h1>{{ trans('label.sellers') }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('label.home') }}</a></li>
                 <li class="breadcrumb-item active">
-                    {{ __('label.products') }}
+                    {{ __('label.sellers') }}
                 </li>
             </ol>
         </div>
@@ -22,8 +22,8 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-            @can('add_products')
-                @includeIf('components.buttons.add', ['route' => route('products.add')])
+            @can('add_sellers')
+                @includeIf('components.buttons.add', ['route' => route('sellers.add')])
             @endcan
             <div class="card">
                 <div class="card-header">
@@ -68,7 +68,7 @@
                 serverSide: true,
                 processing: true,
                 responsive: true,
-                ajax: '{{route('products.datatables')}}',
+                ajax: '{{route('sellers.datatables')}}',
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'image', name: 'image', orderable: false, render: imageContainer},
@@ -90,7 +90,7 @@
                 let isChecked = event.target.checked;
 
                 if (itemId) {
-                    postData("{{route('products.change_status')}}", {
+                    postData("{{route('sellers.change_status')}}", {
                         'field': field,
                         'item_id': itemId,
                         'status': isChecked ? 1 : 0,
@@ -108,7 +108,7 @@
                 let sorting = jQuery(this).val();
 
                 if (itemId) {
-                    postData("{{ route('products.change_sorting') }}", {
+                    postData("{{ route('sellers.change_sorting') }}", {
                         'item_id': itemId,
                         'sorting': sorting,
                         '_token': '{{ csrf_token() }}'

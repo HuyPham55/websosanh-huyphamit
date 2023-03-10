@@ -262,6 +262,20 @@ return [
             ],
         ],
         [
+            'text' => 'Sellers',
+            'icon' => 'fas fa-fw fa-store',
+            'can' => ['show_list_sellers'],
+            'submenu' => [
+                [
+                    'text' => 'Sellers',
+                    'route' => 'sellers.list',
+                    'icon' => 'far fa-fw fa-store',
+                    'can' => 'show_list_sellers',
+                    'active' => ['admin/sellers/*'],
+                ],
+            ],
+        ],
+        [
             'text' => 'Products',
             'icon' => 'fas fa-fw fa-barcode',
             'can' => ['show_list_product_categories', 'show_list_products'],
