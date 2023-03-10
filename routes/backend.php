@@ -8,6 +8,8 @@ use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\MemberController;
 use App\Http\Controllers\Backend\OptionController;
+use App\Http\Controllers\Backend\ProductCategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
@@ -192,6 +194,46 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/show', [ContactController::class, 'show'])->name('contacts.show');
         Route::post('delete', [ContactController::class, 'delete'])->middleware('permission:delete_contacts')->name('contacts.delete');
         Route::post('change-favourite', [ContactController::class, 'changeFavourite'])->name('contacts.change_favourite');
+    });
+
+    //Products
+    Route::group(['prefix' => 'products'], function () {
+        //Category
+        Route::group(['prefix' => 'categories'], function () {
+            Route::get('/', [ProductCategoryController::class, 'index'])->middleware('permission:show_list_product_categories')->name('product_categories.list');
+            Route::group(['middleware' => 'permission:add_product_categories'], function () {
+                Route::get('add', [ProductCategoryController::class, 'getAdd'])->name('product_categories.add');
+                Route::post('add', [ProductCategoryController::class, 'postAdd']);
+            });
+            Route::group(['middleware' => 'permission:edit_product_categories'], function () {
+                Route::get('edit/{id}', [ProductCategoryController::class, 'getEdit'])->name('product_categories.edit');
+                Route::put('edit/{id}', [ProductCategoryController::class, 'putEdit']);
+
+                Route::post('change-sorting', [ProductCategoryController::class, 'changeSorting'])->name('product_categories.change_sorting');
+                Route::post('change-status', [ProductCategoryController::class, 'changeStatus'])->name('product_categories.change_status');
+            });
+            Route::post('delete', [ProductCategoryController::class, 'delete'])->middleware('permission:delete_product_categories')->name('product_categories.delete');
+        });
+
+        //Products
+        Route::group(['prefix' => 'items'], function () {
+            Route::get('/', [ProductController::class, 'index'])->middleware('permission:show_list_products')->name('products.list');
+            Route::get('/datatables', [ProductController::class, 'datatables'])->middleware('permission:show_list_products')->name('products.datatables');
+
+            Route::group(['middleware' => 'permission:add_products'], function () {
+                Route::get('add', [ProductController::class, 'getAdd'])->name('products.add');
+                Route::post('add', [ProductController::class, 'postAdd']);
+            });
+            Route::group(['middleware' => 'permission:edit_products'], function () {
+                Route::get('edit/{id}', [ProductController::class, 'getEdit'])->name('products.edit');
+                Route::put('edit/{id}', [ProductController::class, 'putEdit']);
+
+                Route::post('change-popular', [ProductController::class, 'changePopular'])->name('products.change_popular');
+                Route::post('change-status', [ProductController::class, 'changeStatus'])->name('products.change_status');
+                Route::post('change-sorting', [ProductController::class, 'changeSorting'])->name('products.change_sorting');
+            });
+            Route::post('delete', [ProductController::class, 'delete'])->middleware('permission:delete_products')->name('products.delete');
+        });
     });
 
 });

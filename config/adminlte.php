@@ -262,6 +262,27 @@ return [
             ],
         ],
         [
+            'text' => 'Products',
+            'icon' => 'fas fa-fw fa-barcode',
+            'can' => ['show_list_product_categories', 'show_list_products'],
+            'submenu' => [
+                [
+                    'text' => 'Categories',
+                    'route' => 'product_categories.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/products/categories/*'],
+                    'can' => 'show_list_product_categories'
+                ],
+                [
+                    'text'    => 'Products',
+                    'route'     => 'products.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/products/items/*'],
+                    'can' => 'show_list_products'
+                ]
+            ],
+        ],
+        [
             'text' => 'blog',
             'icon' => 'fas fa-fw fa-rss',
             'can' => ['show_list_blog_categories', 'show_list_blog_posts'],

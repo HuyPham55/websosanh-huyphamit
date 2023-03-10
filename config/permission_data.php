@@ -168,4 +168,26 @@ return [
             'setting_email_notification' => 'Setting email notification',
         ]
     ],
+
+
+    'product_categories' => [
+        'title' => 'Product categories',
+        'permissions' => [
+            'show_list_product_categories' => 'Show list product categories',
+            'add_product_categories' => 'Add product categories',
+            'edit_product_categories' => 'Edit product categories',
+            'delete_product_categories' => 'Delete product categories',
+        ]
+    ],
+
+
+    'products' => [
+        'title' => 'Products',
+        'permissions' => [
+            'show_list_products' => 'Show list products',
+            'add_products' => 'Add products',
+            'edit_products' => 'Edit products',
+            'delete_products' => 'Delete product',
+        ]
+    ],
 ];
