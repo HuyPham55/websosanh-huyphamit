@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\SellerController;
 use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
@@ -236,4 +237,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
     });
 
+    //Sellers
+    Route::group(['prefix' => 'sellers'], function () {
+        Route::get('/', [SellerController::class, 'index'])->middleware('permission:show_list_sellers')->name('sellers.list');
+        Route::get('/datatables', [SellerController::class, 'datatables'])->middleware('permission:show_list_sellers')->name('sellers.datatables');
+
+        Route::group(['middleware' => 'permission:add_sellers'], function () {
+            Route::get('add', [SellerController::class, 'getAdd'])->name('sellers.add');
+            Route::post('add', [SellerController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'permission:edit_sellers'], function () {
+            Route::get('edit/{id}', [SellerController::class, 'getEdit'])->name('sellers.edit');
+            Route::put('edit/{id}', [SellerController::class, 'putEdit']);
+
+            Route::post('change-popular', [SellerController::class, 'changePopular'])->name('sellers.change_popular');
+            Route::post('change-status', [SellerController::class, 'changeStatus'])->name('sellers.change_status');
+            Route::post('change-sorting', [SellerController::class, 'changeSorting'])->name('sellers.change_sorting');
+        });
+        Route::post('delete', [SellerController::class, 'delete'])->middleware('permission:delete_sellers')->name('sellers.delete');
+    });
 });

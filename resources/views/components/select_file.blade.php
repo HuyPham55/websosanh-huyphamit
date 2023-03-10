@@ -17,7 +17,7 @@
                  </button>
              </span>
             <label for="{{ $keyId }}"></label>
-            <input id="{{ $keyId }}" class="form-control" type="text" name="{{$inputName}}" value="{{$inputValue}}">
+            <input id="{{ $keyId }}" class="form-control" type="text" name="{{$inputName}}" value="{{$inputValue}}" autocomplete="off">
         </div>
         <img id="holder" style="margin-top:15px;max-height:100px;" alt="" src="">
         <p class="text-muted">{{ $note }}</p>
