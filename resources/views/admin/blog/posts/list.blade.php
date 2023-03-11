@@ -60,7 +60,7 @@
     <script type="text/javascript">
         jQuery(() => {
             let imageContainer = (data) => `<img src="${data}" style="max-width: 125px;"/>`;
-            let sortingContainer = (data) => `<input class="update-sorting" style="max-width: 125px;" type="number" value="${data}" max="e9"/>`;
+            let sortingContainer = (data) => `<input class="update-sorting form-control" style="max-width: 125px;" type="number" value="${data}" max="e9"/>`;
             let datatablesCallback = () => {
                 jQuery(".bt-switch input[type='checkbox']").bootstrapSwitch();
             }
