@@ -36,7 +36,20 @@ class Product extends BaseModel
 
     public function comparison()
     {
+        //Determine comparisons in which this product appears
         return $this->belongsToMany(Comparison::class);
+    }
+
+    public function seller()
+    {
+        //Determine seller of the product, can NOT be null
+        return $this->belongsTo(Seller::class);
+    }
+
+    public function scape()
+    {
+        //Determine scape of the product, can be null
+        return $this->belongsTo(Scrape::class);
     }
 
     public static function saveModel(self $model, Request $request)

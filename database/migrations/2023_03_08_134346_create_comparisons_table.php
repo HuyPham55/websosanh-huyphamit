@@ -13,28 +13,27 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('comparisons', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('product_category_id');
-            $table->unsignedBigInteger('seller_id');
-            $table->unsignedBigInteger('scrape_id')->nullable();
-
             $table->integer('sorting')->default(0);
+
             $table->bigInteger('price')->default(0);
 
-            $table->unsignedBigInteger('hits')->default(0);
-
             $table->boolean('featured')->default(true);
-            $table->boolean('is_popular')->default(false);
             $table->boolean('status')->default(true);
 
             $table->string('image')->nullable();
+            $table->json('slide')->nullable();
+
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
-            $table->string('url')->nullable();
+            $table->text("content")->nullable();
 
-            $table->timestamp('date')->useCurrent();
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
+
+            $table->unsignedBigInteger('product_category_id');
 
             $table->timestamps();
         });
@@ -47,6 +46,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('comparisons');
     }
 };

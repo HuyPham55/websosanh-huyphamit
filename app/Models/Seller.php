@@ -38,13 +38,6 @@ class Seller extends BaseModel
     {
         return $this->hasMany(Product::class);
     }
-
-    public function comparisons()
-    {
-        //Used to display total selling locations and lowest price
-        return $this->belongsToMany(Comparison::class);
-    }
-
     public function productCategories() {
         //Used for filter
         return $this->belongsToMany(ProductCategory::class);
