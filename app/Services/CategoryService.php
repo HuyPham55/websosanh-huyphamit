@@ -111,4 +111,36 @@ class CategoryService
 
         return $data;
     }
+
+
+    //Used for SPAs
+    public function dropdown_associated(string $text = '', int $exceptId = null)
+    {
+        $categories = $this->model->where('status', 1);
+        if ($exceptId !== null) {
+            $current_category = $this->model->find($exceptId);
+            if ($current_category) {
+                //get children categories
+                $children = $this->getArrayChildrenId($current_category->lft, $current_category->rgt);
+                $categories = $categories->where('id', '<>', $exceptId);
+                $categories = $categories->whereNotIn('id', $children);
+            }
+        }
+        $categories = $categories->orderBy('lft')->get();
+
+        $data = [];
+        if (!empty($text)) {
+            $data[0] = $text;
+        }
+        if ($categories->count() > 0) {
+            foreach ($categories as $key => $category) {
+                $data[] = [
+                    'id' => $category->id,
+                    'title' => html_entity_decode(str_repeat('&nbsp;&nbsp;', (($category->level > 0) ? ($category->level - 1) : 0)) . $category->dynamic_title)
+                ];
+            }
+        }
+
+        return $data;
+    }
 }
