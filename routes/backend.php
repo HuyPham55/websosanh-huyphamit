@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SellerController;
 use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\FooterSlideController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
@@ -255,5 +256,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::post('change-sorting', [SellerController::class, 'changeSorting'])->name('sellers.change_sorting');
         });
         Route::post('delete', [SellerController::class, 'delete'])->middleware('permission:delete_sellers')->name('sellers.delete');
+    });
+
+    //Footer slide
+    Route::group(['prefix' => 'footer-slides'], function () {
+        Route::get('/', [FooterSlideController::class, 'index'])->middleware('permission:show_list_footer_slides')->name('footer_slides.list');
+        Route::group(['middleware' => 'permission:add_footer_slides'], function () {
+            Route::get('add', [FooterSlideController::class, 'getAdd'])->name('footer_slides.add');
+            Route::post('add', [FooterSlideController::class, 'postAdd']);
+        });
+        Route::group(['middleware' => 'permission:edit_footer_slides'], function () {
+            Route::get('edit/{id}', [FooterSlideController::class, 'getEdit'])->name('footer_slides.edit');
+            Route::put('edit/{id}', [FooterSlideController::class, 'putEdit']);
+
+            Route::post('change-sorting', [FooterSlideController::class, 'changeSorting'])->name('footer_slides.change_sorting');
+            Route::post('change-status', [FooterSlideController::class, 'changeStatus'])->name('footer_slides.change_status');
+        });
+        Route::post('delete', [FooterSlideController::class, 'delete'])->middleware('permission:delete_footer_slides')->name('footer_slides.delete');
     });
 });

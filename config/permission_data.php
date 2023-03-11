@@ -200,4 +200,14 @@ return [
             'delete_sellers' => 'Delete product',
         ]
     ],
+
+    'footer_slides' => [
+        'title' => 'Footer slide',
+        'permissions' => [
+            'show_list_footer_slides' => 'Show list footer slides',
+            'add_footer_slides' => 'Add footer slides',
+            'edit_footer_slides' => 'Edit footer slides',
+            'delete_footer_slides' => 'Delete footer slides',
+        ]
+    ],
 ];

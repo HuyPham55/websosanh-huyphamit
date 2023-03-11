@@ -250,7 +250,7 @@ return [
         [
             'text' => 'homepage',
             'icon' => 'fa fa-fw fa-home',
-            'can' => ['show_list_home_slides'],
+            'can' => ['show_list_home_slides', 'show_list_footer_slides'],
             'submenu' => [
                 [
                     'text' => 'slides',
@@ -258,6 +258,13 @@ return [
                     'icon' => 'far fa-fw',
                     'active' => ['admin/home-slides/*'],
                     'can' => 'show_list_home_slides'
+                ],
+                [
+                    'text' => 'Footer slide',
+                    'route' => 'footer_slides.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/footer-slides/*'],
+                    'can' => 'show_list_footer_slides'
                 ],
             ],
         ],
