@@ -136,7 +136,7 @@ class CategoryService
             foreach ($categories as $key => $category) {
                 $data[] = [
                     'id' => $category->id,
-                    'title' => html_entity_decode(str_repeat('&nbsp;&nbsp;', (($category->level > 0) ? ($category->level - 1) : 0)) . $category->dynamic_title)
+                    'text' => html_entity_decode(str_repeat('&nbsp;&nbsp;', (($category->level > 0) ? ($category->level - 1) : 0)) . $category->title)
                 ];
             }
         }
