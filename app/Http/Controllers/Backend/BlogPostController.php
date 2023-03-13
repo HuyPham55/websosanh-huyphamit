@@ -30,8 +30,9 @@ class BlogPostController extends BaseController
         session(['url.intended' => url()->full()]);
 
         $categories = (new CategoryService(new BlogCategory()))->dropdown();
+        $total_count = $this->model->count();
 
-        return view("{$this->pathView}.list", compact('categories'));
+        return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
 
     public function datatables(Request $request)

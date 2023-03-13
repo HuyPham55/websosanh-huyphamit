@@ -34,8 +34,9 @@ class BlogCategoryController extends BaseController
             ->orderBy('sorting')
             ->orderBy('id')
             ->get();
+        $total_count = $this->model->count();
         $categories = $this->categoryService->nestedMenu($categories);
-        return view("{$this->pathView}.list", compact('categories'));
+        return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
 
     public function getAdd()
