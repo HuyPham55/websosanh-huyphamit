@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <h4>{{trans('label.total')}}: {{count($categories)}}</h4>
+                        <h4>{{trans('label.total')}}: {{$total_count}}</h4>
                     </div>
                 </div>
                 <div class="card-body">
