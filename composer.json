@@ -13,6 +13,7 @@
         "barryvdh/laravel-translation-manager": "^0.6.3",
         "bensampo/laravel-enum": "^5.3",
         "doctrine/dbal": "^3.4",
+        "fabpot/goutte": "*",
         "guzzlehttp/guzzle": "^7.2",
         "jeroennoten/laravel-adminlte": "^3.8",
         "laravel/framework": "^9.19",

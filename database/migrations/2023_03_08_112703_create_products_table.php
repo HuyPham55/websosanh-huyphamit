@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('scrape_id')->nullable();
 
             $table->integer('sorting')->default(0);
+            $table->bigInteger('original_price')->default(0);
             $table->bigInteger('price')->default(0);
 
             $table->unsignedBigInteger('hits')->default(0);

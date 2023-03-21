@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\ProductCategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\ScrapeController;
 use App\Http\Controllers\Backend\SellerController;
 use App\Http\Controllers\Backend\StaticPageController;
 use App\Http\Controllers\Backend\UserController;
@@ -235,6 +236,30 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
                 Route::post('change-sorting', [ProductController::class, 'changeSorting'])->name('products.change_sorting');
             });
             Route::post('delete', [ProductController::class, 'delete'])->middleware('permission:delete_products')->name('products.delete');
+        });
+
+
+        //Scrapes
+        Route::group(['prefix' => 'scrapes'], function () {
+            Route::get('/', [ScrapeController::class, 'index'])->middleware('permission:show_list_scrapes')->name('scrapes.list');
+            Route::get('/datatables', [ScrapeController::class, 'datatables'])->middleware('permission:show_list_scrapes')->name('scrapes.datatables');
+            Route::group(['middleware' => 'permission:add_scrapes'], function () {
+                Route::get('add', [ScrapeController::class, 'getAdd'])->name('scrapes.add');
+                Route::post('add', [ScrapeController::class, 'postAdd']);
+            });
+            Route::group(['middleware' => 'permission:edit_scrapes'], function () {
+                Route::get('edit/{id}', [ScrapeController::class, 'getEdit'])->name('scrapes.edit');
+                Route::put('edit/{id}', [ScrapeController::class, 'putEdit']);
+
+            });
+            Route::post('delete', [ScrapeController::class, 'delete'])->middleware('permission:delete_scrapes')->name('scrapes.delete');
+
+            Route::group(['prefix' => 'api'], function () {
+                Route::post('validate-url', [ScrapeController::class, 'ApiValidateUrl']);
+                Route::post('fetch-model-data', [ScrapeController::class, 'ApiFetchModelData']);
+                Route::post('scrape-html', [ScrapeController::class, 'ApiScrapeHtml']);
+                Route::any('get-scraped-data', [ScrapeController::class, 'ApiGetScrapedData']);
+            });
         });
     });
 

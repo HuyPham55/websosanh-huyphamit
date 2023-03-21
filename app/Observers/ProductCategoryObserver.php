@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\ProductCategory;
+use App\Services\NestedSetService;
 
 class ProductCategoryObserver
 {
@@ -15,6 +16,7 @@ class ProductCategoryObserver
     public function created(ProductCategory $productCategory)
     {
         //
+        $this->doNestedCategories($productCategory->getTable());
     }
 
     /**
@@ -26,6 +28,7 @@ class ProductCategoryObserver
     public function updated(ProductCategory $productCategory)
     {
         //
+        $this->doNestedCategories($productCategory->getTable());
     }
 
     /**
@@ -37,6 +40,7 @@ class ProductCategoryObserver
     public function deleted(ProductCategory $productCategory)
     {
         //
+        $this->doNestedCategories($productCategory->getTable());
         $productCategory->sellers()->detach();
     }
 
@@ -61,4 +65,10 @@ class ProductCategoryObserver
     {
         //
     }
+    private function doNestedCategories($tableName)
+    {
+        $nestedSet = new NestedSetService($tableName);
+        $nestedSet->doNested();
+    }
+
 }

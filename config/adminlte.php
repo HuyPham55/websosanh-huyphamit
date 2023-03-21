@@ -300,6 +300,13 @@ return [
                     'icon' => 'far fa-fw',
                     'active' => ['admin/products/items/*'],
                     'can' => 'show_list_products'
+                ],
+                [
+                    'text'    => 'Scrapes',
+                    'route'     => 'scrapes.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/scrapes/*'],
+                    'can' => 'show_list_scrapes'
                 ]
             ],
         ],

@@ -69,4 +69,11 @@ return array (
   'username' => 'Username',
   'logo' => 'Logo',
   'tags' => 'Tags',
+  'scrapes' => 'Scrapes',
+  'products' => 'Products',
+  'banner' => 'Banner',
+  'sellers' => 'Sellers',
+  'icon' => 'Icon',
+  'price' => 'Price',
+  'original_price' => 'Original price',
 );

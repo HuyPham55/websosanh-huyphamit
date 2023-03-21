@@ -63,7 +63,7 @@
                 <select id="category" name="category" class="form-control select2" required>
                     @forelse($categories as $category_id => $category_title)
                         <option
-                            value="{{ $category_id }}" {{ old('category') || request('category') == $category_id || $post->category_id == $category_id ? 'selected' : '' }}>
+                            value="{{ $category_id }}" {{ old('category') || request('category') == $category_id || $post->product_category_id == $category_id ? 'selected' : '' }}>
                             {{ $category_title }}
                         </option>
                     @empty
@@ -80,6 +80,20 @@
             <div class="form-group">
                 <label class="control-label" for="sorting">{{ __('backend.sorting') }}</label>
                 <input type="number" name="sorting" id="sorting" value="{{ old("sorting") ?? $post->sorting }}"
+                       class="form-control" min="0" max="e9" placeholder="0">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label" for="price">{{ __('label.price') }}</label>
+                <input type="number" name="price" id="price" value="{{ old("price") ?? $post->price }}"
+                       class="form-control" min="0" max="e9" placeholder="0">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label" for="original_price">{{ __('label.original_price') }}</label>
+                <input type="number" name="original_price" id="original_price" value="{{ old("original_price") ?? $post->original_price }}"
                        class="form-control" min="0" max="e9" placeholder="0">
             </div>
         </div>

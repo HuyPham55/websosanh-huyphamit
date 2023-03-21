@@ -16,9 +16,17 @@ return new class extends Migration
         Schema::create('scrapes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('seller_id');
+            $table->unsignedBigInteger('product_category_id');
+            $table->unsignedBigInteger('parent_id')->default(0);
 
-            $table->string('url')->nullable();
+            $table->text('url')->nullable();
+
             $table->timestamp('date')->useCurrent();
+
+            $table->json('children')->nullable();
+
+            $table->json('data')->nullable();
+            $table->json('result')->nullable();
 
             $table->timestamps();
         });

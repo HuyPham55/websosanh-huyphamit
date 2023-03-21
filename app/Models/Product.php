@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
  * @property array|mixed|string $slug
  * @property bool|mixed $url
  * @property mixed $created_at
+ * @property int|mixed $original_price
  */
 class Product extends BaseModel
 {
@@ -67,6 +68,7 @@ class Product extends BaseModel
             $model->product_category_id = $request->input('category', 0);
             $model->sorting = $request->input('sorting') | 0;
             $model->price = $request->integer('sorting') | 0;
+            $model->original_price = $request->integer('original_price') | 0;
 
             $model->featured = $request->boolean('featured', true);
             $model->is_popular = $request->boolean('is_popular', true);

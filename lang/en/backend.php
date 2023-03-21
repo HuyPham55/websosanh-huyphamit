@@ -19,4 +19,8 @@ return array (
   'contact_email' => 'Contact email',
   'custom_code' => 'Custom code',
   'email_notification' => 'Email notification',
+  'is_shown_on_menu' => 'Show on menu',
+  'featured' => 'Featured',
+  'is_popular' => 'Popular',
+  'recommended' => 'Recommended',
 );
