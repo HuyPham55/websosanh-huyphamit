@@ -1,0 +1,127 @@
+#slider {
+  margin-left: 270px;
+
+  .img-slider {
+    display: block;
+    width: 100%;
+  }
+}
+
+
+.product-box {
+  margin: 40px 0 0;
+
+  &:nth-child(2n+1) {
+    flex-direction: row-reverse;
+
+    .product-list {
+      margin-right: 8px;
+      margin-left: -8px;
+    }
+  }
+
+  .head {
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    border-bottom: 2px solid $red-color;
+
+    .category-title {
+      color: $white-color;
+      background-color: $red-color;
+      padding: 4px 20px 3px;
+      font-size: 30px;
+      line-height: 35px;
+      border-radius: 0 15px 0 0;
+    }
+
+    .more {
+      color: $main-color;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .wrap {
+    margin: 16px 0 0;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    flex-direction: inherit;
+
+    .banner-wrap {
+      width: 100%;
+      max-width: 382px;
+      border-radius: 10px;
+      overflow: hidden;
+      img {
+        -webkit-box-shadow: 4px 4px 4px rgb(0 0 0 / 15%);
+        box-shadow: 4px 4px 4px rgb(0 0 0 / 15%);
+      }
+  }
+
+    .product-list {
+      justify-content: space-between;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      width: 100%;
+      list-style: none;
+      margin-top: -16px;
+      max-height: 100%;
+
+      .list-item {
+        margin: 16px 0 0;
+        position: relative;
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding: 1px 14px 14px;
+
+        &:hover {
+          &::before {
+            -webkit-box-shadow: 4px 4px 4px rgb(0 0 0 / 15%);
+            box-shadow: 4px 4px 4px rgb(0 0 0 / 15%);
+            border: 1px solid $red-color;
+          }
+        }
+
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 8px;
+          height: calc(100% - 2px);
+          width: -webkit-calc(100% - 16px);
+          width: -moz-calc(100% - 16px);
+          width: calc(100% - 8px);
+          border: 1px dotted $main-color;
+          z-index: -1;
+          box-sizing: border-box;
+        }
+
+        .item-image__container {
+          display: -ms-flexbox;
+          display: flex;
+          align-items: center;
+          -webkit-justify-content: center;
+          justify-content: center;
+        }
+
+        .item-title {
+          font-size: 13px;
+          text-overflow: ellipsis;
+        }
+
+        .item-price {
+          color: $red-color;
+          font-size: 15px;
+          margin: 15px 0 0;
+        }
+      }
+    }
+  }
+}

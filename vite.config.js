@@ -6,8 +6,12 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
-                'resources/js/app.js',
                 'resources/js/backend/app.js',
+
+                //frontend custom css and custom scripts
+                //frontend assets could contain libraries
+                'resources/sass/style.scss',
+                'resources/js/app.js',
             ],
             refresh: true,
         }),
