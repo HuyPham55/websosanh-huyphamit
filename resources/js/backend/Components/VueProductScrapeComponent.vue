@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row mb-3">
-            <div class="col-md-12 row">
+            <Form class="col-md-12 row" as="div">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="category" class="control-label">
@@ -41,7 +41,7 @@
                         Fetch
                     </button>
                 </div>
-            </div>
+            </Form>
 
 
             <Form v-if="!!getScrapedDataRoute.length" class="col-md-12 row" id="sampleForm" @submit="scrapeItems"
@@ -713,7 +713,8 @@ let validateSeedUrl = async (value) => {
     let message = true;
     await axios
         .post("/admin/products/scrapes/api/validate-url", {
-            value
+            url: value,
+            id: props.id
         })
         .then(() => {
         })

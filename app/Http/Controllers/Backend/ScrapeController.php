@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ScrapeRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Scrape;
@@ -122,10 +123,10 @@ class ScrapeController extends BaseController
         ]);
     }
 
-    public function ApiValidateUrl(Request $request)
+    public function ApiValidateUrl(ScrapeRequest $request)
     {
         $request->validate([
-            'value' => 'required|url',
+            'url' => 'required|url',
         ]);
     }
 
