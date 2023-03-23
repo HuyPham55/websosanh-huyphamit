@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
+
 function isImage($path = ''): bool
 {
     $imageExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'svg'];
@@ -45,3 +47,18 @@ function simple_slug($string): array|string
 }
 
 function either($first = null, $second = null, $third = null) {return !empty($first)?$first:(!empty($second)?$second:$third);}
+
+function LFMThumb($url): string
+{
+    $url2 = str_replace(basename($url), '', $url);
+    $url2 = $url2 . 'thumbs/' . basename($url);
+    return $url2;
+}
+
+function cachedOption($key)
+{
+    return Cache::remember($key, rand(0, env('SESSION_LIFETIME')), function () use ($key) {
+        return option($key);
+    });
+}
+
