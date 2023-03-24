@@ -456,10 +456,14 @@
                     }
                 }
             }
-            .remember-me {
+            .auth-checkbox {
                 user-select: none;
-                .remember-checkboxinput {
+                .remember-checkbox {
                     margin-right: 2px;
+                }
+                .checkbox-url {
+                    color: $main-color;
+                    text-decoration: none;
                 }
             }
         }

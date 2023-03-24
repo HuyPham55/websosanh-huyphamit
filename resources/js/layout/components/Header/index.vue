@@ -4,9 +4,9 @@
             <button type="button" class="menu-bar">
                 <i class="far fa-bars"></i>
             </button>
-            <h1 class="logo">
+            <h1 class="logo" v-if="headerData['logo']">
                 <a href="/">
-                    <img src="/images/logo.svg" alt="">
+                    <img :src="headerData['logo']" alt="">
                 </a>
             </h1>
             <div class="search-wrap">
@@ -27,96 +27,26 @@
                         <i class="far fa-bars"></i>
                         Products
                     </div>
-                    <ol class="nav-list">
-                        <li class="menu-item">
+                    <ol class="nav-list" v-if="store.layoutData.ready">
+                        <li v-for="category in computedCategories"
+                            :class="{'menu-item': 1, 'has-children': category['subs'].length}">
                             <a href="#">
-                                <img src="/images/cate-dien-lanh.svg"/>
-                                <span>Category 1</span>
-                            </a>
-                        </li>
-                        <li class="menu-item has-children">
-                            <a href="#">
-                                <img src="/images/cate-dien-thoai-may-tinh-bang.svg"/>
-                                <span>Category 2</span>
-                                <button type="button" class="btn-sub">
+                                <img :src="category['icon']" alt=""/>
+                                <span>
+                                    {{category['title']}}
+                                </span>
+                                <button type="button" class="btn-sub" v-if="category['subs'].length">
                                     <i class="fal fa-fw fa-angle-down"></i>
                                 </button>
                             </a>
-                            <ul class="sub-menu">
-                                <li class="menu-item">
+                            <ul class="sub-menu" v-if="category['subs'].length">
+                                <li v-for="sub in category['subs']"
+                                    class="menu-item">
                                     <a href="#">
-                                        <span>Category 2.1</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 2.2</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 2.3</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 2.4</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 2.5</span>
+                                        <span>{{ sub['title'] }}</span>
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="menu-item has-children">
-                            <a href="#">
-                                <img src="/images/cate-do-gia-dung.svg"/>
-                                <span>Category 3</span>
-                                <button type="button" class="btn-sub">
-                                    <i class="fal fa-fw fa-angle-down"></i>
-                                </button>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 3.1</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 3.2</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 3.3</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 3.4</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="#">
-                                        <span>Category 3.5</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#">
-                                <img src="/images/cate-thiet-bi-van-phong.svg"/>
-                                <span>Category 4</span>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#">
-                                <img src="/images/cate-thiet-bi-y-te-suc-khoe.svg"/>
-                                <span>Category 5</span>
-                            </a>
                         </li>
                     </ol>
                 </div>
@@ -142,6 +72,17 @@
 export default {
     name: "index",
 }
+</script>
+
+<script setup>
+import {useLayoutStore} from "@/stores";
+import {computed} from "vue";
+
+const store = useLayoutStore();
+
+const headerData = computed(() => store.layoutData.headerData);
+
+const computedCategories = computed(() => headerData.value['menuItems'])
 </script>
 
 <style scoped>

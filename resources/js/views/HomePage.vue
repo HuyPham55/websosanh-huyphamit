@@ -329,6 +329,21 @@ export default {
     name: "HomePage"
 }
 </script>
+<script setup>
+import {onMounted} from "vue";
+
+onMounted(() => {
+    let homeSlider = new Swiper('#slider', {
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+        },
+    });
+})
+</script>
 
 <style scoped>
 

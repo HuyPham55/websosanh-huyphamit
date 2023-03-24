@@ -17,9 +17,17 @@ export default {
 import Header from "@/layout/components/Header/index.vue";
 import TopBar from "@/layout/components/Header/components/TopBar.vue";
 import Footer from "@/layout/components/Footer/index.vue";
-import Login from "@/layout/components/Login/index.vue";
-import {onMounted} from "vue";
+import Login from "@/layout/components/Auth/index.vue";
+import {onBeforeMount, onMounted} from "vue";
 import {hydrate} from "@/main";
+import {useLayoutStore} from "@/stores";
+
+
+
+const store = useLayoutStore()
+onBeforeMount(() => {
+    store.fetchLayoutData();
+})
 onMounted(() => {
     hydrate();
 })

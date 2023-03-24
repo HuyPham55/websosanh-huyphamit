@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\ProductCategoryObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -49,6 +50,11 @@ class ProductCategory extends BaseModel
     {
         //Used for filter
         return $this->belongsToMany(Seller::class);
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id');
     }
 
     public static function saveModel(self $model, Request $request)

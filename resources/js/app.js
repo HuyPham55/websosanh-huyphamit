@@ -1,3 +1,5 @@
+import '@/styles/index.scss';
+
 import './bootstrap';
 import {createApp, h, onMounted} from 'vue';
 import App from "@/App.vue";

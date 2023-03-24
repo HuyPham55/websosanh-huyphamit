@@ -12,6 +12,20 @@
                 ])
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Footer {{ __('label.logo') }}</label>
+                @includeIf('components.select_file', [
+                    'keyId' => "footer_logo",
+                    'inputName' => "footer_logo",
+                    'inputValue' => old("footer_logo") ?? option('footer_logo'),
+                    'lfmType' => 'image',
+                    'note' => 'height x width',
+                ])
+            </div>
+        </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">{{ __('backend.favicon') }}</label>

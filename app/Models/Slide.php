@@ -18,6 +18,8 @@ class Slide extends BaseModel
 {
     use HasFactory;
     use HasTranslations;
+
+    //Also related: SlideResource
     public array $translatable = [
         'image',
         'url',
@@ -26,6 +28,7 @@ class Slide extends BaseModel
         'text_3',
         'description',
     ];
+
 
     public static function saveModel(self $model, string $key, Request $request)
     {
