@@ -1,0 +1,105 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devilbox/php-fpm-8.0
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    networks:
+      - app-network
+    depends_on:
+      - webserver
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+    #MySQL Service
+  mysql_service:
+      image: mysql:5.7
+      restart: unless-stopped
+      tty: true
+      ports:
+          - "3306:3306"
+      environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+          SERVICE_TAGS: dev
+          SERVICE_NAME: mysql
+      volumes:
+          - database_data:/var/lib/mysql
+          - ./mysql/my.cnf:/etc/mysql/my.cnf
+      networks:
+          - app-network
+
+  phpmyadmin:
+      image: phpmyadmin
+      restart: unless-stopped
+      ports:
+          - "8080:80"
+      environment:
+          - UPLOAD_LIMIT=100000000
+          - PMA_ARBITRARY=0
+          - PMA_PORT=3306
+          - PMA_HOST=mysql_service
+          - PMA_USER=${DB_USERNAME}
+          - PMA_PASSWORD=${DB_PASSWORD}
+      networks:
+          - app-network
+      depends_on:
+          - mysql_service
+  elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+#      volumes:
+#          - es_data:/usr/share/elasticsearch/data
+      environment:
+          - node.name=elasticsearch
+          - cluster.name=data_search
+          - bootstrap.memory_lock=true
+          - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+          - cluster.initial_master_nodes=elasticsearch
+      ulimits:
+          memlock:
+              soft: -1
+              hard: -1
+      ports:
+          - "9200:9200"
+      networks:
+          - app-network
+  kibana:
+      image: docker.elastic.co/kibana/kibana:7.0.1
+      ports:
+          - "5601:5601"
+      #Kibana server is not ready yet
+      networks:
+          - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  database_data:
+    driver: local
