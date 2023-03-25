@@ -23,4 +23,27 @@ export const useLayoutStore = defineStore('layout', () => {
     return {layoutData, fetchLayoutData}
 })
 
+
+export const userUserStore = defineStore('user', () => {
+    const user = ref(null);
+
+    // Token is only used for token based authentication
+    const token = ref(null);
+    const setAxiosToken = function (value) {
+        token.value = value;
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${value}`;
+        //Set axios bearer token
+    }
+    const fetchUserData = function () {
+        axios.get('/api/user').then(response => {
+            user.value = response.data
+        });
+    }
+
+    const userLogOut = function () {
+        user.value = null;
+        token.value = null;
+    }
+    return {user, token, setAxiosToken, fetchUserData, userLogOut}
 })
+

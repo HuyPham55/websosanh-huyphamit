@@ -18,7 +18,7 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\FooterSlideController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
 
 
     /*

@@ -20,16 +20,20 @@ import Footer from "@/layout/components/Footer/index.vue";
 import Login from "@/layout/components/Auth/index.vue";
 import {onBeforeMount, onMounted} from "vue";
 import {hydrate} from "@/main";
-import {useLayoutStore} from "@/stores";
-
+import {useLayoutStore, userUserStore} from "@/stores";
 
 
 const store = useLayoutStore()
+const userStore = userUserStore()
 onBeforeMount(() => {
     store.fetchLayoutData();
 })
 onMounted(() => {
     hydrate();
+    //Cookie-based authentication
+    axios.get('/sanctum/csrf-cookie').then(response => {
+        userStore.fetchUserData();
+    });
 })
 </script>
 

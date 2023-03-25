@@ -2,7 +2,8 @@
     <div class="login-popup">
         <div class="auth-overlay"></div>
         <transition name="fade-transform" mode="out-in">
-            <component :is="targetComponent" @changeComponent="handler"></component>
+            <component :is="targetComponent" @changeComponent="handler" @closePopup="closePopup">
+            </component>
         </transition>
     </div>
 </template>
@@ -26,6 +27,11 @@ import {ref} from "vue";
 const targetComponent = ref('Login');
 const handler = function (target) {
     targetComponent.value = target;
+}
+
+const closePopup = function () {
+    let loginPopup = document.querySelector(".login-popup");
+    loginPopup.classList.remove('active');
 }
 </script>
 

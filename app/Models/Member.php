@@ -31,6 +31,9 @@ class Member extends Authenticatable implements CanResetPasswordContract
     use CanResetPassword;
     use Filterable;
 
+    protected $fillable = [
+        'status'
+    ];
     public static function saveModel(self $model, Request $request)
     {
         DB::beginTransaction();
