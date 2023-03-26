@@ -27,9 +27,21 @@ footer {
         display: block;
         width: 100%;
         overflow: hidden;
+        .swiper-wrapper {
+            align-items: center;
+        }
 
-        img {
-            user-select: none;
+        .item-partner {
+            display: block;
+            width: 100%;
+            img {
+                user-select: none;
+                display: block;
+                width: 100%;
+                max-height: 70px;
+                object-fit: contain;
+                object-position: center;
+            }
         }
     }
 
