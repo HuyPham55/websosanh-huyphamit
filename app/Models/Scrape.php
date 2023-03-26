@@ -80,7 +80,7 @@ class Scrape extends BaseModel
 
 
             $children = $request->input('children') ?? [];
-            $model->children = array_values($children) ?? [];
+            $model->children = json_encode(array_values($children) ?? []);
             $model->save();
             $productData = [];
             foreach ($products as $item) {

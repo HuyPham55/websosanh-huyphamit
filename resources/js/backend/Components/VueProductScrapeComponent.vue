@@ -45,11 +45,11 @@
             </Form>
 
 
-            <Form v-if="!!getScrapedDataRoute.length" class="col-md-12 row" id="sampleForm" @submit="scrapeItems" as="div">
-                <div class="col-md-12 mb-3">
+            <Form class="col-md-12 row" id="sampleForm" @submit="scrapeItems" as="div">
+                <div class="col-md-12 mb-3" v-if="!!getScrapedDataRoute.length">
                     <iframe class="" :src="getScrapedDataRoute" ref="iframe" @load="iframeReadyHandler"></iframe>
                 </div>
-                <div class="col-md-12 rounded mb-3">
+                <div class="col-md-12 rounded mb-3" v-if="iframeReadyStatus">
                     <div class="form-group bg-light">
                         <div class="row px-3 pt-3">
                             <div v-for="column in columns" :class="`col-${column.col}`">
@@ -117,14 +117,12 @@
                             </div>
                         </section>
                     </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <button type="submit" class="btn btn-secondary" form="sampleForm" @click="scrapeItems">
-                                Scrape
-                            </button>
-                        </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary" form="sampleForm"
+                                :disabled="!iframeReadyStatus"
+                                @click="scrapeItems">
+                            Scrape
+                        </button>
                     </div>
                 </div>
             </Form>
@@ -374,11 +372,12 @@ let selectedCategory = ref('');
 let selectedSeller = ref('');
 let url = ref('')
 let iframe = ref(null);
-
+const iframeReadyStatus = ref(false)
 
 let computedIframeDocument = computed(() => {
     iframeInnerHTML.value; //force re-computation
     iframeInnerText.value; //force re-computation
+    //development
     // return iframe.value.contentWindow.document;
     //production
     let parser = new DOMParser()
@@ -431,7 +430,7 @@ let scrapeItems = function (event = null, documentObject = null) {
     let priceQuery = queryData.price;
     let originalPriceQuery = queryData.original_price;
 
-    for (const item of arrItems) {
+    for (let item of arrItems) {
         //title
         let titleElement = documentObject.evaluate(`${titleQuery}`
             , item
@@ -479,7 +478,7 @@ let scrapeItems = function (event = null, documentObject = null) {
 
         //original price, optional
         let originalPriceValue = '';
-        if (originalPriceQuery.length !== 0) {
+        if (typeof originalPriceQuery === "string" && originalPriceQuery.length !== 0) {
             let originalPriceElement = documentObject.evaluate(`${originalPriceQuery}`
                 , item
                 , null
@@ -488,18 +487,17 @@ let scrapeItems = function (event = null, documentObject = null) {
             originalPriceElement = originalPriceElement.iterateNext();
             originalPriceValue = originalPriceElement === null
                 ? ''
-                : priceElement.innerText;
+                : originalPriceElement.innerText;
         }
 
         let newItem = {
-            id: randomGenerator(),
+            id: randomGenerator(products.data.map(item => item['id'])),
             title: normalizeString(titleText),
             image: normalizeUrl(imageUrl, false),
             url: normalizeUrl(anchorValue),
             price: priceValue,
             original_price: originalPriceValue,
         }
-
         let flag = validateItemTitle(newItem.title);
         if (typeof flag === "boolean") {
             //unique title
@@ -574,7 +572,7 @@ let validateSampleImage = function (value) {
     let listItemElement = sample.elements.item;
     let listItemHtml = listItemElement.innerHTML;
 
-    let absoluteExist = existInHtml(value, listItemHtml);
+    let absoluteExist = existInHtml(value, listItemHtml, false);
     let url = null;
     try {
         url = new URL(value);
@@ -582,7 +580,7 @@ let validateSampleImage = function (value) {
         return "Invalid URL";
     }
     let relativeUrl = url.pathname;
-    let relativeExist = existInHtml(relativeUrl, listItemHtml);
+    let relativeExist = existInHtml(relativeUrl, listItemHtml, false);
 
     if (typeof relativeExist === "string") {
         return relativeExist;
@@ -592,7 +590,7 @@ let validateSampleImage = function (value) {
         ? value
         : relativeUrl;
 
-    let imgExpression = `//*[attribute::*="${imageUrl}"]`; //src and data-src
+    let imgExpression = `//img[attribute::*="${imageUrl}"]`; //src and data-src
     let nodeList = computedIframeDocument.value.evaluate(
         imgExpression
         , listItemElement
@@ -609,6 +607,9 @@ let validateSampleImage = function (value) {
     let arrImgElement = arrNodes.filter(el => el.tagName === "IMG");
     if (arrImgElement.length === 0) {
         return "This type of image is not supported";
+    }
+    if (arrImgElement.length > 1) {
+        return "The image is not unique";
     }
     let targetNode = arrImgElement[arrImgElement.length - 1];
     queryData.image = getPathTo(targetNode, listItemElement).replace(`${listItemTagName}`, "./");
@@ -700,6 +701,10 @@ const validateSampleOriginalPrice = function (value) {
         return "Element not found";
     }
 
+    if (value.length === 0 ) {
+        queryData.original_price = "";
+        return true;
+    }
     let listItemElement = sample.elements.item;
     let textExist = existInText(value, listItemElement.innerText);
     if (typeof textExist === "string") {
@@ -855,13 +860,15 @@ let normalizeUrl = function (value, originCheck = true) {
 
 let normalizeString = function (value) {
     if (typeof value === "string") {
-        return value.trim();
+        return value.replace(/\s+/g, ' ').trim()
+        //https://futurestud.io/tutorials/remove-extra-spaces-from-a-string-in-javascript-or-node-js
     }
     return value;
 }
 
 let fetchIframeData = function () {
     getScrapedDataRoute.value = '';
+    iframeReadyStatus.value = false;
     let callback = function (res) {
         //html
         crawlData.value = res.data
@@ -953,11 +960,16 @@ let addItem = function (obj = null) {
     products.data.push(newItem);
 }
 
-function randomGenerator() { //id generator (optional)
-    return Date.now() - Math.floor(Math.random() * 10);
+function randomGenerator(except = []) { //id generator (optional)
+    let value = null;
+    do {
+        value = Date.now() - Math.floor(Math.random() * 10);
+    } while (except.find(item => item === value))
+    return value;
 }
 
 const iframeReadyHandler = function () {
+    iframeReadyStatus.value = true;
     try {
         //transfer new data
         iframeInnerHTML.value = iframe.value.contentDocument.body.innerHTML;

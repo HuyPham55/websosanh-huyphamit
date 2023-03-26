@@ -43,8 +43,13 @@ class ScrapeController extends BaseController
     public function datatables(Request $request)
     {
         $posts = $this->model
+            ->withCount('products')
             ->filter(request()->all());
         $data = DataTables::eloquent($posts)
+            ->editColumn('url', function ($item) {
+                $productCount = $item->products_count;
+                return $item->url." ({$productCount})";
+            })
             ->editColumn('created_at', function ($item) {
                 return $item->date_format;
             })

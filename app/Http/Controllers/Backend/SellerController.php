@@ -34,13 +34,15 @@ class SellerController extends BaseController
     public function datatables(Request $request)
     {
         $posts = $this->model
+            ->withCount('products')
             ->filter(request()->all());
         $data = DataTables::eloquent($posts)
             ->editColumn('image', function ($item) {
                 return either($item->image, '/images/no-image.png');
             })
             ->editColumn('title', function ($item) {
-                return $item->title;
+                $productCount = $item->products_count;
+                return $item->title." ({$productCount})";
             })
             ->editColumn('status', function ($item) {
                 return view('components.buttons.bootstrapSwitch', [
