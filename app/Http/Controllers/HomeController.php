@@ -61,4 +61,21 @@ class HomeController extends Controller
         $nestedCollection = (new CategoryService(new ProductCategory()))->nestedMenu($collection);
         return CategoryResource::collection($nestedCollection);
     }
+
+    public function fetchHomePage(Request $request)
+    {
+        return response()->json([
+            'slides' => $this->getHomeSlides(),
+        ]);
+    }
+
+    private function getHomeSlides()
+    {
+        $collection = Slide::where('key', 'HOME')
+            ->orderBy('sorting')
+            ->orderBy('id')
+            ->get();
+        return SlideResource::collection($collection);
+    }
+
 }

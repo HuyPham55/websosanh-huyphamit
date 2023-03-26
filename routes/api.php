@@ -30,5 +30,6 @@ Route::post('/member/login', [LoginController::class, 'login']);
 Route::post('/member/register', [RegisterController::class, 'register']);
 
 Route::post('/fetch-layout-data', [HomeController::class, "fetchLayoutData"]);
+Route::post('/fetch-home-page', [HomeController::class, "fetchHomePage"]);
 
 

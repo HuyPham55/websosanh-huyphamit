@@ -2,26 +2,12 @@
     <main class="main-content">
         <div id="slider" class="swiper-container">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
+                <div class="swiper-slide" v-for="slide in slides.data">
                     <a href="#" class="img-slider">
-                        <img src="/images/brand1.jpg" class="img-slider" alt="KidsMart">
+                        <img :src="slide.image" class="img-slider" alt="KidsMart">
                     </a>
                 </div>
-                <div class="swiper-slide">
-                    <a href="#" class="img-slider">
-                        <img src="/images/brand2.jpg" class="img-slider" alt="KidsMart">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#" class="img-slider">
-                        <img src="/images/brand3.jpg" class="img-slider" alt="KidsMart">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#" title="Partner 4">
-                        <img src="/images/brand5.jpg" class="img-slider" alt="KidsMart">
-                    </a>
-                </div>
+
             </div>
             <div class="nav-swiper swiper-button-next"></div>
             <div class="nav-swiper swiper-button-prev"></div>
@@ -374,9 +360,37 @@ export default {
 }
 </script>
 <script setup>
-import {onMounted} from "vue";
+import {nextTick, onBeforeMount, onMounted, reactive, watch} from "vue";
 
-onMounted(() => {
+const slides = reactive({
+    data: [],
+    ready: false
+})
+
+onBeforeMount(() => {
+    getHomeSlides()
+})
+
+const getHomeSlides = async function() {
+    slides.ready = false;
+    axios.post("/api/fetch-home-page")
+        .then(res => {
+            let data = res.data;
+            slides.data = data['slides'];
+            slides.ready = true;
+        })
+}
+
+
+watch(() => slides.ready, () => {
+    if (slides.ready) {
+        nextTick(() => {
+            //wait for Vue to render tags
+            initializeSwiper();
+        })
+    }
+})
+const initializeSwiper = function() {
     let homeSlider = new Swiper('#slider', {
         navigation: {
             nextEl: ".swiper-button-next",
@@ -386,6 +400,9 @@ onMounted(() => {
             el: ".swiper-pagination",
         },
     });
+}
+
+onMounted(() => {
 })
 </script>
 
