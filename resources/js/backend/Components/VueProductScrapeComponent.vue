@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row mb-3">
-            <Form class="col-md-12 row" as="div">
+            <Form class="col-md-12 row" as="div" id="urlForm">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="category" class="control-label">
@@ -36,6 +36,7 @@
                     </div>
                 </div>
 
+
                 <div class="col-md-12 mb-3">
                     <button type="button" class="btn btn-primary" :disabled="!url" @click.prevent="fetchIframeData">
                         Fetch
@@ -44,13 +45,7 @@
             </Form>
 
 
-            <Form v-if="!!getScrapedDataRoute.length" class="col-md-12 row" id="sampleForm" @submit="scrapeItems"
-                  as="div">
-                <div class="col-md-12" hidden>
-                    <input name="htmlTextContent" :value="iframeInnerText"/>
-                    <input name="htmlContent" :value="iframeInnerHTML"/>
-                    <input v-for="(value, name) in queryData" :value="value" :name="`queryData[${name}]`"/>
-                </div>
+            <Form v-if="!!getScrapedDataRoute.length" class="col-md-12 row" id="sampleForm" @submit="scrapeItems" as="div">
                 <div class="col-md-12 mb-3">
                     <iframe class="" :src="getScrapedDataRoute" ref="iframe" @load="iframeReadyHandler"></iframe>
                 </div>
@@ -135,9 +130,46 @@
             </Form>
 
             <template v-if="products.data.length">
-                <Form class="col-md-12 rounded mb-3" as="div">
+                <Form class="col-md-12 rounded mb-3" as="div" id="paginationForm">
+                    <div class="col-md-12" hidden>
+                        <input name="htmlTextContent" :value="iframeInnerText"/>
+                        <input name="htmlContent" :value="iframeInnerHTML"/>
+                        <input v-for="(value, name) in queryData" :value="value" :name="`queryData[${name}]`"/>
+                    </div>
+
+                    <div class="form-group bg-light card-body">
+                        <div class="row justify-content-between">
+                            <div>
+                                <h4>
+                                    Pagination
+                                </h4>
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary" @click="scrapeChildren">
+                                Scrape
+                            </button>
+                        </div>
+                    </div>
                     <div class="form-group bg-light">
-                        <BootstrapItemListManager :has-data="(item) => item['title']" :columns="columns"
+                        <BootstrapItemListManager :has-data="() => false" :columns="[{title: 'URL', col: 12}]"
+                                                  :disableAdd="false" :items="pagination.array" @addItem="addPaginationLink" @remove="paginationListRemove" :useCustomRemoveMethod="true">
+                            <template v-slot:main="{item}" :key="item.id">
+                                <div class="col-md-12">
+                                    <Field type="text" v-model="item.link" :name="`children[${item.id}][link]`"
+                                           :rules="validateUrl" v-slot="{field, errors, meta}" :validateOnMount="true">
+                                        <input autocomplete="off" v-bind="field" :title="item.link" :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
+                                    </Field>
+                                    <input type="hidden" :name="`children[${item.id}][id]`" v-bind:value="item.id"/>
+                                    <ErrorMessage :name="`children[${item.id}][link]`" class="text-danger small" as="p"/>
+                                </div>
+                            </template>
+                        </BootstrapItemListManager>
+                    </div>
+                </Form>
+
+                <Form class="col-md-12 rounded mb-3" as="div" id="productForm">
+                    <div class="form-group bg-light">
+                        <BootstrapItemListManager :has-data="itemHasData" :columns="columns"
+                                                  :disableAdd="canNotAddMore"
                                                   :items="products.data" @addItem="addItem">
                             <template v-slot:main="{item}" :key="item.id">
                                 <div class="col-md-3">
@@ -227,6 +259,36 @@ const listItemTagName = "LI";
 let categories = reactive({
     data: []
 })
+
+const pagination = reactive({
+    array: []
+})
+
+const addPaginationLink = function (obj = null) {
+    let newItem = obj !== null
+        ? obj
+        : {
+            id: randomGenerator(),
+            link: "",
+            isHovered: false,
+        }
+    pagination.array.push(newItem)
+}
+
+
+const scrapeChildren = async function () {
+    for (const item of pagination.array) {
+        let url = item['link'];
+        let htmlValue = await scrapeHtml(url);
+        try {
+            let parser = new DOMParser()
+            let htmlDocument = parser.parseFromString(htmlValue, "text/html");
+            scrapeItems(htmlDocument);
+        } catch (e) {
+
+        }
+    }
+}
 let computedProductCategories = computed(() => {
     let result = Array();
     result.push({id: '', text: ''})
@@ -338,11 +400,22 @@ let queryData = reactive({
     original_price: '',
 });
 
-let scrapeItems = function (event) {
+
+const itemHasData = function (item) {
+    return item['title'];
+}
+const canNotAddMore = computed(() => {
+    return !!(products.data.find(item => !itemHasData((item))) | 0);
+})
+
+let scrapeItems = function (event = null, documentObject = null) {
     console.log('scrapeItems')
     iframeReadyHandler();
-    let nodeList = computedIframeDocument.value.evaluate(`${queryData.list}/${listItemTagName}`
-        , computedIframeDocument.value
+    documentObject = documentObject === null
+        ? computedIframeDocument.value
+        : documentObject;
+    let nodeList = documentObject.evaluate(`${queryData.list}/${listItemTagName}`
+        , documentObject
         , null
         , XPathResult.ANY_TYPE
         , null);
@@ -360,7 +433,7 @@ let scrapeItems = function (event) {
 
     for (const item of arrItems) {
         //title
-        let titleElement = computedIframeDocument.value.evaluate(`${titleQuery}`
+        let titleElement = documentObject.evaluate(`${titleQuery}`
             , item
             , null
             , XPathResult.ANY_TYPE
@@ -370,7 +443,7 @@ let scrapeItems = function (event) {
             ? ''
             : titleElement.innerText;
         //img
-        let imgElement = computedIframeDocument.value.evaluate(`${imageQuery}`
+        let imgElement = documentObject.evaluate(`${imageQuery}`
             , item
             , null
             , XPathResult.ANY_TYPE
@@ -378,9 +451,12 @@ let scrapeItems = function (event) {
         imgElement = imgElement.iterateNext();
         let imageUrl = imgElement === null
             ? ''
-            : imgElement.src;
+            : (imgElement.src
+                    ? imgElement.src
+                    : imgElement.attributes['data-src'].value
+            );
         //url
-        let anchorElement = computedIframeDocument.value.evaluate(`${urlQuery}`
+        let anchorElement = documentObject.evaluate(`${urlQuery}`
             , item
             , null
             , XPathResult.ANY_TYPE
@@ -391,7 +467,7 @@ let scrapeItems = function (event) {
             : anchorElement.href;
 
         //price
-        let priceElement = computedIframeDocument.value.evaluate(`${priceQuery}`
+        let priceElement = documentObject.evaluate(`${priceQuery}`
             , item
             , null
             , XPathResult.ANY_TYPE
@@ -404,7 +480,7 @@ let scrapeItems = function (event) {
         //original price, optional
         let originalPriceValue = '';
         if (originalPriceQuery.length !== 0) {
-            let originalPriceElement = computedIframeDocument.value.evaluate(`${originalPriceQuery}`
+            let originalPriceElement = documentObject.evaluate(`${originalPriceQuery}`
                 , item
                 , null
                 , XPathResult.ANY_TYPE
@@ -423,7 +499,12 @@ let scrapeItems = function (event) {
             price: priceValue,
             original_price: originalPriceValue,
         }
-        addItem(newItem);
+
+        let flag = validateItemTitle(newItem.title);
+        if (typeof flag === "boolean") {
+            //unique title
+            addItem(newItem);
+        }
     }
 }
 
@@ -435,7 +516,6 @@ let validateRequired = function (value) {
 }
 
 let validateSampleTitle = function (value) {
-    console.log('validateSampleTitle')
     let required = validateRequired(value)
     if (typeof required === "string") return required;
     let exist = existInText(value)
@@ -512,7 +592,9 @@ let validateSampleImage = function (value) {
         ? value
         : relativeUrl;
 
-    let nodeList = computedIframeDocument.value.evaluate(`//*[@src="${imageUrl}"]`
+    let imgExpression = `//*[attribute::*="${imageUrl}"]`; //src and data-src
+    let nodeList = computedIframeDocument.value.evaluate(
+        imgExpression
         , listItemElement
         , null
         , XPathResult.ANY_TYPE
@@ -657,8 +739,21 @@ let validateItemUrl = function (value) {
     }
     return true;
 }
-let validateItemImage = function (item) {
+let validateItemImage = function (value) {
+    let checkUrl = validateUrl(value, 'title');
+    if (typeof checkUrl === "string") {
+        return checkUrl
+    }
     return true;
+}
+
+const validateUrl = function(value) {
+    try {
+        let url = new URL(value)
+        return true;
+    } catch (e) {
+        return "Not a valid URL"
+    }
 }
 let validateUniqueness = function (value, field) {
     let matches = products.data.filter(item => item[field] === value);
@@ -767,14 +862,29 @@ let normalizeString = function (value) {
 
 let fetchIframeData = function () {
     getScrapedDataRoute.value = '';
-    axios.post("/admin/products/scrapes/api/scrape-html", {
-        'url': url.value
-    }).then(res => {
+    let callback = function (res) {
         //html
         crawlData.value = res.data
         //Next step
         getScrapedDataRoute.value = "/admin/products/scrapes/api/get-scraped-data"
-    })
+    }
+    scrapeHtml(url.value, callback)
+}
+
+const scrapeHtml = async function (url, callback = null) {
+    let htmlValue = null;
+    callback = callback !== null
+        ? callback
+        : function (res) {
+            htmlValue = res.data
+        }
+    await axios.post("/admin/products/scrapes/api/scrape-html", {
+        'url': url
+    }).then(callback)
+        .catch((res) => {
+            Swal.fire(labels.status.canceled, res.message, "error");
+        })
+    return htmlValue;
 }
 let fetchData = async function () {
     return await axios
@@ -817,6 +927,8 @@ let fetchData = async function () {
             if (htmlTextContent) {
                 iframeInnerText.value = htmlTextContent
             }
+
+            pagination.array = JSON.parse(model['children'])
         })
         .catch(exception => {
         })
@@ -845,7 +957,7 @@ function randomGenerator() { //id generator (optional)
     return Date.now() - Math.floor(Math.random() * 10);
 }
 
-const iframeReadyHandler = function (el) {
+const iframeReadyHandler = function () {
     try {
         //transfer new data
         iframeInnerHTML.value = iframe.value.contentDocument.body.innerHTML;
@@ -877,6 +989,11 @@ function getPathTo(toElement, fromElement) {
             ix++;
     }
 }
+
+const paginationListRemove = function(item) {
+    pagination.array = pagination.array.filter(arrItem => arrItem['id'] !== item['id'])
+}
+
 </script>
 
 <style scoped>

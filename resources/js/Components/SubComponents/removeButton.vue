@@ -7,8 +7,8 @@
                 :title="label"
                 @mouseover.stop="isHover()"
                 @mouseleave.stop="isNotHover()"
-                @click="$emit('click')">
-            {{ isHovered ? hoverLabel : label || 'Remove'}}
+                @click="clickHandler">
+            {{ isHovered ? hoverLabel : label || 'Remove' }}
             <i class="ti-trash"></i>
         </button>
     </div>
@@ -41,6 +41,13 @@ export default {
         isNotHover: function () {
             this.isHovered = false;
         },
+        clickHandler: function (e) {
+            e.target.setAttribute('disabled', '')
+            setTimeout(() => {
+                e.target.remove('disabled');
+            }, 500)
+            this.$emit('click')
+        }
     },
 
     data: function () {

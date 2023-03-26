@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
  * @property int|mixed $product_category_id
  * @property false|mixed|string $result
  * @property false|mixed|string $data
+ * @property false|mixed|string $children
  */
 class Scrape extends BaseModel
 {
@@ -53,6 +54,7 @@ class Scrape extends BaseModel
 
     public static function saveModel(self $model, Request $request, $editFlag)
     {
+
         DB::beginTransaction();
         try {
             $model->url = $request->input('url_seed', 0);
@@ -74,7 +76,11 @@ class Scrape extends BaseModel
                 'htmlContent' => $request->input('htmlContent'),
                 'queryData' => $request->input('queryData'),
             ];
-            $model->data = json_encode($data);
+            $model->data = json_encode($data) ?? [];
+
+
+            $children = $request->input('children') ?? [];
+            $model->children = array_values($children) ?? [];
             $model->save();
             $productData = [];
             foreach ($products as $item) {

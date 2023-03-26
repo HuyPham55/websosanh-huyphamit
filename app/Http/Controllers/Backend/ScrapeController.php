@@ -11,6 +11,7 @@ use App\Models\Seller;
 use App\Services\CategoryService;
 use App\Services\ScrapeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class ScrapeController extends BaseController
@@ -144,13 +145,14 @@ class ScrapeController extends BaseController
             'model' => $model,
             'categories' => $categories,
             'sellers' => $sellers,
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
     public function ApiGetScrapedData(Request $request)
     {
-        return session()->get('scraped-html');
+        //iframe data
+        return Cache::get('scraping_url');
     }
 
     public function ApiScrapeHtml(Request $request)
@@ -159,7 +161,7 @@ class ScrapeController extends BaseController
         $scraper = new ScrapeService();
         $result = $scraper->scrape($url);
         $html = $result['html'];
-        session()->put('scraped-html', $html);
+        Cache::put('scraping_url', $html);
         return $html;
     }
 }

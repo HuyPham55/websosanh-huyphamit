@@ -30,7 +30,7 @@
                         <slot class=row name="main" :item="item"/>
                     </div>
                     <remove-button
-                        @click="removeItem(index)"
+                        @click="removeItem(index, item)"
                         :has-data="hasData(item)"
                         :col-division="colDivision"
                         :label="removeColumn.title"
@@ -38,19 +38,25 @@
                 </div>
             </transition-group>
         </section>
-        <bootstrapAddButton @click="$emit('addItem')" :is-disabled="disableAdd"/>
+
+        <div class="row justify-content-between">
+            <bootstrapAddButton @click="$emit('addItem')" :is-disabled="disableAdd"/>
+            <clearButton @click="clearAll"></clearButton>
+        </div>
+
     </div>
 </template>
 
 <script>
 import bootstrapAddButton from "@/Components/SubComponents/bootstrapAddButton.vue";
 import removeButton from "@/Components/SubComponents/removeButton.vue";
-
+import clearButton from "@/backend/Components/SubComponents/clearButton.vue";
 export default {
     name: "bootstrapItemListManager",
     components: {
         bootstrapAddButton,
         removeButton,
+        clearButton,
     },
     props: {
         items: {
@@ -70,6 +76,11 @@ export default {
             default: false,
             required: true,
         },
+        useCustomRemoveMethod: {
+            type: Boolean,
+            default: false,
+            required: false,
+        }
     },
     inject: ['removeColumn'],
     data() {
@@ -81,7 +92,11 @@ export default {
         }
     },
     methods: {
-        removeItem: function (index) {
+        removeItem: function (index, item) {
+            if (this.useCustomRemoveMethod) {
+                this.$emit('remove', item)
+                return
+            }
             this.items.splice(index, 1);
         },
         isHover: function (index) {
@@ -96,6 +111,9 @@ export default {
                 this.items[index].isHovered = false;
             } catch (e) {
             }
+        },
+        clearAll: function() {
+            this.items.splice(0, this.items.length);
         }
     },
 }

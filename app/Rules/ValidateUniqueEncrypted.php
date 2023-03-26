@@ -22,7 +22,8 @@ class ValidateUniqueEncrypted implements Rule
         //
         $this->model = $model;
         $this->field = $field;
-        $this->except = $except;
+        //Cannot assign null to property App\Rules\ValidateUniqueEncrypted::$except of type int
+        $this->except = $except | 0;
     }
 
     /**
