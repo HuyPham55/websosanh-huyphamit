@@ -47,7 +47,10 @@
 
             <Form class="col-md-12 row" id="sampleForm" @submit="scrapeItems" as="div">
                 <div class="col-md-12 mb-3" v-if="!!getScrapedDataRoute.length">
-                    <iframe class="" :src="getScrapedDataRoute" ref="iframe" @load="iframeReadyHandler"></iframe>
+                    <iframe class="mb-3" :src="getScrapedDataRoute" ref="iframe" @load="iframeReadyHandler"></iframe>
+                    <button type="button" class="btn btn-outline-danger" v-if="!iframeReadyStatus" @click="iframeReadyHandler">
+                        Force ready
+                    </button>
                 </div>
                 <div class="col-md-12 rounded mb-3" v-if="iframeReadyStatus">
                     <div class="form-group bg-light">
@@ -152,12 +155,15 @@
                                                   :disableAdd="false" :items="pagination.array" @addItem="addPaginationLink" @remove="paginationListRemove" :useCustomRemoveMethod="true">
                             <template v-slot:main="{item}" :key="item.id">
                                 <div class="col-md-12">
-                                    <Field type="text" v-model="item.link" :name="`children[${item.id}][link]`"
-                                           :rules="validateUrl" v-slot="{field, errors, meta}" :validateOnMount="true">
-                                        <input autocomplete="off" v-bind="field" :title="item.link" :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
-                                    </Field>
+
+                                    <input autocomplete="off"
+                                           v-model="item.link" :name="`children[${item.id}][link]`"
+                                           :title="item.link"
+                                           type="url"
+                                           required
+                                           :class="{'form-control': 1, 'is-invalid': validateUrl(item.link)!==true,'is-valid': validateUrl(item.link)===true}"/>
+
                                     <input type="hidden" :name="`children[${item.id}][id]`" v-bind:value="item.id"/>
-                                    <ErrorMessage :name="`children[${item.id}][link]`" class="text-danger small" as="p"/>
                                 </div>
                             </template>
                         </BootstrapItemListManager>
@@ -171,63 +177,48 @@
                                                   :items="products.data" @addItem="addItem">
                             <template v-slot:main="{item}" :key="item.id">
                                 <div class="col-md-3">
-                                    <Field type="text" v-model="item.title" :name="`products[${item.id}][title]`"
-                                           :rules="validateItemTitle" v-slot="{field, errors, meta}"
-                                           :validateOnMount="true">
+
                                         <input autocomplete="off" v-bind="field" :title="item.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid, 'bg-primary': !item['created_at']}"/>
-                                    </Field>
+                                               v-model="item.title"
+                                               :name="`products[${item.id}][title]`"
+                                               :class="{'form-control': 1, 'is-invalid': validateItemTitle(item.title) !== true,'is-valid': validateItemTitle(item.title) === true, 'bg-primary': !item['created_at']}"/>
                                     <input type="hidden" :name="`products[${item.id}][id]`" v-bind:value="item.id"/>
-                                    <ErrorMessage :name="`products[${item.id}][title]`" class="text-danger small"
-                                                  as="p"/>
+
                                 </div>
                                 <div class="col-md-3">
-                                    <Field type="text" v-model="item.image" :name="`products[${item.id}][image]`"
-                                           :validateOnMount="true"
-                                           :rules="validateItemImage" v-slot="{field, errors, meta}">
-                                        <input autocomplete="off" v-bind="field"
+                                        <input autocomplete="off"
                                                :disabled="!item.title"
                                                :title="item.image"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
-                                    </Field>
-                                    <ErrorMessage :name="`products[${item.id}][image]`" class="text-danger small"
-                                                  as="p"/>
+                                               type="url"
+                                               required
+                                               v-model="item.image" :name="`products[${item.id}][image]`"
+                                               :class="{'form-control': 1, 'is-invalid': validateItemImage(item.image)!==true,'is-valid': validateItemImage(item.image)===true}"/>
+
                                 </div>
                                 <div class="col-md-2">
-                                    <Field type="text" v-model="item.url" :name="`products[${item.id}][url]`"
-                                           :validateOnMount="true"
-                                           :rules="validateItemUrl" v-slot="{field, errors, meta}">
-                                        <input autocomplete="off" v-bind="field"
-                                               :disabled="!item.title"
-                                               :title="item.url"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
-                                    </Field>
-                                    <ErrorMessage :name="`products[${item.id}][url]`" class="text-danger small"
-                                                  as="p"/>
+
+                                    <input autocomplete="off"
+                                           :disabled="!item.title"
+                                           :title="item.url"
+                                           type="url"
+                                           required
+                                           v-model="item.url" :name="`products[${item.id}][url]`"
+                                           :class="{'form-control': 1, 'is-invalid': validateItemUrl(item.url)!==true,'is-valid': validateItemUrl(item.url)===true}"/>
                                 </div>
                                 <div class="col-md-2">
-                                    <Field type="text" v-model="item.price" :name="`products[${item.id}][price]`"
-                                           :validateOnMount="true"
-                                           :rules="null" v-slot="{field, errors, meta}">
-                                        <input autocomplete="off" v-bind="field"
+                                        <input autocomplete="off"
                                                :disabled="!item.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
-                                    </Field>
-                                    <ErrorMessage :name="`products[${item.id}][price]`" class="text-danger small"
-                                                  as="p"/>
+                                               required
+                                               v-model="item.price" :name="`products[${item.id}][price]`"
+                                               :class="{'form-control': 1, 'is-invalid': 0,'is-valid': 0}"/>
+
                                 </div>
                                 <div class="col-md-2">
-                                    <Field type="text" v-model="item.original_price"
-                                           :name="`products[${item.id}][original_price]`"
-                                           :validateOnMount="true"
-                                           :rules="null" v-slot="{field, errors, meta}">
-                                        <input autocomplete="off" v-bind="field"
-                                               :disabled="!item.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid}"/>
-                                    </Field>
-                                    <ErrorMessage :name="`products[${item.id}][original_price]`"
-                                                  class="text-danger small"
-                                                  as="p"/>
+                                    <input autocomplete="off"
+                                           :disabled="!item.title"
+                                           v-model="item.original_price" :name="`products[${item.id}][original_price]`"
+                                           :class="{'form-control': 1, 'is-invalid': 0,'is-valid': 0}"/>
+
                                 </div>
                             </template>
                         </BootstrapItemListManager>

@@ -41,6 +41,18 @@ class Scrape extends BaseModel
         return $this->hasMany(Product::class);
     }
 
+
+    public static function createProduct(array $newItemData, Scrape $model)
+    {
+        if (Product::where('url', $newItemData['url'])->get()->first() !== null) {
+            //duplicated Product['url'] -> skip
+            return false;
+        }
+        $product = new Product($newItemData);
+        $model->products()->save($product);
+        return $product;
+    }
+
     public function seller()
     {
         //Determine seller of the scrape, can NOT be null
@@ -58,8 +70,15 @@ class Scrape extends BaseModel
         DB::beginTransaction();
         try {
             $model->url = $request->input('url_seed', 0);
-            $model->seller_id = $request->input('seller') | 0;
-            $model->product_category_id = $request->input('category') | 0;
+            $seller_id = $request->input('seller') | 0;
+            $model->seller_id = $seller_id;
+            $product_category_id = $request->input('category') | 0;
+            $model->product_category_id = $product_category_id;
+
+            ProductCategory
+                ::findOrFail($product_category_id)
+                ->sellers()
+                ->syncWithoutDetaching($seller_id);
 
             $products = $request->input('products') ?? [];
 
@@ -108,14 +127,12 @@ class Scrape extends BaseModel
                 if ($editFlag) {
                     $product = Product::find($itemData['id']);
                     if ($product == null) {
-                        $product = new Product($newItemData);
-                        $model->products()->save($product);
+                        self::createProduct($newItemData, $model);
                     } else {
                         $product->update($itemData);
                     }
                 } else {
-                    $product = new Product($newItemData);
-                    $model->products()->save($product);
+                    self::createProduct($newItemData, $model);
                 }
             }
             DB::commit();
@@ -125,5 +142,6 @@ class Scrape extends BaseModel
             return $exception;
         }
     }
+
 
 }
