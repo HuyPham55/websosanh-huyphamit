@@ -1,11 +1,20 @@
 <template>
     <div class="top-bar">
-        <p></p>
-        <div class="login-section">
-            <div class="login-title" v-if="computedUser">
-                <span @click.prevent.stop="logOut">
+        <p>Bán hàng cùng Let's compare</p>
+        <div :class="{'login-section': 1, 'logged-in': computedUser}">
+            <div class='login-title'
+                 v-if="computedUser">
+                <span>
                     {{computedUser['name']}}
                 </span>
+                <ol class="sub-menu-top">
+                    <li>
+                        <a>My account</a>
+                    </li>
+                    <li>
+                        <a @click.prevent.stop="logOut">Log out</a>
+                    </li>
+                </ol>
             </div>
             <div class="login-title" v-else>
                 Login

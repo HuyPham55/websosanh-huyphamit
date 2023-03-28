@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CommonStatus;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductCategoryResource;
 use App\Http\Resources\SlideResource;
 use App\Models\ProductCategory;
 use App\Models\Slide;
@@ -66,6 +67,7 @@ class HomeController extends Controller
     {
         return response()->json([
             'slides' => $this->getHomeSlides(),
+            'featured_categories' => $this->getFeaturedCategories(),
         ]);
     }
 
@@ -76,6 +78,34 @@ class HomeController extends Controller
             ->orderBy('id')
             ->get();
         return SlideResource::collection($collection);
+    }
+
+    private function getFeaturedCategories()
+    {
+        //8: Limit product per product-box
+        //10: Limit total featured product categories on home page
+        $productCallback = function ($query) {
+            return $query
+                ->where([
+                    ['products.featured', CommonStatus::Active],
+                    ['products.status', CommonStatus::Active],
+                ])
+                ->orderBy('sorting');
+        };
+        $result = ProductCategory
+            ::with([
+                'products' => $productCallback,
+            ])
+            ->whereHas('products', $productCallback)
+            ->where([
+                ['featured', CommonStatus::Active],
+                ['status', CommonStatus::Active],
+            ])
+            ->orderBy('sorting')
+            ->orderBy('id')
+            ->limit(10)
+            ->get();
+        return ProductCategoryResource::collection($result);
     }
 
 }

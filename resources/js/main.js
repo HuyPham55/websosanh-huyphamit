@@ -30,6 +30,9 @@ const hydrate = function () {
     let loginPopup = document.querySelector(".login-popup");
     loginButton.addEventListener("click", function (e) {
         e.stopPropagation();
+        if (loginButton.classList.contains("logged-in")) {
+            return
+        }
         loginPopup.classList.toggle('active');
     })
     let loginOverlay = document.querySelector(".auth-overlay");

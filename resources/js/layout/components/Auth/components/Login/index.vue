@@ -1,5 +1,5 @@
 <template>
-    <Form class="auth-container" @submit="attemptLogin">
+    <Form class="auth-container" @submit="onSubmit" v-slot="{isSubmitting}">
         <div class="auth-title">Login</div>
         <div class="auth-content">
         </div>
@@ -7,10 +7,12 @@
             <div class="form-group">
                 <label>
                     <Field type="email" class="form-control" autocomplete="off" placeholder="E-mail" name="email"/>
+                    <ErrorMessage name="email" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
                 <label>
                     <Field type="password" class="form-control" autocomplete="off" placeholder="Password"
                            name="password"/>
+                    <ErrorMessage name="password" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
             </div>
             <div class="auth-checkbox">
@@ -21,10 +23,13 @@
             </div>
         </div>
         <div class="auth-action">
-            <button class="register" @click="registerClickHandler" type="button">Register</button>
-            <button class="login" type="submit">Login</button>
+            <button class="register" @click="registerClickHandler" type="button" :disabled="isSubmitting">
+                Register
+            </button>
+            <button class="login" type="submit" :disabled="isSubmitting">Login</button>
         </div>
     </Form>
+
 </template>
 
 <script>
@@ -36,16 +41,13 @@ export default {
 <script setup>
 import {Form, ErrorMessage, Field} from "vee-validate";
 import {userUserStore} from "@/stores";
+import {ref} from "vue";
 let store = userUserStore()
 const emit = defineEmits(['changeComponent', 'closePopup'])
 const registerClickHandler = function () {
     emit('changeComponent', 'Register')
 }
-const loginClickHandler = function () {
-
-}
-
-const attemptLogin = function (data) {
+function onSubmit(data, actions) {
     axios.post("/api/member/login", {
         ...data
     })
@@ -56,8 +58,16 @@ const attemptLogin = function (data) {
                 emit('closePopup');
             }
         })
-}
+        .catch(res => {
+            let data = res.response.data
+            let errors = data['errors'];
+            for (const field in errors) {
+                actions.setFieldError(field, errors[field]);
 
+            }
+        })
+
+}
 
 </script>
 

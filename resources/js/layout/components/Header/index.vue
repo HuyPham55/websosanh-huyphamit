@@ -5,9 +5,9 @@
                 <i class="far fa-bars"></i>
             </button>
             <h1 class="logo" v-if="headerData['logo']">
-                <a href="/">
+                <router-link :to="{name: 'home'}">
                     <img :src="headerData['logo']" alt="">
-                </a>
+                </router-link>
             </h1>
             <div class="search-wrap">
                 <input autocomplete="off" title="" autofocus placeholder=""/>
@@ -30,7 +30,7 @@
                     <ol class="nav-list" v-if="store.layoutData.ready">
                         <li v-for="category in computedCategories"
                             :class="{'menu-item': 1, 'has-children': category['subs'].length}">
-                            <a href="#">
+                            <router-link :to="{name: 'product_category', params: {id: category['id'], slug: category['slug']}}">
                                 <img :src="category['icon']" alt=""/>
                                 <span>
                                     {{category['title']}}
@@ -38,13 +38,13 @@
                                 <button type="button" class="btn-sub" v-if="category['subs'].length">
                                     <i class="fal fa-fw fa-angle-down"></i>
                                 </button>
-                            </a>
+                            </router-link>
                             <ul class="sub-menu" v-if="category['subs'].length">
                                 <li v-for="sub in category['subs']"
                                     class="menu-item">
-                                    <a href="#">
+                                    <router-link :to="{name: 'product_category', params: {id: sub['id'], slug: sub['slug']}}">
                                         <span>{{ sub['title'] }}</span>
-                                    </a>
+                                    </router-link>
                                 </li>
                             </ul>
                         </li>

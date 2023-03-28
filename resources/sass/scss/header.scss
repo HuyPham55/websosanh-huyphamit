@@ -4,7 +4,7 @@
     flex-direction: row;
     background: $white-color;;
     justify-content: space-between;
-    padding: 5px 0px;
+    padding: 5px 0;
     @media only screen and (max-width: 768px) {
         display: none;
     }
@@ -15,6 +15,49 @@
 
         .login-title {
             user-select: none;
+        }
+
+        &.logged-in {
+            .login-title:hover {
+                text-decoration: underline;
+            }
+
+            .login-title {
+                position: relative;
+                cursor: pointer;
+
+                .sub-menu-top {
+                    display: none;
+                    list-style: none;
+                    position: absolute;
+                    right: 0;
+                    padding: 16px;
+                    box-shadow: 0 4px 4px rgba(0, 0, 0, .15);
+                    border: 1px solid $darker-color;
+                    border-radius: 4px;
+                    background-color: $white-color;
+                    z-index: 100;
+                    min-width: 100%;
+                    top: 0;
+                    margin: 20px 0 0 -41px;
+
+                    li {
+                        min-width: 20px;
+                        a {
+                            text-decoration: none;
+                            &:hover {
+                                color: $red-color;
+                            }
+                        }
+                    }
+                }
+
+                &:hover {
+                    .sub-menu-top {
+                        display: block;
+                    }
+                }
+            }
         }
     }
 }
@@ -27,6 +70,7 @@
             opacity: 1;
             visibility: visible;
         }
+
         .header-drop .nav-overlay {
             position: fixed;
             top: 0;
@@ -37,6 +81,7 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: -1;
         }
+
         .header-drop .nav-wrap .nav-left .nav-list {
             display: block;
         }
@@ -424,53 +469,71 @@
         bottom: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,.6) none;
+        background: rgba(0, 0, 0, .6) none;
         z-index: 10;
     }
+
     .auth-container {
         min-width: calc(100% / 3);
         position: fixed;
         z-index: 100;
         padding: 40px 30px;
         background: $white-color;
+
         .auth-title {
             font-weight: 700;
             font-size: 30px;
             line-height: 35px;
         }
+
         .auth-content {
         }
+
         .auth-form {
             .form-group {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 margin-top: 20px;
+
                 label {
                     width: 100%;
+
                     input {
                         width: 100%;
                         outline: none;
                         padding: 12px 20px;
                         margin: 8px 0;
                     }
+
+                    .invalid-feedback {
+                        margin-top: .25rem;
+                        font-size: 80%;
+                        color: $red-color;
+                    }
                 }
             }
+
             .auth-checkbox {
+                margin-top: 20px;
                 user-select: none;
+
                 .remember-checkbox {
                     margin-right: 2px;
                 }
+
                 .checkbox-url {
                     color: $main-color;
                     text-decoration: none;
                 }
             }
         }
+
         .auth-action {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
+
             button {
                 padding: 14px 20px;
                 border: none;
@@ -483,9 +546,11 @@
                     background-color: $darker-color;
                 }
             }
+
             .login {
                 color: $white-color;
                 background-color: $main-color;
+
                 &:hover {
                     background-color: $red-color;
                 }

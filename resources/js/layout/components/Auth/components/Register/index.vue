@@ -1,5 +1,5 @@
 <template>
-    <Form class="auth-container" @submit="attemptRegister">
+    <Form class="auth-container" @submit="attemptRegister" v-slot="{isSubmitting}">
         <div class="auth-title">Register</div>
         <div class="auth-content">
         </div>
@@ -7,17 +7,21 @@
             <div class="form-group">
                 <label>
                     <Field type="email" class="form-control" autocomplete="off" placeholder="E-mail" name="email"/>
+                    <ErrorMessage name="email" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
                 <label>
                     <Field type="text" class="form-control" autocomplete="off" placeholder="Name" name="name"/>
+                    <ErrorMessage name="name" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
                 <label>
                     <Field type="password" class="form-control" autocomplete="off" placeholder="Password"
                            name="password"/>
+                    <ErrorMessage name="password" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
                 <label>
                     <Field type="password" class="form-control" autocomplete="off" placeholder="Password confirmation"
                            name="password_confirmation"/>
+                    <ErrorMessage name="password_confirmation" as="span" class="invalid-feedback"></ErrorMessage>
                 </label>
             </div>
             <div class="auth-checkbox">
@@ -28,8 +32,8 @@
             </div>
         </div>
         <div class="auth-action">
-            <button class="register" @click="loginClickHandler" type="button">Back</button>
-            <button class="login" type="submit">Register</button>
+            <button class="register" @click="loginClickHandler" type="button" :disabled="isSubmitting">Back</button>
+            <button class="login" type="submit" :disabled="isSubmitting">Register</button>
         </div>
     </Form>
 </template>
@@ -51,7 +55,7 @@ const loginClickHandler = function () {
 
 }
 
-const attemptRegister = function (data) {
+const attemptRegister = function (data, actions) {
     axios.post("/api/member/register", {
         ...data
     })
@@ -60,6 +64,14 @@ const attemptRegister = function (data) {
             if (data['status'] === 'success') {
                 store.user = data['data']['user'];
                 emit('closePopup');
+            }
+        })
+        .catch(res => {
+            let data = res.response.data
+            let errors = data['errors'];
+            for (const field in errors) {
+                actions.setFieldError(field, errors[field]);
+
             }
         })
 }

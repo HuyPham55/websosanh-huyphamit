@@ -2,6 +2,67 @@
     .img-slider {
         display: block;
         width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.featured-categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: $gray-color;
+    width: 100%;
+    color: $main-color;
+
+    .featured-list {
+        min-width: 200px;
+        max-width: 270px;
+        width: 100%;
+        list-style: none;
+        @media only screen and (max-width: 768px) {
+            display: none;
+        }
+
+
+        .featured-item {
+            display: block;
+            width: 100%;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                & > a {
+                    color: $red-color;
+                    background-color: $gray-color;
+                }
+            }
+
+            a {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                padding: 5px 10px;
+                position: relative;
+                transition: color 150ms;
+
+                img {
+                    width: 35px;
+                    height: 35px;
+                    display: block;
+                    margin-right: 5px;
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+
+    .home-slider {
+        width: 100%;
+        height: 100%;
+        background-color: $white-color;
     }
 }
 

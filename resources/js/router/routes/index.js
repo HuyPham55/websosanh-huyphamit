@@ -1,4 +1,6 @@
 import Layout from "@/layout/index.vue";
+import HomePage from "@/views/HomePage.vue";
+
 const routes = [
     {
         path: '/',
@@ -7,10 +9,16 @@ const routes = [
             {
                 path: '',
                 name: 'home',
-                component: () => import("@/views/HomePage.vue")
-            }
+                component: HomePage,
+            },
+            {
+                path: "/product-category/:id/:slug",
+                name: 'product_category',
+                component: () => import("@/views/Product/Category/index.vue")
+            },
         ]
-    }
+    },
+
 ];
 
 export default routes

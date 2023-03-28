@@ -41,6 +41,18 @@ class ProductCategory extends BaseModel
         return $this->hasMany(Product::class);
     }
 
+    public function nestedProducts()
+    {
+        return $this
+            ->hasManyThrough(
+                Product::class,
+                ProductCategory::class,
+                'parent_id',
+                'product_category_id',
+            )
+            ->orderBy('sorting');
+    }
+
     public function comparisons() {
         //Used for filter by product category
         return $this->hasMany(Comparison::class);
