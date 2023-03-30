@@ -210,4 +210,14 @@ return [
             'delete_footer_slides' => 'Delete footer slides',
         ]
     ],
+
+    'comparisons' => [
+        'title' => 'Comparisons',
+        'permissions' => [
+            'show_list_comparisons' => 'Show list comparisons',
+            'add_comparisons' => 'Add comparisons',
+            'edit_comparisons' => 'Edit comparisons',
+            'delete_comparisons' => 'Delete product',
+        ]
+    ],
 ];

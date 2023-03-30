@@ -76,4 +76,5 @@ return array (
   'icon' => 'Icon',
   'price' => 'Price',
   'original_price' => 'Original price',
+  'comparisons' => 'Comparisons',
 );

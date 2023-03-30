@@ -302,11 +302,18 @@ return [
                     'can' => 'show_list_products'
                 ],
                 [
-                    'text'    => 'Scrapes',
-                    'route'     => 'scrapes.list',
+                    'text' => 'Scrapes',
+                    'route' => 'scrapes.list',
                     'icon' => 'far fa-fw',
-                    'active' => ['admin/scrapes/*'],
+                    'active' => ['admin/products/scrapes/*'],
                     'can' => 'show_list_scrapes'
+                ],
+                [
+                    'text' => 'Comparisons',
+                    'route' => 'comparisons.list',
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/products/comparisons/*'],
+                    'can' => 'show_list_comparisons'
                 ]
             ],
         ],

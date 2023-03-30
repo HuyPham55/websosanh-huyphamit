@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
+use App\Http\Controllers\Backend\ComparisonController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
@@ -259,6 +260,32 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
                 Route::post('fetch-model-data', [ScrapeController::class, 'ApiFetchModelData']);
                 Route::post('scrape-html', [ScrapeController::class, 'ApiScrapeHtml']);
                 Route::any('get-scraped-data', [ScrapeController::class, 'ApiGetScrapedData']);
+            });
+        });
+
+        //Comparisons
+        Route::group(['prefix' => 'comparisons'], function () {
+            Route::get('/', [ComparisonController::class, 'index'])->middleware('permission:show_list_comparisons')->name('comparisons.list');
+            Route::get('/datatables', [ComparisonController::class, 'datatables'])->middleware('permission:show_list_comparisons')->name('comparisons.datatables');
+
+            Route::group(['middleware' => 'permission:add_comparisons'], function () {
+                Route::get('add', [ComparisonController::class, 'getAdd'])->name('comparisons.add');
+                Route::post('add', [ComparisonController::class, 'postAdd']);
+            });
+            Route::group(['middleware' => 'permission:edit_comparisons'], function () {
+                Route::get('edit/{id}', [ComparisonController::class, 'getEdit'])->name('comparisons.edit');
+                Route::put('edit/{id}', [ComparisonController::class, 'putEdit']);
+
+                Route::post('change-popular', [ComparisonController::class, 'changePopular'])->name('comparisons.change_popular');
+                Route::post('change-status', [ComparisonController::class, 'changeStatus'])->name('comparisons.change_status');
+                Route::post('change-sorting', [ComparisonController::class, 'changeSorting'])->name('comparisons.change_sorting');
+            });
+            Route::post('delete', [ComparisonController::class, 'delete'])->middleware('permission:delete_comparisons')->name('comparisons.delete');
+
+            Route::group(['prefix' => 'view'], function() {
+                Route::get('show/{id}', [ComparisonController::class, 'getShow'])->name('comparisons.show');
+                Route::get('datatables/{id}', [ComparisonController::class, 'productDatatables'])->name('comparison_products.datatables');
+                Route::post('change-relationship/{id}', [ComparisonController::class, 'productChangeRelationship'])->name('comparison_products.change_relationship');
             });
         });
     });
