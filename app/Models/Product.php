@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\ProductObserver;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,14 +23,23 @@ use Illuminate\Support\Facades\DB;
  * @property bool|mixed $url
  * @property mixed $created_at
  * @property int|mixed $original_price
+ * @property mixed $id
  */
 class Product extends BaseModel
 {
     use HasFactory;
     use Filterable;
-
+    protected $casts = [
+        'featured' => 'integer',
+        'is_popular' => 'integer',
+        'status' => 'integer',
+    ];
     protected $guarded = [];
-
+    public static function boot()
+    {
+        parent::boot();
+        self::observe(ProductObserver::class);
+    }
     public function productCategory()
     {
         return $this->belongsTo(ProductCategory::class);

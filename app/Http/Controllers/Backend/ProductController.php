@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\CategoryService;
+use App\Services\ElasticService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,9 +30,20 @@ class ProductController extends BaseController
     {
         session(['url.intended' => url()->full()]);
 
+        $total_count = $this->model->count();
+
         $categories = (new CategoryService(new ProductCategory()))->dropdown();
 
-        return view("{$this->pathView}.list", compact('categories'));
+        try {
+            $client = new ElasticService($this->model->getTable());
+            if (!$client->indexExist()) {
+                $client->createIndex();
+            }
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+
+        return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
 
     public function datatables(Request $request)
@@ -208,6 +219,21 @@ class ProductController extends BaseController
             return response()->json([
                 'status' => 'error',
                 'message' => trans('label.something_went_wrong')
+            ]);
+        }
+    }
+
+    public function addAllToIndex(Request $request) {
+        try {
+            $client = new ElasticService($this->model->getTable());
+            $collection = Product::all()->toArray();
+            $sizeLimit = 100;
+            $client->bulkIndex($collection, $sizeLimit);
+            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'flash_message' => trans('label.something_went_wrong')
             ]);
         }
     }

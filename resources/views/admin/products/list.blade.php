@@ -22,13 +22,22 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-            @can('add_products')
-                @includeIf('components.buttons.add', ['route' => route('products.add')])
-            @endcan
+            <div class="row mb-3">
+                <div class="col justify-content-between align-items-center d-flex">
+                    @can('add_products')
+                        @includeIf('components.buttons.add', ['route' => route('products.add')])
+                    @endcan
+                    <a class="btn btn-outline-primary mb-2" href="{{route('products.add_all_to_index')}}">
+                        <i class="fas fa-fw fa-plus"></i>
+                        Bulk index
+                    </a>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <h4></h4>
+                        <h4>{{trans('label.total')}}: {{$total_count}}</h4>
                     </div>
                 </div>
                 <div class="card-body">

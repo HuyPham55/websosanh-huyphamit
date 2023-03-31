@@ -124,7 +124,9 @@ class ElasticService
         $params = [
             'index' => $this->index,
             'id' => $id,
-            'body' => $data
+            'body' => [
+                'doc' => $data
+            ]
         ];
         return $this->client->update($params);
     }

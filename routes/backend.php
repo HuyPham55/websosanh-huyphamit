@@ -223,6 +223,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
         Route::group(['prefix' => 'items'], function () {
             Route::get('/', [ProductController::class, 'index'])->middleware('permission:show_list_products')->name('products.list');
             Route::get('/datatables', [ProductController::class, 'datatables'])->middleware('permission:show_list_products')->name('products.datatables');
+            Route::get('/add-all-to-index', [ProductController::class, 'addAllToIndex'])->middleware('permission:show_list_products')->name('products.add_all_to_index');
+
 
             Route::group(['middleware' => 'permission:add_products'], function () {
                 Route::get('add', [ProductController::class, 'getAdd'])->name('products.add');
