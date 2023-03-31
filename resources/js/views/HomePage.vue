@@ -66,45 +66,34 @@
                 <a href="#">News</a>
             </h2>
             <div class="article-wrap">
-                <article class="article-item">
-                    <a href="#" title="">
+                <div class="article-list">
+                    <article class="article-item" v-for="item in featuredNews.data">
+                        <a href="#" title="">
+                            <span class="article-img">
+                                <img :src="item['image']" alt="">
+                            </span>
+                            <h3 class="article-title">{{ item.title }}</h3>
+                        </a>
+                        <p class="article-desc">
+                            {{ item['short_description'] }}
+                        </p>
+                    </article>
+                </div>
+                <div class="article-aside">
+                    <div class="article-aside-container">
+                        <article class="article-item" v-for="item in asideNews.data">
+                            <a href="#" title="">
                         <span class="article-img">
-                            <img
-                                src="https://img.websosanh.vn/v2/users/review/images/danh-gia-chi-tiet-ve-may-giat/hehu2j5aiekyb.jpg?compress=85&amp;width=390"
-                                alt="">
+                            <img :src="item.image" alt="">
                         </span>
-                        <h3 class="article-title">Đánh giá chi tiết về máy giặt LG Inverter 9 kg fm1209s6w</h3>
-                    </a>
-                    <p class="article-desc">
-                        Bạn có biết máy giặt LG Inverter 9kg fm1209s6w có tính năng gì nổi bật? Có nên mua máy giặt LG
-                        Inverter 9kg fm1209s6w không và mức giá bán như thế nào?</p>
-                </article>
-                <article class="article-item">
-                    <a href="#" title="">
-                        <span class="article-img">
-                            <img
-                                src="https://img.websosanh.vn/v2/users/review/images/may-giat-lg-fv1410s5w-co-tot/rromn1f9puaug.jpg?compress=85&width=390"
-                                alt="">
-                        </span>
-                        <h3 class="article-title">Đánh giá chi tiết về máy giặt LG Inverter 9 kg fm1209s6w</h3>
-                    </a>
-                    <p class="article-desc">
-                        Bạn có biết máy giặt LG Inverter 9kg fm1209s6w có tính năng gì nổi bật? Có nên mua máy giặt LG
-                        Inverter 9kg fm1209s6w không và mức giá bán như thế nào?</p>
-                </article>
-                <article class="article-item">
-                    <a href="#" title="">
-                        <span class="article-img">
-                            <img
-                                src="https://img.websosanh.vn/v2/users/review/images/quat-dieu-hoa-erito-eac-8000/aji4a6heomua7.jpg?compress=85&width=390"
-                                alt="">
-                        </span>
-                        <h3 class="article-title">Đánh giá chi tiết về máy giặt LG Inverter 9 kg fm1209s6w</h3>
-                    </a>
-                    <p class="article-desc">
-                        Bạn có biết máy giặt LG Inverter 9kg fm1209s6w có tính năng gì nổi bật? Có nên mua máy giặt LG
-                        Inverter 9kg fm1209s6w không và mức giá bán như thế nào?</p>
-                </article>
+                                <h3 class="article-title">{{ item.title }}</h3>
+                            </a>
+                            <p class="article-desc">
+                                {{ item['short_description'] }}
+                            </p>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -135,6 +124,13 @@ const featuredCategories = reactive({
     data: [],
 })
 
+const featuredNews = reactive({
+    data: [],
+})
+const asideNews = reactive({
+    data: [],
+})
+
 onBeforeMount(() => {
     fetchHomePage()
 })
@@ -147,6 +143,7 @@ const fetchHomePage = async function () {
             slides.data = data['slides'];
             slides.ready = true;
             featuredCategories.data = data['featured_categories']
+            asideNews.data = data['aside_news']
         })
 }
 

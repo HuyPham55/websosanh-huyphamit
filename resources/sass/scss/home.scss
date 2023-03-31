@@ -14,7 +14,6 @@
     background-color: $gray-color;
     width: 100%;
     color: $main-color;
-
     .featured-list {
         min-width: 200px;
         max-width: 270px;
@@ -32,7 +31,6 @@
             &:last-child {
                 border-bottom: none;
             }
-
             &:hover {
                 & > a {
                     color: $red-color;
@@ -58,7 +56,6 @@
             }
         }
     }
-
     .home-slider {
         width: 100%;
         height: 100%;
@@ -120,6 +117,7 @@
 
         @media only screen and (max-width: 768px) {
             flex-direction: column;
+            align-items: center;
         }
 
         .banner-wrap {
@@ -220,12 +218,13 @@
 
 .article-box {
     margin: 40px 0 0;
-
     .article-head {
 
     }
 
     .article-wrap {
+        display: flex;
+
         .article-item {
             margin: 24px 0 0;
 
@@ -258,7 +257,7 @@
                     overflow: hidden;
                     float: left;
                     position: relative;
-
+                    border-radius: 5px;
                     @media only screen and (max-width: 768px) {
                         width: 110px;
                         height: 58px;
@@ -291,6 +290,22 @@
                 content: '';
                 display: block;
                 clear: both;
+            }
+        }
+
+        .article-aside {
+            margin-left: 12px;
+            flex: 0 0 25%;
+            position: relative;
+            @media only screen and (max-width: 768px) {
+                display: none;
+            }
+
+            .article-aside-container {
+                position: sticky;
+                top: 128px; //header height
+            }
+            article {
             }
         }
     }

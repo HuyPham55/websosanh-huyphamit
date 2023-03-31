@@ -6,6 +6,7 @@ use App\Enums\CommonStatus;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\Http\Resources\SlideResource;
+use App\Models\BlogPost;
 use App\Models\ProductCategory;
 use App\Models\Slide;
 use App\Services\CategoryService;
@@ -68,6 +69,8 @@ class HomeController extends Controller
         return response()->json([
             'slides' => $this->getHomeSlides(),
             'featured_categories' => $this->getFeaturedCategories(),
+            'featured_news' => $this->getFeaturedNews(),
+            'aside_news' => $this->getAsideNews(),
         ]);
     }
 
@@ -106,6 +109,27 @@ class HomeController extends Controller
             ->limit(10)
             ->get();
         return ProductCategoryResource::collection($result);
+    }
+
+    private function getFeaturedNews()
+    {
+        return BlogPost::where([
+            ['status', CommonStatus::Active],
+            ['is_popular']
+        ])
+            ->orderBy('sorting')
+            ->take(10)
+            ->get();
+    }
+
+    private function getAsideNews()
+    {
+        return BlogPost::where([
+            ['status', CommonStatus::Active],
+        ])
+            ->orderBy('created_at', 'DESC')
+            ->take(5)
+            ->get();
     }
 
 }
