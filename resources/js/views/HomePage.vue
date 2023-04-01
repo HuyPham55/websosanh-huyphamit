@@ -54,7 +54,7 @@
                                 </div>
                                 <h3 class="item-title">{{ item['title'] }}</h3>
                             </a>
-                            <span class="item-price">{{ item['price'] }}</span>
+                            <span class="item-price">{{ store.formatMoney(item['price']) }}</span>
                         </li>
                     </template>
                 </ul>

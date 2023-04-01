@@ -8,6 +8,7 @@ use App\Services\ElasticService;
 class ProductObserver
 {
     protected ElasticService $client;
+
     public function __construct()
     {
         $this->client = new ElasticService((new Product())->getTable());
@@ -17,7 +18,7 @@ class ProductObserver
     /**
      * Handle the Product "created" event.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return void
      */
     public function created(Product $product)
@@ -28,14 +29,14 @@ class ProductObserver
             $data = $product->toArray();
             $this->client->indexDocument(null, $data);
         } catch (\Exception $exception) {
-            dd($exception);
+            throw ($exception);
         }
     }
 
     /**
      * Handle the Product "updated" event.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return void
      */
     public function updated(Product $product)
@@ -43,32 +44,33 @@ class ProductObserver
         //
         try {
             $data = $product->toArray();
+            $exist = $this->client->getDocument($product->id);
+            if ($exist === false) {
+                $this->client->indexDocument(null, $data);
+                return;
+            }
             $this->client->updateDocument($product->id, $data);
         } catch (\Exception $exception) {
-            dd($exception);
+            throw ($exception);
         }
     }
 
     /**
      * Handle the Product "deleted" event.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return void
      */
     public function deleted(Product $product)
     {
         //
-        try {
-            $this->client->deleteDocument($product->id);
-        } catch (\Exception $exception) {
-            dd($exception);
-        }
+        $this->client->deleteDocument($product->id);
     }
 
     /**
      * Handle the Product "restored" event.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return void
      */
     public function restored(Product $product)
@@ -79,7 +81,7 @@ class ProductObserver
     /**
      * Handle the Product "force deleted" event.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return void
      */
     public function forceDeleted(Product $product)

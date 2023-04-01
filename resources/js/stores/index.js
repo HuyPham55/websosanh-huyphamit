@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
-
+import {sessionCache} from "@/API/sessionCache";
 export const useLayoutStore = defineStore('layout', () => {
     const layoutData = reactive({
         ready: false,
@@ -9,18 +9,33 @@ export const useLayoutStore = defineStore('layout', () => {
         headerData: [],
     })
 
-    const fetchLayoutData = function () {
-        layoutData.ready = false;
-        axios.post("/api/fetch-layout-data")
-            .then(res => {
-                layoutData.ready = true;
-                let data = res.data;
-                layoutData.footerData = data['footerData'];
-                layoutData.headerData = data['headerData'];
-                layoutData.title = data['title'];
-            })
+    const formatMoney = function (value) {
+        return new Intl.NumberFormat('de-DE', { style: 'currency', currency:'VND' }).format(value)
     }
-    return {layoutData, fetchLayoutData}
+
+    const fetchLayoutData = function () {
+        let cacheKey = 'layoutData';
+        layoutData.ready = false;
+        let callback = (data) => {
+            layoutData.footerData = data['footerData'];
+            layoutData.headerData = data['headerData'];
+            layoutData.title = data['title'];
+            layoutData.ready = true;
+        }
+
+        if (sessionCache.has(cacheKey)) {
+            let data = sessionCache.load(cacheKey);
+            callback(data);
+        } else {
+            axios.post("/api/fetch-layout-data")
+                .then(res => {
+                    let data = res.data;
+                    callback(data);
+                    sessionCache.save(cacheKey, data)
+                })
+        }
+    }
+    return {layoutData, fetchLayoutData, formatMoney}
 })
 
 

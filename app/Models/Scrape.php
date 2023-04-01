@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\ScrapeObserver;
+use App\Services\CategoryService;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Exception\NotFoundException;
 
 /**
  * @property mixed $date
@@ -75,10 +77,17 @@ class Scrape extends BaseModel
             $product_category_id = $request->input('category') | 0;
             $model->product_category_id = $product_category_id;
 
-            ProductCategory
-                ::findOrFail($product_category_id)
-                ->sellers()
-                ->syncWithoutDetaching($seller_id);
+            $seller = Seller::find($seller_id);
+            $category = ProductCategory::find($product_category_id);
+            if ($seller == null || $category == null) {
+                throw new NotFoundException();
+            }
+            $categoryService = (new CategoryService(new ProductCategory()));
+            $arrayParentCategories = $categoryService
+                ->getArrayParentId($category->lft | 0, $category->rgt | 0) ?? [];
+            foreach ($arrayParentCategories as $item) {
+                $seller->productCategories()->syncWithoutDetaching($item);
+            }
 
             $products = $request->input('products') ?? [];
 
@@ -104,7 +113,7 @@ class Scrape extends BaseModel
             $productData = [];
             foreach ($products as $item) {
                 $productData[] = [
-                    'id' => $item['id'],
+                    'id' => $item['id'] | 0,
                     'product_category_id' => $model->product_category_id,
                     'title' => $item['title'],
                     'slug' => simple_slug($item['title']),
@@ -112,7 +121,7 @@ class Scrape extends BaseModel
                     'url' => $item['url'],
                     'price' => (int)preg_replace("/[^0-9]/", '', $item['price']),
                     'original_price' => (int)preg_replace("/[^0-9]/", '', $item['original_price']),
-                    'seller_id' => $model->seller_id,
+                    'seller_id' => $model->seller_id | 0,
                 ];
             }
             $arrayItemId = array_map(function ($item) {

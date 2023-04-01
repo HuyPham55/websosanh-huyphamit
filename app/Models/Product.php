@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\ProductObserver;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -55,6 +56,7 @@ class Product extends BaseModel
     {
         //Determine seller of the product, can NOT be null
         return $this->belongsTo(Seller::class);
+        //seller_image
     }
 
     public function scape()
@@ -96,5 +98,12 @@ class Product extends BaseModel
     public function getDateFormatAttribute()
     {
         return date_format($this->created_at, 'Y/m/d');
+    }
+    protected $appends = ['seller_image'];
+    protected function sellerImage(): Attribute
+    {
+        return Attribute::make(
+          get: fn() => $this->seller->image
+        );
     }
 }

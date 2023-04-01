@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\ClientErrorResponseException;
 
 class ElasticService
 {
@@ -76,12 +77,19 @@ class ElasticService
         return $this->client->index($params);
     }
 
-    public function getDocument($document_id)
+    public function getDocument($document_id, $index = null)
     {
-        return $this->client->get([
-            'index' => $this->index,
-            'id' => $document_id,
-        ]);
+        try {
+            if ($index == null) {
+                $index = $this->index;
+            }
+            return $this->client->get([
+                'index' => $index,
+                'id' => $document_id,
+            ]);
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     public function batchIndex($array)
@@ -138,6 +146,40 @@ class ElasticService
             'index' => $this->index,
             'id' => $id
         ];
-        return $this->client->delete($params);
+        try {
+            $response = $this->client->delete($params);
+            if ($response['acknowledge'] === 1) {
+                // the document has been delete
+                return true;
+            }
+        } catch (\Exception $exception) {
+            if ($exception->getCode() === 404) {
+                // the document does not exist
+            }
+        }
+    }
+
+    public function search(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [])
+    {
+        $params = [
+            'index' => $this->index,
+            'size' => $perPage,
+            'body' => [
+                'query' => $query,
+            ],
+        ];
+        if ($fields !== []) {
+            $params['_source'] = $fields;
+        }
+        if ($page) {
+            $params['from'] = $page * $perPage;
+        }
+        if ($sort !== []) {
+            $params['body']['sort'] = $sort;
+        }
+        $response = $this->client->search($params);
+        $total = $response['hits']['total']['value'];
+        $hits = $response['hits']['hits']; //can be null
+        return compact('hits', 'total', 'response');
     }
 }

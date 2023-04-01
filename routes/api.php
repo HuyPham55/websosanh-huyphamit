@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\Auth\Api\LoginController;
 use App\Http\Controllers\Frontend\Auth\Api\RegisterController;
+use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,5 @@ Route::post('/member/register', [RegisterController::class, 'register']);
 Route::post('/fetch-layout-data', [HomeController::class, "fetchLayoutData"]);
 Route::post('/fetch-home-page', [HomeController::class, "fetchHomePage"]);
 
-
+Route::post('/fetch-product-category', [ProductController::class, 'fetchCategoryData']);
+Route::post('/filter-product', [ProductController::class, 'filterProduct']);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Resources\ElasticProductResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\CategoryService;
@@ -40,7 +42,8 @@ class ProductController extends BaseController
                 $client->createIndex();
             }
         } catch (\Exception $exception) {
-            return $exception->getMessage();
+            return view("{$this->pathView}.list", compact('categories', 'total_count'))
+                ->with(['danger' => 'success', 'flash_message' => $exception->getMessage()]);
         }
 
         return view("{$this->pathView}.list", compact('categories', 'total_count'));
@@ -226,14 +229,14 @@ class ProductController extends BaseController
     public function addAllToIndex(Request $request) {
         try {
             $client = new ElasticService($this->model->getTable());
-            $collection = Product::all()->toArray();
+            $collection = Product::with(['seller'])->get()->toArray();
             $sizeLimit = 100;
             $client->bulkIndex($collection, $sizeLimit);
             return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
         } catch (\Exception $exception) {
             return redirect()->back()->with([
                 'status' => 'danger',
-                'flash_message' => trans('label.something_went_wrong')
+                'flash_message' => $exception->getMessage()
             ]);
         }
     }

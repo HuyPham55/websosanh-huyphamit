@@ -83,12 +83,12 @@ let ready = computed(() => {
 const footerData = computed(() => store.layoutData.footerData)
 
 watch(ready, (newValue, oldValue) => {
-    if (newValue) {
+    if (ready.value) {
         nextTick(() => {
             initializeSwiper();
         })
     }
-})
+}, {immediate: true})
 
 let initializeSwiper = () => {
     const swiper = new Swiper('.partner', {
