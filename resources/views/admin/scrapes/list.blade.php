@@ -37,6 +37,7 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">{{trans('label.url')}}</th>
+                            <th scope="col">{{trans('label.sellers')}}</th>
                             <th scope="col">{{ __('label.created_at') }}</th>
                             <th scope="col">{{ __('label.action.action') }}</th>
                         </tr>
@@ -69,6 +70,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'url', name: 'url'},
+                    {data: 'seller', name: 'seller'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false}
                 ],
