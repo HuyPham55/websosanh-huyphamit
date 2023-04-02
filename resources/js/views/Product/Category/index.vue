@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="input-slide-wrap">
                                         <Field type="range" class="range" max="200000000" step="10000"
-                                               v-model.number="filterData.max_price" name="max_price"  @change="filterProduct"/>
+                                               v-model.number="filterData.max_price" name="max_price" @change="filterProduct"/>
                                     </div>
                                     <div class="filter-slide-amount">
                                         <span>{{store.formatMoney(filterData.min_price)}}</span>
@@ -88,19 +88,7 @@
                 </div>
                 <div class="list-product">
                     <ProductList :items="products.data"/>
-                    <ul class="pagination">
-                        <li><a href="" class="active">1</a></li>
-                        <li><a href="" >2</a>
-                        </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=3" >3</a>
-                        </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=4">4</a>
-                        </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=5">5</a>
-                        </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=2">›</a></li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=18">»</a></li>
-                    </ul>
+                    <Pagination :total="total" :perPage="pagination.perPage" :currentPage="pagination.currentPage" @changePage="changePage"/>
                 </div>
             </div>
         </div>
@@ -118,6 +106,8 @@ import { useRoute } from 'vue-router';
 import {useLayoutStore} from "@/stores";
 import ProductList from "@/views/Product/components/ProductList/index.vue";
 import {Form, Field} from "vee-validate";
+import Pagination from "@/layout/Pagination/index.vue";
+
 const store = useLayoutStore();
 const route = useRoute();
 const computedId = computed(() => route.params.id | 0)
@@ -135,6 +125,11 @@ const computedSellers = reactive({
 
 const products = reactive({
     data: []
+})
+
+const pagination = reactive({
+    currentPage: 1,
+    perPage: 40,
 })
 
 const total = ref(0);
@@ -166,15 +161,27 @@ watch(() => filterData.max_price, (newValue, oldValue) => {
     if (newValue <= filterData.min_price && newValue > 0) {
         filterData.min_price = newValue - 1
     }
+    if (pagination.currentPage !== 1) {
+        pagination.currentPage = 1;
+    }
 })
 
 watch(() => filterData.min_price, (newValue, oldValue) => {
     if (newValue >= filterData.max_price) {
         filterData.max_price = newValue + 1;
     }
+    if (pagination.currentPage !== 1) {
+        pagination.currentPage = 1;
+    }
 })
 
-const filterProduct = function() {
+watch(() => filterData.seller, (newValue, oldValue) => {
+    if (pagination.currentPage !== 1) {
+        pagination.currentPage = 1;
+    }
+})
+
+const filterProduct = function(page = 1) {
     let data = {}
     data.category = computedId.value;
 
@@ -190,15 +197,24 @@ const filterProduct = function() {
     if (filterData.seller !== null) {
         data.seller = filterData.seller
     }
+    if (typeof page === 'number' && page !== pagination.currentPage) {
+        data.page = page;
+    }
 
     const callback = axios.post('/api/filter-product', data)
         .then(res => {
             let data = res.data
             total.value = data['total'];
             products.data = data['products']['data'];
+            if (typeof page === 'number' && page !== pagination.currentPage) {
+                pagination.currentPage = page;
+            }
         })
     delay(callback, 200)
+}
 
+const changePage = function (pageNumber) {
+    filterProduct(pageNumber);
 }
 
 onBeforeMount(() => {
