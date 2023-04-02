@@ -89,4 +89,34 @@ class ProductController extends Controller
         $arrCategoryIds = $categoryService->getArrayChildrenId($category->lft, $category->rgt);
         return $arrCategoryIds;
     }
+
+    public function getProductUrl(Request $request)
+    {
+        $id = $request->input('id') | 0;
+        $product = Product::find($id);
+        if ($product === null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => trans('label.something_went_wrong')
+            ]);
+        }
+        $key = "viewed_products";
+        if (session()->has($key)) {
+            $existing = session()->pull($key) ?? [];
+            if (!in_array($id, $existing)) {
+                array_push($existing, $id);
+                $product->increment('hits');
+                session()->put($key, $existing);
+            }
+        } else {
+            $array = [];
+            array_push($array, $id);
+            $product->increment('hits');
+            session()->put($key, $array);
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $product->url,
+        ]);
+    }
 }

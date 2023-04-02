@@ -30,10 +30,10 @@ export default {
 </script>
 
 <script setup>
-import {userUserStore} from "@/stores";
+import {useUserStore} from "@/stores";
 import {computed} from "vue";
 
-const store = userUserStore()
+const store = useUserStore()
 
 const computedUser = computed(() => store.user)
 

@@ -39,7 +39,7 @@ export const useLayoutStore = defineStore('layout', () => {
 })
 
 
-export const userUserStore = defineStore('user', () => {
+export const useUserStore = defineStore('user', () => {
     const user = ref(null);
 
     // Token is only used for token based authentication
@@ -60,5 +60,17 @@ export const userUserStore = defineStore('user', () => {
         token.value = null;
     }
     return {user, token, setAxiosToken, fetchUserData, userLogOut}
+})
+
+export const useProductStore = defineStore('products', () => {
+    const getProductUrl = function (id) {
+        axios.post('/api/get-product-url', {id})
+            .then(res => {
+                let data = res.data
+                let url = data['data'];
+                window.open(url);
+            })
+    }
+    return {getProductUrl}
 })
 

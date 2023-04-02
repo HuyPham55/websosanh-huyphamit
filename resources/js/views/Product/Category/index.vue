@@ -82,26 +82,24 @@
                             <option value="_score-asc">Relevance</option>
                             <option value="price-desc">Highest price first</option>
                             <option value="price-asc">Lowest price first</option>
+                            <option value="hits-desc">Most viewed</option>
                         </select>
                     </div>
                 </div>
                 <div class="list-product">
                     <ProductList :items="products.data"/>
                     <ul class="pagination">
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=1" data-page="1" rel="nofollow"
-                               class="active">1</a></li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=2" data-page="2" rel="nofollow">2</a>
+                        <li><a href="" class="active">1</a></li>
+                        <li><a href="" >2</a>
                         </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=3" data-page="3" rel="nofollow">3</a>
+                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=3" >3</a>
                         </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=4" data-page="4" rel="nofollow">4</a>
+                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=4">4</a>
                         </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=5" data-page="5" rel="nofollow">5</a>
+                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=5">5</a>
                         </li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=2" data-page="2" class="next"
-                               title="Trang tiếp" rel="nofollow">›</a></li>
-                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=18" data-page="18" class="last"
-                               title="Trang cuối" rel="nofollow">»</a></li>
+                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=2">›</a></li>
+                        <li><a href="https://websosanh.vn/s/máy+giặt+toshiba+8.5.htm?pi=18">»</a></li>
                     </ul>
                 </div>
             </div>

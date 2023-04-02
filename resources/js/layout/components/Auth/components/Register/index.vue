@@ -45,9 +45,9 @@ export default {
 </script>
 <script setup>
 import {Form, Field, ErrorMessage} from "vee-validate";
-import {userUserStore} from "@/stores";
+import {useUserStore} from "@/stores";
 
-let store = userUserStore()
+let store = useUserStore()
 
 const emit = defineEmits(['changeComponent', 'closePopup'])
 const loginClickHandler = function () {

@@ -24,12 +24,12 @@ import Footer from "@/layout/components/Footer/index.vue";
 import Login from "@/layout/components/Auth/index.vue";
 import {computed, onBeforeMount, onMounted} from "vue";
 import {hydrate} from "@/main";
-import {useLayoutStore, userUserStore} from "@/stores";
+import {useLayoutStore, useUserStore} from "@/stores";
 import {useRoute} from "vue-router";
 
 const route = useRoute()
 const store = useLayoutStore()
-const userStore = userUserStore()
+const userStore = useUserStore()
 
 const key = computed(() => {
     return route.fullPath;

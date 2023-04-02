@@ -8,11 +8,11 @@
                     <span class="product-img">
                         <img :src="item.image" :alt="item.title">
                     </span>
-                        <span class="product-action">To seller</span>
-                        <h3>{{ item.title }}</h3>
-                        <span class="product-meta">
-                        <span class="product-price">{{ store.formatMoney(item.price) }}</span>
-                        <span class="product-percent">-27 %</span>
+                    <span class="product-action" @click="clickHandler(item)">To seller</span>
+                    <h3>{{ item.title }}</h3>
+                    <span class="product-meta">
+                    <span class="product-price">{{ store.formatMoney(item.price) }}</span>
+                    <span class="product-percent">-27 %</span>
                     </span>
                         <span class="product-shipping blue-light">
                         <i class="ico-happy-smiley"></i>
@@ -40,8 +40,10 @@ export default {
 <script setup>
 import {computed} from "vue";
 import {useLayoutStore} from "@/stores";
+import {useProductStore} from "@/stores";
 
 const store = useLayoutStore();
+const productStore = useProductStore();
 
 const props = defineProps({
     items: {
@@ -56,6 +58,11 @@ const props = defineProps({
 const computedItems = computed(() => {
     return props.items
 })
+
+const clickHandler = function(item) {
+    let id = item.id;
+    productStore.getProductUrl(id);
+}
 </script>
 
 <style scoped>

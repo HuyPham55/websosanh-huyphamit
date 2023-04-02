@@ -40,9 +40,9 @@ export default {
 
 <script setup>
 import {Form, ErrorMessage, Field} from "vee-validate";
-import {userUserStore} from "@/stores";
+import {useUserStore} from "@/stores";
 import {ref} from "vue";
-let store = userUserStore()
+let store = useUserStore()
 const emit = defineEmits(['changeComponent', 'closePopup'])
 const registerClickHandler = function () {
     emit('changeComponent', 'Register')

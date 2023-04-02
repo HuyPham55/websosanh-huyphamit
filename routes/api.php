@@ -35,3 +35,4 @@ Route::post('/fetch-home-page', [HomeController::class, "fetchHomePage"]);
 
 Route::post('/fetch-product-category', [ProductController::class, 'fetchCategoryData']);
 Route::post('/filter-product', [ProductController::class, 'filterProduct']);
+Route::post('/get-product-url', [ProductController::class, 'getProductUrl']);

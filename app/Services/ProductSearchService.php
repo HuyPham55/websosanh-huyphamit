@@ -17,7 +17,7 @@ class ProductSearchService
     {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
-        $sortOptions = ["_score-asc", "price-asc", "price-desc"];
+        $sortOptions = ["_score-asc", "price-asc", "price-desc", "hits-desc"];
         $sort = [];
         if ($sorting !== null && in_array($sorting, $sortOptions)) {
             $explode = explode("-", $sorting);
