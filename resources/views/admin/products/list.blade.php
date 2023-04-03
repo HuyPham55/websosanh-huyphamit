@@ -93,7 +93,6 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'image', name: 'image', orderable: false, render: imageContainer},
-                    {data: 'price', name: 'price', render: formatMoney},
                     {data: 'title', name: 'title'},
                     {data: 'price', name: 'price', render: formatMoney},
                     {data: 'sorting', name: 'sorting', render: sortingContainer},
