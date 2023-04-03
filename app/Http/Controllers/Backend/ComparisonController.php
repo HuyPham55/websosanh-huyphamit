@@ -32,20 +32,23 @@ class ComparisonController extends BaseController
         session(['url.intended' => url()->full()]);
 
         $categories = (new CategoryService(new ProductCategory()))->dropdown();
+        $total_count = $this->model->count();
 
-        return view("{$this->pathView}.list", compact('categories'));
+        return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
 
     public function datatables(Request $request)
     {
         $posts = $this->model
+            ->withCount('products')
             ->filter(request()->all());
         $data = DataTables::eloquent($posts)
             ->editColumn('image', function ($item) {
                 return either($item->image, '/images/no-image.png');
             })
             ->editColumn('title', function ($item) {
-                return $item->title;
+                $productCount = $item->products_count;
+                return $item->title." ({$productCount})";
             })
             ->editColumn('status', function ($item) {
                 return view('components.buttons.bootstrapSwitch', [

@@ -74,4 +74,9 @@ class Comparison extends BaseModel
             return $exception;
         }
     }
+
+    public function getDateFormatAttribute()
+    {
+        return $this->date;
+    }
 }

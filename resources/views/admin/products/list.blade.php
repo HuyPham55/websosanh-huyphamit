@@ -53,6 +53,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">{{ __('label.image') }}</th>
                             <th scope="col">{{ __('label.title') }}</th>
+                            <th scope="col">{{ __('label.price') }}</th>
                             <th scope="col">{{ __('backend.sorting') }}</th>
                             <th scope="col">{{ __('label.status.status') }}</th>
                             <th scope="col">{{ __('label.created_at') }}</th>
@@ -79,6 +80,11 @@
             let datatablesCallback = () => {
                 jQuery(".bt-switch input[type='checkbox']").bootstrapSwitch();
             }
+
+            const formatMoney = function (value) {
+                return new Intl.NumberFormat('de-DE', { style: 'currency', currency:'VND' }).format(value)
+            }
+
             jQuery("#datatables").DataTable({
                 serverSide: true,
                 processing: true,
@@ -87,6 +93,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'image', name: 'image', orderable: false, render: imageContainer},
+                    {data: 'price', name: 'price', render: formatMoney},
                     {data: 'title', name: 'title'},
                     {data: 'sorting', name: 'sorting', render: sortingContainer},
                     {data: 'status', name: 'status'},
