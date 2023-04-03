@@ -76,10 +76,11 @@ class ProductController extends Controller
         $max_price = $request->input('max_price') | 0;
         $min_price = $request->input('min_price') | 0;
         $page = ($request->input('page') | 0);
-        if ($page === 0) {
-            $page = 1;
-        } else {
+        if ($page !== 0) {
             $page -= 1;
+        }
+        if ($page < 0) {
+            $page = 0;
         }
         $seller = $request->input('seller') | 0;
         $category = ProductCategory::find($categoryId);
