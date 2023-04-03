@@ -37,7 +37,9 @@ class ScrapeController extends BaseController
 
         $categories = (new CategoryService(new ProductCategory()))->dropdown();
 
-        return view("{$this->pathView}.list", compact('categories'));
+        $total_count = $this->model->count();
+
+        return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
 
     public function datatables(Request $request)
