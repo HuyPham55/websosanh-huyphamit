@@ -240,4 +240,16 @@ class ProductController extends BaseController
             ]);
         }
     }
+    public function clearIndex(Request $request) {
+        try {
+            $client = new ElasticService($this->model->getTable());
+            $client->deleteIndex();
+            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'flash_message' => $exception->getMessage()
+            ]);
+        }
+    }
 }

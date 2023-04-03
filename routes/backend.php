@@ -239,6 +239,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
                 Route::post('change-sorting', [ProductController::class, 'changeSorting'])->name('products.change_sorting');
             });
             Route::post('delete', [ProductController::class, 'delete'])->middleware('permission:delete_products')->name('products.delete');
+            Route::get('/clear-index', [ProductController::class, 'clearIndex'])->middleware('permission:delete_products')->name('products.clear_index');
+
         });
 
 

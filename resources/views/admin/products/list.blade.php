@@ -27,10 +27,16 @@
                     @can('add_products')
                         @includeIf('components.buttons.add', ['route' => route('products.add')])
                     @endcan
-                    <a class="btn btn-outline-primary mb-2" href="{{route('products.add_all_to_index')}}">
-                        <i class="fas fa-fw fa-plus"></i>
-                        Bulk index
-                    </a>
+                    <div>
+                        <a class="btn btn-outline-danger mb-2" href="{{route('products.clear_index')}}">
+                            <i class="fas fa-fw fa-trash"></i>
+                            Clear index
+                        </a>
+                        <a class="btn btn-outline-primary mb-2" href="{{route('products.add_all_to_index')}}">
+                            <i class="fas fa-fw fa-plus"></i>
+                            Bulk index
+                        </a>
+                    </div>
                 </div>
             </div>
 
