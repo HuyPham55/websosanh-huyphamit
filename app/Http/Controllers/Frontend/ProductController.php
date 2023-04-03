@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Enums\CommonStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductCategoryResource;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\CategoryService;
@@ -20,10 +21,12 @@ class ProductController extends Controller
     //
 
     private ProductSearchService $productSearchService;
+    private CategoryService $categoryService;
 
     public function __construct()
     {
         $this->productSearchService = (new ProductSearchService());
+        $this->categoryService = (new CategoryService(new ProductCategory()));
     }
 
     public function fetchCategoryData(Request $request)
@@ -36,21 +39,28 @@ class ProductController extends Controller
                         ['status', CommonStatus::Active],
                     ]);
                 },
-                'sellers' => function ($query) {
-                    return $query->where([
-                        ['status', CommonStatus::Active],
-                    ]);
+                'sellers' => function ($query) use ($id) {
+                    return $query
+                        ->where([
+                            ['status', CommonStatus::Active],
+                        ])
+                        ->withCount(['products' => function ($query) use ($id) {
+                            return $query;
+                        }]);
                 }
             ])
             ->find($id);
 
         $sellers = $category->sellers;
         $arrCategoryIds = $this->getArr($category);
+        $breadcrumb = ProductCategoryResource::collection(
+            $this->categoryService->breadcrumb($category->lft, $category->rgt)
+        );
         $query = $this->productSearchService->productsByCategory($arrCategoryIds);
         $products['data'] = $this->productSearchService->productMapper($query['hits']);
         $total = $query['total'] | 0;
         $children = $category->children ?? [];
-        $staticData = compact('category', 'children', 'sellers');
+        $staticData = compact('category', 'children', 'sellers', 'breadcrumb');
         return response()->json(array_merge($staticData,
             [
                 'products' => $products,
@@ -90,8 +100,7 @@ class ProductController extends Controller
      */
     public function getArr(Model|Collection|Builder|array|null $category): array
     {
-        $categoryService = (new CategoryService(new ProductCategory()));
-        $arrCategoryIds = $categoryService->getArrayChildrenId($category->lft, $category->rgt);
+        $arrCategoryIds = $this->categoryService->getArrayChildrenId($category->lft, $category->rgt);
         return $arrCategoryIds;
     }
 

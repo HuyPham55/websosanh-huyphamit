@@ -5,10 +5,11 @@
                 <router-link :to="{name: 'home'}">Homepage</router-link>
                 <i class="fa fa-angle-right"></i>
             </li>
-            <li>
-                <a href="https://websosanh.vn/dien-lanh/cat-1867.htm">
-                    {{category['title']}}
-                </a>
+            <li v-for="item in breadcrumb.data">
+                <router-link :to="{name: 'product_category', params: {id: item['id'], slug: item['slug']}}">
+                    {{item['title']}}
+                </router-link>
+                <i class="fa fa-angle-right" v-if="item.id !== category.id"></i>
             </li>
         </ol>
         <div class="page-wrap">
@@ -45,7 +46,7 @@
                                             <span class="filter-radio"></span>
                                             <span class="filter-name">{{seller['title']}}</span>
                                         </label>
-                                        <span class="filter-count">130.032</span>
+                                        <span class="filter-count">{{seller['products_count']}}</span>
                                     </li>
                                 </ol>
                             </div>
@@ -115,7 +116,20 @@ import ProductEmpty from "@/views/Product/components/ProductList/ProductEmpty.vu
 const store = useLayoutStore();
 const route = useRoute();
 const computedId = computed(() => route.params.id | 0)
+
+// layout data
+
 const readyStatus = ref(false);
+const total = ref(0);
+const pagination = reactive({
+    currentPage: 1,
+    perPage: 40,
+})
+const breadcrumb = reactive({
+    data: []
+})
+
+// end layout data
 
 const category = ref(null);
 
@@ -131,12 +145,7 @@ const products = reactive({
     data: []
 })
 
-const pagination = reactive({
-    currentPage: 1,
-    perPage: 40,
-})
 
-const total = ref(0);
 const fetchCategoryData = function () {
     readyStatus.value = false;
     const id = computedId.value
@@ -151,6 +160,7 @@ const fetchCategoryData = function () {
             products.data = data['products']['data'];
             total.value = data['total'];
             computedSellers.data = data['sellers'];
+            breadcrumb.data = data['breadcrumb'];
         })
 }
 
@@ -228,8 +238,9 @@ onMounted(() => {
 })
 
 
-const timer = ref(0)
 
+//utilities functions
+const timer = ref(0)
 function delay(callback, ms) {
     timer.value = 0;
     return function () {
