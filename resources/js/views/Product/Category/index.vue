@@ -29,20 +29,21 @@
                 <div class="sidebar-filter">
                     <div class="sidebar-filter-title">Filter</div>
                     <Form class="filter-wrap" @submit="">
-                        <div class="filter-item" v-if="computedSellers.data.length">
+                        <div class="filter-item" v-if="sellers.data.length">
                             <div class="filter-title">Seller</div>
                             <div class="filter-choose">
                                 <div class="filter-search">
-                                    <input class="filter-box-input" name="li-merchant-list" placeholder="Store">
-                                    <span class="filter-search-icon">
+                                    <input class="filter-box-input" name="li-merchant-list" placeholder="Store" v-model="sellers.keyword" @change="filterSeller">
+                                    <span class="filter-search-icon" @click="filterSeller">
                                         <i class="fa fa-search"></i>
                                     </span>
                                 </div>
                                 <ol class="filter-list li-merchant-list">
-                                    <li v-for="seller in computedSellers.data"
+                                    <li v-for="seller in computedSellers"
                                         class="filter-list-item filter-list-merchant-item merchant-filter">
                                         <label class="filter-label">
-                                            <Field type="radio" name="seller" v-model.number="filterData.seller" :value="seller.id" @change="filterProduct"/>
+                                            <input type="radio" autocomplete="off"
+                                                   name="seller" v-model.number="filterData.seller" :value="seller.id" @change="filterProduct"/>
                                             <span class="filter-radio"></span>
                                             <span class="filter-name">{{seller['title']}}</span>
                                         </label>
@@ -137,14 +138,31 @@ const children = reactive({
     data: [],
 })
 
-const computedSellers = reactive({
+const sellers = reactive({
     data: [],
+    keyword: '',
+    submit: 0
 })
 
 const products = reactive({
     data: []
 })
 
+const computedSellers = computed(() => {
+    sellers.submit; //reactivity
+    let keyword = sellers.keyword.toUpperCase().trim();
+    let result = sellers.data;
+    if (keyword.length) {
+        let callback = function (item) {
+            return (item['title'].toUpperCase().indexOf(keyword) > -1) || (item['url'].toUpperCase().indexOf(keyword) > -1)
+        }
+        result = result.filter(item => callback(item))
+    }
+    return result;
+})
+const filterSeller = function() {
+    sellers.submit++;
+}
 
 const fetchCategoryData = function () {
     readyStatus.value = false;
@@ -159,7 +177,7 @@ const fetchCategoryData = function () {
             children.data = data['children'];
             products.data = data['products']['data'];
             total.value = data['total'];
-            computedSellers.data = data['sellers'];
+            sellers.data = data['sellers'];
             breadcrumb.data = data['breadcrumb'];
         })
 }
