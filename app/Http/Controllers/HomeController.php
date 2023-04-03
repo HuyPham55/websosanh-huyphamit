@@ -11,6 +11,8 @@ use App\Models\ProductCategory;
 use App\Models\Slide;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
@@ -66,12 +68,15 @@ class HomeController extends Controller
 
     public function fetchHomePage(Request $request)
     {
-        return response()->json([
-            'slides' => $this->getHomeSlides(),
-            'featured_categories' => $this->getFeaturedCategories(),
-            'featured_news' => $this->getFeaturedNews(),
-            'aside_news' => $this->getAsideNews(),
-        ]);
+        $result = Cache::remember('homepage', rand(0, config('session.lifetime')), function () {
+            return [
+                'slides' => $this->getHomeSlides(),
+                'featured_categories' => $this->getFeaturedCategories(),
+                'featured_news' => $this->getFeaturedNews(),
+                'aside_news' => $this->getAsideNews(),
+            ];
+        });
+        return response()->json($result);
     }
 
     private function getHomeSlides()

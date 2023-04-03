@@ -69,6 +69,16 @@ services:
           - app-network
       depends_on:
           - mysql_service
+
+  cache_service:
+      image: redis:alpine
+      command: redis-server --appendonly yes
+      networks:
+          - app-network
+      ports:
+          - "6382:6379"
+      restart: unless-stopped
+
   elasticsearch:
       image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
       restart: unless-stopped
