@@ -134,6 +134,7 @@
                                 position: relative;
 
                                 .filter-box-input {
+                                    outline: none;
                                     font-size: 12px;
                                     line-height: 1.5;
                                     color: #333;
@@ -365,6 +366,7 @@
                                 }
 
                                 .product-action {
+                                    cursor: pointer;
                                     background: #ff6535 none;
                                     font-size: 14px;
                                     line-height: 16px;
@@ -502,6 +504,19 @@
                                 overflow: visible;
                             }
                         }
+                    }
+                }
+                .product-empty {
+                    .page-text {
+                        padding: 16px 0 0;
+                        max-width: none;
+                        text-align: center;
+                    }
+                    .product-empty-text {
+                        padding: 16px 0 0;
+                        margin: 16px 0 0;
+                        border-top: 1px solid #e8e8e8;
+                        text-align: center;
                     }
                 }
             }

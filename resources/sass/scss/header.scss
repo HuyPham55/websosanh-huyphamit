@@ -153,6 +153,7 @@
         .search-wrap {
             position: relative;
             width: 100%;
+            max-width: 570px;
             @media only screen and (max-width: 768px) {
                 padding: 10px 6px;
             }

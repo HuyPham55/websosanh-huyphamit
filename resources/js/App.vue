@@ -1,5 +1,8 @@
 <template>
     <router-view />
+    <button type="button" id="btn-to-top">
+        <i class="fas fa-angle-up"></i>
+    </button>
 </template>
 
 <script>

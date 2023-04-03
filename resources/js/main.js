@@ -40,5 +40,21 @@ const hydrate = function () {
         e.stopPropagation();
         loginPopup.classList.remove('active');
     })
+
+    let scrollTopBtn = document.querySelector("#btn-to-top");
+    if (scrollTopBtn) {
+        window.addEventListener("scroll", function () {
+            let top = window.pageYOffset || document.documentElement.scrollTop;
+            if (top > 100) {
+                scrollTopBtn.classList.add("active");
+            } else {
+                scrollTopBtn.classList.remove("active");
+            }
+        })
+
+        scrollTopBtn.addEventListener("click", function () {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+    }
 }
 export {hydrate}

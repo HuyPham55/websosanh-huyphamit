@@ -87,8 +87,11 @@
                     </div>
                 </div>
                 <div class="list-product">
-                    <ProductList :items="products.data"/>
-                    <Pagination :total="total" :perPage="pagination.perPage" :currentPage="pagination.currentPage" @changePage="changePage"/>
+                    <template v-if="products.data.length !== 0">
+                        <ProductList :items="products.data"/>
+                        <Pagination :total="total" :perPage="pagination.perPage" :currentPage="pagination.currentPage" @changePage="changePage"/>
+                    </template>
+                    <ProductEmpty :keyword="category.title" v-else/>
                 </div>
             </div>
         </div>
@@ -107,6 +110,7 @@ import {useLayoutStore} from "@/stores";
 import ProductList from "@/views/Product/components/ProductList/index.vue";
 import {Form, Field} from "vee-validate";
 import Pagination from "@/layout/Pagination/index.vue";
+import ProductEmpty from "@/views/Product/components/ProductList/ProductEmpty.vue";
 
 const store = useLayoutStore();
 const route = useRoute();
