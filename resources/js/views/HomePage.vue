@@ -108,6 +108,7 @@ export default {
 import {computed, nextTick, onBeforeMount, onMounted, reactive, watch} from "vue";
 import {useLayoutStore} from "@/stores";
 
+import {sessionCache} from "@/API/sessionCache";
 const store = useLayoutStore()
 
 const headerData = computed(() => store.layoutData.headerData);
@@ -131,20 +132,33 @@ const asideNews = reactive({
     data: [],
 })
 
+let callback = (callbackData) => {
+    slides.data = callbackData['slides'];
+    featuredCategories.data = callbackData['featured_categories']
+    asideNews.data = callbackData['aside_news']
+    slides.ready = true;
+}
+
+let useCache = true;
+
 onBeforeMount(() => {
     fetchHomePage()
 })
 
 const fetchHomePage = async function () {
+    let cacheKey = 'homeData';
     slides.ready = false;
-    axios.post("/api/fetch-home-page")
-        .then(res => {
-            let data = res.data;
-            slides.data = data['slides'];
-            slides.ready = true;
-            featuredCategories.data = data['featured_categories']
-            asideNews.data = data['aside_news']
-        })
+    if (sessionCache.has(cacheKey) && useCache) {
+        let data = sessionCache.load(cacheKey);
+        callback(data);
+    } else {
+        axios.post("/api/fetch-home-page")
+            .then(res => {
+                let data = res.data;
+                callback(data);
+                sessionCache.save(cacheKey, data)
+            })
+    }
 }
 
 
