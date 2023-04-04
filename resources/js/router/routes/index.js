@@ -16,6 +16,11 @@ const routes = [
                 name: 'product_category',
                 component: () => import("@/views/Product/Category/index.vue")
             },
+            {
+                path: "/search",
+                name: 'search',
+                component: () => import("@/views/Product/Search/index.vue")
+            },
         ]
     },
 

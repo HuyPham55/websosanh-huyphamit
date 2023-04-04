@@ -134,4 +134,30 @@ class ProductController extends Controller
             'data' => $product->url,
         ]);
     }
+
+    public function productByKeyword(Request $request) {
+        $categoryId = $request->input("category") | 0;
+        $sorting = $request->input('sorting');
+        $max_price = $request->input('max_price') | 0;
+        $min_price = $request->input('min_price') | 0;
+        $page = ($request->input('page') | 0);
+
+        $keyword = $request->input('keyword');
+        if ($page !== 0) {
+            $page -= 1;
+        }
+        if ($page < 0) {
+            $page = 0;
+        }
+        $seller = $request->input('seller') | 0;
+
+        $query = $this->productSearchService->productByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
+        $total = $query['total'] | 0;
+        $products['data'] = $this->productSearchService->productMapper($query['hits']);
+        return response()->json(array_merge([
+                'products' => $products,
+                'total' => $total,
+            ]
+        ));
+    }
 }

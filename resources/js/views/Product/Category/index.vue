@@ -154,9 +154,9 @@ const filterProduct = function (page = 1) {
     if (filterData.max_price) {
         data.max_price = filterData.max_price;
     }
-    if (filterData.sorting !== "relevance") {
-        data.sorting = filterData.sorting
-    }
+
+    data.sorting = filterData.sorting
+
     if (filterData.seller !== null) {
         data.seller = filterData.seller
     }

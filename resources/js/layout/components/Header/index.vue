@@ -9,12 +9,7 @@
                     <img :src="headerData['logo']" alt="">
                 </router-link>
             </h1>
-            <div class="search-wrap">
-                <input autocomplete="off" title="" autofocus placeholder=""/>
-                <button aria-label="search-button" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
+            <SearchForm/>
         </div>
         <div class="header-drop">
             <div class="nav-overlay"></div>
@@ -77,6 +72,7 @@ export default {
 <script setup>
 import {useLayoutStore} from "@/stores";
 import {computed} from "vue";
+import SearchForm from "@/layout/components/Header/components/SearchForm.vue";
 
 const store = useLayoutStore();
 
