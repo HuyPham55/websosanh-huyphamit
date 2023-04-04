@@ -33,7 +33,8 @@
                             <div class="filter-title">Seller</div>
                             <div class="filter-choose">
                                 <div class="filter-search">
-                                    <input class="filter-box-input" name="li-merchant-list" placeholder="Store" v-model="sellers.keyword" @change="filterSeller">
+                                    <input class="filter-box-input" name="li-merchant-list" placeholder="Store"
+                                           v-model="sellers.keyword" @change="filterSeller">
                                     <span class="filter-search-icon" @click="filterSeller">
                                         <i class="fa fa-search"></i>
                                     </span>
@@ -43,11 +44,12 @@
                                         class="filter-list-item filter-list-merchant-item merchant-filter">
                                         <label class="filter-label">
                                             <input type="radio" autocomplete="off"
-                                                   name="seller" v-model.number="filterData.seller" :value="seller.id" @change="filterProduct"/>
+                                                   name="seller" v-model.number="filterData.seller" :value="seller.id"
+                                                   @change="filterProduct"/>
                                             <span class="filter-radio"></span>
-                                            <span class="filter-name">{{seller['title']}}</span>
+                                            <span class="filter-name">{{ seller['title'] }}</span>
                                         </label>
-                                        <span class="filter-count">{{seller['products_count']}}</span>
+                                        <span class="filter-count">{{ seller['products_count'] }}</span>
                                     </li>
                                 </ol>
                             </div>
@@ -91,7 +93,7 @@
                 <div class="list-product">
                     <template v-if="products.data.length !== 0">
                         <ProductList :items="products.data"/>
-                        <Pagination :total="total" :perPage="pagination.perPage" :currentPage="pagination.currentPage" @changePage="changePage"/>
+                        <Pagination :total="total" :perPage="filterData.perPage" :currentPage="filterData.currentPage" @changePage="changePage"/>
                     </template>
                     <ProductEmpty :keyword="category.title" v-else/>
                 </div>
@@ -122,10 +124,6 @@ const computedId = computed(() => route.params.id | 0)
 
 const readyStatus = ref(false);
 const total = ref(0);
-const pagination = reactive({
-    currentPage: 1,
-    perPage: 40,
-})
 const breadcrumb = reactive({
     data: []
 })
@@ -186,15 +184,17 @@ const filterData = reactive({
     min_price: 0,
     max_price: 200000000,
     seller: null,
-    sorting: '_score-asc'
+    sorting: '_score-asc',
+    currentPage: 1,
+    perPage: 40,
 })
 
 watch(() => filterData.max_price, (newValue, oldValue) => {
     if (newValue <= filterData.min_price && newValue > 0) {
         filterData.min_price = newValue - 1
     }
-    if (pagination.currentPage !== 1) {
-        pagination.currentPage = 1;
+    if (filterData.currentPage !== 1) {
+        filterData.currentPage = 1;
     }
 })
 
@@ -202,14 +202,14 @@ watch(() => filterData.min_price, (newValue, oldValue) => {
     if (newValue >= filterData.max_price) {
         filterData.max_price = newValue + 1;
     }
-    if (pagination.currentPage !== 1) {
-        pagination.currentPage = 1;
+    if (filterData.currentPage !== 1) {
+        filterData.currentPage = 1;
     }
 })
 
 watch(() => filterData.seller, (newValue, oldValue) => {
-    if (pagination.currentPage !== 1) {
-        pagination.currentPage = 1;
+    if (filterData.currentPage !== 1) {
+        filterData.currentPage = 1;
     }
 })
 
@@ -229,7 +229,7 @@ const filterProduct = function(page = 1) {
     if (filterData.seller !== null) {
         data.seller = filterData.seller
     }
-    if (typeof page === 'number' && page !== pagination.currentPage) {
+    if (typeof page === 'number' && page !== filterData.currentPage) {
         data.page = page;
     }
 
@@ -238,8 +238,8 @@ const filterProduct = function(page = 1) {
             let data = res.data
             total.value = data['total'];
             products.data = data['products']['data'];
-            if (typeof page === 'number' && page !== pagination.currentPage) {
-                pagination.currentPage = page;
+            if (typeof page === 'number' && page !== filterData.currentPage) {
+                filterData.currentPage = page;
             }
         })
     delay(callback, 200)
