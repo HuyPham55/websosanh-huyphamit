@@ -29,6 +29,15 @@
             </li>
         </transition-group>
     </ul>
+    <LoadingComponent
+        :useCircle="false"
+        width="-webkit-fill-available"
+        position="absolute"
+        zIndex="1"
+        :useClass="true"
+        :ready="ready"
+        duration="0.75s"
+        top="0"/>
 </template>
 
 <script>
@@ -41,6 +50,7 @@ export default {
 import {computed} from "vue";
 import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
+import LoadingComponent from "@/Components/LoadingComponent.vue";
 
 const store = useLayoutStore();
 const productStore = useProductStore();
@@ -52,8 +62,12 @@ const props = defineProps({
         default: function () {
             return Array()
         }
+    },
+    ready: {
+        default: true,
     }
 })
+
 
 const computedItems = computed(() => {
     return props.items

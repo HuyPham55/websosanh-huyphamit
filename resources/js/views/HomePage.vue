@@ -1,5 +1,6 @@
 <template>
     <main class="main-content">
+        <LoadingComponent v-if="!slides.ready"/>
         <div class="featured-categories">
             <ul class="featured-list">
                 <li class="featured-item" v-for="category in computedCategories">

@@ -1,5 +1,5 @@
 <template>
-    <main class="main-content product-category" v-if="readyStatus">
+    <main class="main-content product-category">
         <ol class="breadcrumbs">
             <li>
                 <router-link :to="{name: 'home'}">Homepage</router-link>
@@ -11,7 +11,7 @@
                 </a>
             </li>
         </ol>
-        <div class="page-wrap">
+        <div class="page-wrap" v-if="readyStatus">
             <div class="page-sidebar">
                 <div class="sidebar-filter">
                     <div class="sidebar-filter-title">Filter</div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="page-container">
-                <div class="page-header">
+                <div class="page-header" ref="header">
                     <div class="page-text">
                         <h1 class="title">
                             There are <transition name="fade-transform"><b class="total">{{total}}</b></transition> products for "{{keyword}}"
@@ -38,13 +38,17 @@
                 </div>
                 <div class="list-product">
                     <template v-if="products.data.length !== 0">
-                        <ProductList :items="products.data"/>
+                        <ProductList :items="products.data" :ready="products.ready"/>
                         <Pagination :total="total" :perPage="filterData.perPage" :currentPage="filterData.currentPage" @changePage="changePage"/>
                     </template>
                     <ProductEmpty :keyword="keyword" v-else/>
                 </div>
             </div>
         </div>
+        <LoadingComponent
+            :useClass="true"
+            :ready="readyStatus"
+        />
     </main>
 </template>
 
@@ -63,12 +67,14 @@ import ProductList from "@/views/Product/components/ProductList/index.vue";
 import Pagination from "@/layout/Pagination/index.vue";
 import PriceFilter from "@/views/Product/components/Filters/PriceFilter.vue";
 import {Form} from "vee-validate";
+import LoadingComponent from "@/Components/LoadingComponent.vue";
 const route = useRoute()
 
 // layout data
 
 const readyStatus = ref(false);
 const total = ref(0);
+const header = ref(null)
 
 // end layout data
 
@@ -90,10 +96,13 @@ const sellers = reactive({
     submit: 0
 })
 const products = reactive({
-    data: []
+    data: [],
+    ready: false,
 })
 
-const filterProduct = function (page = 1) {
+const filterProduct = async function (page = 1) {
+    products.ready = false;
+
     let data = {}
     if (filterData.min_price) {
         data.min_price = filterData.min_price;
@@ -107,7 +116,7 @@ const filterProduct = function (page = 1) {
     }
 
     data.keyword = keyword.value;
-    const callback = axios.post('/api/product-by-keyword', data)
+    const callback = await axios.post('/api/product-by-keyword', data)
         .then(res => {
             let data = res.data
             total.value = data['total'];
@@ -115,23 +124,31 @@ const filterProduct = function (page = 1) {
             if (typeof page === 'number' && page !== filterData.currentPage) {
                 filterData.currentPage = page;
             }
+        }).finally(() => {
+            products.ready = true;
         })
-    delay(callback, 200)
+    return await delay(callback, 200)
 }
 
 const changePage = function (pageNumber) {
+    scrollToPageHeader();
     filterProduct(pageNumber);
 }
 
-onBeforeMount(() => {
-    filterProduct()
-})
-
-onMounted(() => {
+onBeforeMount(async () => {
+    await filterProduct()
     readyStatus.value = true;
 })
 
+onMounted(() => {
+})
+
 //utilities functions
+const scrollToPageHeader = function() {
+    let headerPosition = header.value.scrollHeight;
+    window.scrollTo({top: headerPosition, behavior: 'smooth'});
+}
+
 const timer = ref(0)
 
 function delay(callback, ms) {
