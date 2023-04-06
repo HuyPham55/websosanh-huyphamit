@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\ComparisonObserver;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,12 @@ class Comparison extends BaseModel
     use HasFactory;
     use Filterable;
 
+
+    public static function boot()
+    {
+        parent::boot();
+        self::observe(ComparisonObserver::class);
+    }
     public function products()
     {
         //A comparison is composed of many products

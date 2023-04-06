@@ -7,6 +7,7 @@ use App\Models\Comparison;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\CategoryService;
+use App\Services\ElasticService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -33,6 +34,16 @@ class ComparisonController extends BaseController
 
         $categories = (new CategoryService(new ProductCategory()))->dropdown();
         $total_count = $this->model->count();
+
+        try {
+            $client = new ElasticService($this->model->getTable());
+            if (!$client->indexExist()) {
+                $client->createIndex();
+            }
+        } catch (\Exception $exception) {
+            return view("{$this->pathView}.list", compact('categories', 'total_count'))
+                ->with(['danger' => 'success', 'flash_message' => $exception->getMessage()]);
+        }
 
         return view("{$this->pathView}.list", compact('categories', 'total_count'));
     }
@@ -228,8 +239,10 @@ class ComparisonController extends BaseController
     public function productDatatables(Request $request, $id)
     {
         $posts = $this->model->with('products')->findOrFail($id)->products;
-        $arrProductIds = $posts->modelKeys() ?? [];;
-        $productCollection = Product::all();
+        $arrProductIds = $posts->modelKeys() ?? [];
+        $productCollection = Product
+            ::with(['seller'])
+            ->get();
         $data = DataTables::make($productCollection)
             ->editColumn('image', function ($item) {
                 return either($item->image, '/images/no-image.png');
@@ -249,6 +262,9 @@ class ComparisonController extends BaseController
             ->editColumn('created_at', function ($item) {
                 return $item->date_format;
             })
+            ->addColumn('seller', function ($item) {
+                return $item->seller->title;
+            })
             ->setRowId(function ($item) {
                 return 'row-id-' . $item->id;
             });
@@ -266,15 +282,14 @@ class ComparisonController extends BaseController
         $itemId = $request->post('item_id');
         $status = $request->post('status');
 
-        $comparison = $this->model->findOrFail($id);
-
+        $comparison = $this->model->with(['products'])->findOrFail($id);
         if (in_array($status, [0, 1])) {
             if ($status) {
                 $comparison->products()->attach($itemId);
+                $this->updateModelData($comparison);
             } else {
                 $comparison->products()->detach($itemId);
             }
-
 
             return response()->json([
                 'status' => 'success',
@@ -286,5 +301,45 @@ class ComparisonController extends BaseController
             'status' => 'error',
             'message' => trans('label.something_went_wrong')
         ]);
+    }
+
+    public function addAllToIndex(Request $request) {
+        try {
+            $client = new ElasticService($this->model->getTable());
+            $collection = Comparison::get()->toArray();
+            $sizeLimit = 100;
+            $client->bulkIndex($collection, $sizeLimit);
+            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'flash_message' => $exception->getMessage()
+            ]);
+        }
+    }
+    public function clearIndex(Request $request) {
+        try {
+            $client = new ElasticService($this->model->getTable());
+            $client->deleteIndex();
+            return redirect()->intended(route($this->routeList))->with(['status' => 'success', 'flash_message' => trans('label.notification.success')]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'flash_message' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    protected function updateModelData(mixed $comparison)
+    {
+        $product = $comparison->products->sortBy('price')->first();
+        if ($product === null) {
+            return;
+        }
+        $comparison->price = $product->price | 0;
+        if (empty($comparison->image)) {
+            $comparison->image = $product->image;
+        }
+        $comparison->save();
     }
 }

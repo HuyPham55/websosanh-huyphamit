@@ -38,6 +38,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">{{ __('label.image') }}</th>
                             <th scope="col">{{ __('label.title') }}</th>
+                            <th scope="col">{{ __('label.sellers') }}</th>
                             <th scope="col">{{ __('label.status.status') }}</th>
                             <th scope="col">{{ __('label.created_at') }}</th>
                         </tr>
@@ -71,6 +72,7 @@
                     {data: 'id', name: 'id'},
                     {data: 'image', name: 'image', orderable: false, render: imageContainer},
                     {data: 'title', name: 'title'},
+                    {data: 'seller', name: 'seller'},
                     {data: 'status', name: 'status'},
                     {data: 'created_at', name: 'created_at'},
                 ],

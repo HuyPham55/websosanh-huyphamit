@@ -22,9 +22,22 @@
     <div class="row">
         <div class="col-12">
             @includeIf('components.notification')
-            @can('add_comparisons')
-                @includeIf('components.buttons.add', ['route' => route('comparisons.add')])
-            @endcan
+            <div class="col justify-content-between align-items-center d-flex">
+
+                @can('add_comparisons')
+                    @includeIf('components.buttons.add', ['route' => route('comparisons.add')])
+                @endcan
+                <div>
+                    <a class="btn btn-outline-danger mb-2" href="{{route('comparisons.clear_index')}}">
+                        <i class="fas fa-fw fa-trash"></i>
+                        Clear index
+                    </a>
+                    <a class="btn btn-outline-primary mb-2" href="{{route('comparisons.add_all_to_index')}}">
+                        <i class="fas fa-fw fa-plus"></i>
+                        Bulk index
+                    </a>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">

@@ -3,15 +3,17 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Observers\ElasticContract\ElasticObserver;
 use App\Services\ElasticService;
 
-class ProductObserver
+class ProductObserver extends ElasticObserver
 {
     protected ElasticService $client;
 
     public function __construct()
     {
         $this->client = new ElasticService((new Product())->getTable());
+        parent::__construct($this->client);
     }
 
 
@@ -24,13 +26,7 @@ class ProductObserver
     public function created(Product $product)
     {
         //
-
-        try {
-            $data = $product->toArray();
-            $this->client->indexDocument(null, $data);
-        } catch (\Exception $exception) {
-            throw ($exception);
-        }
+        $this->addToIndex($product);
     }
 
     /**
@@ -42,17 +38,7 @@ class ProductObserver
     public function updated(Product $product)
     {
         //
-        try {
-            $data = $product->toArray();
-            $exist = $this->client->getDocument($product->id);
-            if ($exist === false) {
-                $this->client->indexDocument(null, $data);
-                return;
-            }
-            $this->client->updateDocument($product->id, $data);
-        } catch (\Exception $exception) {
-            throw ($exception);
-        }
+        $this->updateDocument($product);
     }
 
     /**

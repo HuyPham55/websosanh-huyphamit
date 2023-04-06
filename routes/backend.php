@@ -271,6 +271,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
         Route::group(['prefix' => 'comparisons'], function () {
             Route::get('/', [ComparisonController::class, 'index'])->middleware('permission:show_list_comparisons')->name('comparisons.list');
             Route::get('/datatables', [ComparisonController::class, 'datatables'])->middleware('permission:show_list_comparisons')->name('comparisons.datatables');
+            Route::get('/add-all-to-index', [ComparisonController::class, 'addAllToIndex'])->middleware('permission:show_list_comparisons')->name('comparisons.add_all_to_index');
 
             Route::group(['middleware' => 'permission:add_comparisons'], function () {
                 Route::get('add', [ComparisonController::class, 'getAdd'])->name('comparisons.add');
@@ -285,6 +286,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
                 Route::post('change-sorting', [ComparisonController::class, 'changeSorting'])->name('comparisons.change_sorting');
             });
             Route::post('delete', [ComparisonController::class, 'delete'])->middleware('permission:delete_comparisons')->name('comparisons.delete');
+            Route::get('/clear-index', [ComparisonController::class, 'clearIndex'])->middleware('permission:delete_comparisons')->name('comparisons.clear_index');
 
             Route::group(['prefix' => 'view'], function() {
                 Route::get('show/{id}', [ComparisonController::class, 'getShow'])->name('comparisons.show');

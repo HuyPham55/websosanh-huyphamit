@@ -68,8 +68,11 @@ class ElasticService
 
     public function indexDocument($index, array $document, $document_id = null, $type = null)
     {
+        if ($index == null) {
+            $index = $this->index;
+        }
         $params = [
-            'index' => $this->index,
+            'index' => $index,
             'id' => $document_id,
             'type' => $type,
             'body' => $document
