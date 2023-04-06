@@ -57,7 +57,7 @@ class ProductController extends Controller
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
         $query = $this->productSearchService->productsByCategory($arrCategoryIds);
-        $products['data'] = $this->productSearchService->productMapper($query['hits']);
+        $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $total = $query['total'] | 0;
         $children = $category->children ?? [];
         $staticData = compact('category', 'children', 'sellers', 'breadcrumb');
@@ -87,7 +87,7 @@ class ProductController extends Controller
         $arrCategoryIds = $this->getArr($category);
         $query = $this->productSearchService->productsByCategory($arrCategoryIds, $page, $min_price, $max_price, $sorting, $seller);
         $total = $query['total'] | 0;
-        $products['data'] = $this->productSearchService->productMapper($query['hits']);
+        $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         return response()->json(array_merge([
                 'products' => $products,
                 'total' => $total,
@@ -135,7 +135,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function productByKeyword(Request $request) {
+    public function searchByKeyword(Request $request) {
         $categoryId = $request->input("category") | 0;
         $sorting = $request->input('sorting');
         $max_price = $request->input('max_price') | 0;
@@ -151,9 +151,9 @@ class ProductController extends Controller
         }
         $seller = $request->input('seller') | 0;
 
-        $query = $this->productSearchService->productByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
+        $query = $this->productSearchService->searchByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
         $total = $query['total'] | 0;
-        $products['data'] = $this->productSearchService->productMapper($query['hits']);
+        $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         return response()->json(array_merge([
                 'products' => $products,
                 'total' => $total,

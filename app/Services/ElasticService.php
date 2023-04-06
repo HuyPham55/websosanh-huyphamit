@@ -162,7 +162,7 @@ class ElasticService
         }
     }
 
-    public function search(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [])
+    public function searchByKeyword(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [])
     {
         $params = [
             'index' => $this->index,

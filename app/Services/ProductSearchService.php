@@ -34,11 +34,11 @@ class ProductSearchService
         if ($seller !== 0) {
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
-        $result = $this->service->search($query, 40, $fields, $page, $sort);
+        $result = $this->service->searchByKeyword($query, 40, $fields, $page, $sort);
         return $result;
     }
 
-    public function productMapper($array)
+    public function resultMapper($array)
     {
         $callback = function ($item) {
             return $item["_source"];
@@ -49,7 +49,7 @@ class ProductSearchService
         );
     }
 
-    public function productByKeyword($keyword, array $categories = [], $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0) {
+    public function searchByKeyword($keyword, array $categories = [], $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0) {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
         $sort = $this->validateSort($sorting);
@@ -78,7 +78,7 @@ class ProductSearchService
         if ($seller !== 0) {
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
-        $result = $this->service->search($query, 40, $fields, $page, $sort);
+        $result = $this->service->searchByKeyword($query, 40, $fields, $page, $sort);
         return $result;
     }
 

@@ -116,7 +116,7 @@ const filterProduct = async function (page = 1) {
     }
 
     data.keyword = keyword.value;
-    const callback = await axios.post('/api/product-by-keyword', data)
+    const callback = await axios.post('/api/search-by-keyword', data)
         .then(res => {
             let data = res.data
             total.value = data['total'];
