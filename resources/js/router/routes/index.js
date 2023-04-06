@@ -1,6 +1,5 @@
 import Layout from "@/layout/index.vue";
 import HomePage from "@/views/HomePage.vue";
-
 const routes = [
     {
         path: '/',
@@ -20,6 +19,11 @@ const routes = [
                 path: "/search",
                 name: 'search',
                 component: () => import("@/views/Product/Search/index.vue")
+            },
+            {
+                path: "/product/compare/:id/:slug",
+                name: 'comparison',
+                component: () => import("@/views/Comparison/index.vue")
             },
         ]
     },

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\Auth\Api\LoginController;
 use App\Http\Controllers\Frontend\Auth\Api\RegisterController;
+use App\Http\Controllers\Frontend\ComparisonController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
@@ -37,3 +38,6 @@ Route::post('/fetch-product-category', [ProductController::class, 'fetchCategory
 Route::post('/filter-product', [ProductController::class, 'filterProduct']);
 Route::post('/get-product-url', [ProductController::class, 'getProductUrl']);
 Route::post('/search-by-keyword', [ProductController::class, 'searchByKeyword']);
+Route::post('/fetch-comparison-data', [ComparisonController::class, 'fetchComparisonData']);
+Route::post('/get-comparison-sellers', [ComparisonController::class, 'getComparisonSellers']);
+

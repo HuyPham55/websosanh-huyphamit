@@ -4,11 +4,9 @@ namespace App\Traits;
 
 trait HttpResponses
 {
-    protected function success($data, $message = null, $status = 200)
+    protected function success(array $data, $message = null, $status = 200)
     {
-        if ($message === null) {
-            $message = trans('label.notification.success');
-        }
+        $message = $message ?: trans('label.notification.success');
         return response()->json([
             'status' => 'success',
             'message' => $message,
@@ -16,8 +14,9 @@ trait HttpResponses
         ], $status);
     }
 
-    protected function error($data, $message = null, $status = null)
+    protected function error(array $data, $message = null, int $status = 200)
     {
+        $message = $message ?: trans('label.something_went_wrong');
         return response()->json([
             'status' => 'danger',
             'message' => $message,
