@@ -11,7 +11,7 @@ class ProductSearchService
 
     public function __construct()
     {
-        $this->service = (new ElasticService((new Product())->getTable()));
+        $this->service = (new ElasticService([(new Product())->getTable(), (new Comparison())->getTable()]));
     }
 
     public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0)
@@ -42,7 +42,9 @@ class ProductSearchService
     public function resultMapper($array)
     {
         $callback = function ($item) {
-            return $item["_source"];
+            $result = $item["_source"];
+            $result['index'] = $item['_index'];
+            return $result;
         };
         return array_map(
             $callback

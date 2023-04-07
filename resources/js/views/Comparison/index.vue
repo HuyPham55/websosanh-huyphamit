@@ -224,7 +224,7 @@ const breadcrumb = reactive({
     data: []
 })
 const computedId = computed(() => route.params.id | 0)
-const model = ref(null)
+const model = ref({})
 const featuredSellers = reactive({
     data: []
 })
@@ -245,14 +245,11 @@ const fetchModelData = function () {
         id,
     })
         .then(res => {
-            readyStatus.value = true;
             let data = res.data.data;
-            console.log(data);
             model.value = data['model'];
             breadcrumb.data = data['breadcrumb'];
             let allSellers = data['featuredSellers'];
             featuredSellers.data = allSellers.slice(0, 4);
-
         }).finally(() => {
         readyStatus.value = true;
     })

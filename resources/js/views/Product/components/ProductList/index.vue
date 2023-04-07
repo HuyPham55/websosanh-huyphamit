@@ -1,14 +1,16 @@
 <template>
     <ul class="product-wrap">
         <transition-group name="fade-transform">
-            <li class="product-item" v-for="item in computedItems" :key="item.id">
+            <li class="product-item" v-for="item in computedItems" :key="key(item)">
                 <a target="_blank">
                     <span class="offer-icon" v-if="item['featured']">Đề xuất</span>
                     <div class="product-item-content">
                     <span class="product-img">
-                        <img :src="item.image" :alt="item.title">
+                        <img :src="item.image" :alt="item.title"/>
                     </span>
-                    <span class="product-action" @click="clickHandler(item)">To seller</span>
+                    <span class="product-action" @click="clickHandler(item)">
+                        {{ getItemType(item) === 0 ? "To seller" : "Let's compare" }}
+                    </span>
                     <h3>{{ item.title }}</h3>
                     <span class="product-meta">
                     <span class="product-price">{{ store.formatMoney(item.price) }}</span>
@@ -22,7 +24,7 @@
                     <span class="product-bottom">
                     <span class="product-store"></span>
                     <span class="product-store-logo">
-                        <img :src="item['seller_image']">
+                        <img v-if="item['seller_image']" :src="item['seller_image']">
                     </span>
                 </span>
                 </a>
@@ -51,10 +53,22 @@ import {computed} from "vue";
 import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
 import LoadingComponent from "@/Components/LoadingComponent.vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const store = useLayoutStore();
 const productStore = useProductStore();
+const itemTypes = {
+    'products': 0,
+    'comparisons': 1
+}
 
+const getItemType = function(item) {
+    let index = item['index'];
+    return itemTypes[index]
+}
+
+const key = (item) => item.index + item.id;
 const props = defineProps({
     items: {
         type: Array,
@@ -74,8 +88,16 @@ const computedItems = computed(() => {
 })
 
 const clickHandler = function(item) {
+    let itemType = getItemType(item);
     let id = item.id;
-    productStore.getProductUrl(id);
+    if (itemType === 0) {
+        productStore.getProductUrl(id);
+        return;
+    }
+    if (itemType === 1) {
+        router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
+    }
+
 }
 </script>
 
