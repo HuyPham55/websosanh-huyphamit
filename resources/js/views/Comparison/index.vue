@@ -1,6 +1,6 @@
 <template>
     <main class="main-content products">
-        <template v-if="readyStatus">
+        <template v-if="store.pageData.ready">
             <ol class="breadcrumbs">
                 <li>
                     <router-link :to="{name: 'home'}">Homepage</router-link>
@@ -196,9 +196,6 @@
                 </div>
             </div>
         </template>
-        <LoadingComponent
-            :useClass="true"
-            :ready="readyStatus"/>
     </main>
 </template>
 
@@ -212,7 +209,6 @@ export default {
 import {useRoute} from 'vue-router';
 import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useLayoutStore} from "@/stores";
-import LoadingComponent from "@/Components/LoadingComponent.vue";
 import {useProductStore} from "@/stores";
 
 
@@ -239,7 +235,7 @@ const computedSellers = computed(() => {
 })
 
 const fetchModelData = function () {
-    readyStatus.value = false;
+    store.pageData.ready = false;
     const id = computedId.value
     axios.post("/api/fetch-comparison-data", {
         id,
@@ -251,7 +247,7 @@ const fetchModelData = function () {
             let allSellers = data['featuredSellers'];
             featuredSellers.data = allSellers.slice(0, 4);
         }).finally(() => {
-        readyStatus.value = true;
+        store.pageData.ready = true;
     })
 }
 
@@ -259,8 +255,8 @@ const clickHandler = function(item) {
     let id = item.id;
     productStore.getProductUrl(id);
 }
-watch(readyStatus, () => {
-    if (readyStatus.value) {
+watch(()=> store.pageData.ready, () => {
+    if (store.pageData.ready) {
         nextTick(() => {
             //wait for Vue to render tags
             initializeSwiper();
@@ -274,7 +270,7 @@ const getComparisonSellers = function () {
         id,
     })
         .then(res => {
-            readyStatus.value = true;
+            store.pageData.ready = true;
             let data = res.data.data;
             sellers.data = data['sellers'];
         }).finally(() => {

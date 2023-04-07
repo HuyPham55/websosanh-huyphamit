@@ -1,6 +1,5 @@
 <template>
     <main class="main-content">
-        <LoadingComponent v-if="!slides.ready"/>
         <div class="featured-categories">
             <ul class="featured-list">
                 <li class="featured-item" v-for="category in computedCategories">
@@ -106,7 +105,7 @@ export default {
 }
 </script>
 <script setup>
-import {computed, nextTick, onBeforeMount, onMounted, reactive, watch} from "vue";
+import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useLayoutStore} from "@/stores";
 
 import {sessionCache} from "@/API/sessionCache";
@@ -121,6 +120,7 @@ const slides = reactive({
     data: [],
     ready: false
 })
+
 
 const featuredCategories = reactive({
     data: [],
@@ -137,7 +137,7 @@ let callback = (callbackData) => {
     slides.data = callbackData['slides'];
     featuredCategories.data = callbackData['featured_categories']
     asideNews.data = callbackData['aside_news']
-    slides.ready = true;
+    store.pageData.ready = true;
 }
 
 let useCache = true;
@@ -148,7 +148,7 @@ onBeforeMount(() => {
 
 const fetchHomePage = async function () {
     let cacheKey = 'homeData';
-    slides.ready = false;
+    store.pageData.ready = false;
     if (sessionCache.has(cacheKey) && useCache) {
         let data = sessionCache.load(cacheKey);
         callback(data);
@@ -163,14 +163,14 @@ const fetchHomePage = async function () {
 }
 
 
-watch(() => slides.ready, () => {
-    if (slides.ready) {
+watch(() => store.pageData.ready, (value) => {
+    if (value) {
         nextTick(() => {
             //wait for Vue to render tags
             initializeSwiper();
         })
     }
-})
+}, {immediate: true})
 const initializeSwiper = function () {
     let homeSlider = new Swiper('#slider', {
         slidesPerView: '1',

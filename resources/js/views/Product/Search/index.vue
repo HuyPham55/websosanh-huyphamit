@@ -11,7 +11,7 @@
                 </a>
             </li>
         </ol>
-        <div class="page-wrap" v-if="readyStatus">
+        <div class="page-wrap" v-if="store.pageData.ready">
             <div class="page-sidebar">
                 <div class="sidebar-filter">
                     <div class="sidebar-filter-title">Filter</div>
@@ -20,7 +20,7 @@
                     </Form>
                 </div>
             </div>
-            <div class="page-container">
+            <div class="page-container" v-show="products.ready">
                 <div class="page-header" ref="header">
                     <div class="page-text">
                         <h1 class="title">
@@ -45,10 +45,6 @@
                 </div>
             </div>
         </div>
-        <LoadingComponent
-            :useClass="true"
-            :ready="readyStatus"
-        />
     </main>
 </template>
 
@@ -67,15 +63,14 @@ import ProductList from "@/views/Product/components/ProductList/index.vue";
 import Pagination from "@/layout/Pagination/index.vue";
 import PriceFilter from "@/views/Product/components/Filters/PriceFilter.vue";
 import {Form} from "vee-validate";
-import LoadingComponent from "@/Components/LoadingComponent.vue";
+import {useLayoutStore} from "@/stores";
+
 const route = useRoute()
 
 // layout data
-
-const readyStatus = ref(false);
+const store = useLayoutStore()
 const total = ref(0);
 const header = ref(null)
-
 // end layout data
 
 
@@ -137,7 +132,7 @@ const changePage = function (pageNumber) {
 
 onBeforeMount(async () => {
     await filterProduct()
-    readyStatus.value = true;
+    store.pageData.ready = true;
 })
 
 onMounted(() => {

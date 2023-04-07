@@ -8,6 +8,7 @@
             <component :is="Component" :key="key"/>
         </transition>
     </router-view>
+    <loading-component :ready="store.computedReady"/>
     <Footer/>
 </div>
 </template>
@@ -26,6 +27,7 @@ import {computed, onBeforeMount, onMounted} from "vue";
 import {hydrate} from "@/main";
 import {useLayoutStore, useUserStore} from "@/stores";
 import {useRoute} from "vue-router";
+import LoadingComponent from "@/Components/LoadingComponent.vue";
 
 const route = useRoute()
 const store = useLayoutStore()

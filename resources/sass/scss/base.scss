@@ -77,3 +77,30 @@ body {
     }
 }
 
+.preloader {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(255, 255, 255, .8) 50% 50% no-repeat;
+    opacity: 1;
+    visibility: visible;
+    position: fixed;
+    z-index: 999;
+    transition: all 0.4s;
+    &.inactive {
+        opacity: 0;
+        visibility: hidden;
+    }
+    & > div {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & > img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    }
+}

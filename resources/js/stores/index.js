@@ -8,10 +8,15 @@ export const useLayoutStore = defineStore('layout', () => {
         footerData: [],
         headerData: [],
     })
+    const pageData = reactive({
+        ready: false
+    });
 
     const formatMoney = function (value) {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency:'VND' }).format(value)
     }
+
+    const computedReady = computed(() => pageData.ready && layoutData.ready)
 
     const fetchLayoutData = function () {
         let cacheKey = 'layoutData';
@@ -23,7 +28,8 @@ export const useLayoutStore = defineStore('layout', () => {
             layoutData.ready = true;
         }
 
-        if (sessionCache.has(cacheKey)) {
+        let useCache = true;
+        if (sessionCache.has(cacheKey) && useCache) {
             let data = sessionCache.load(cacheKey);
             callback(data);
         } else {
@@ -35,7 +41,7 @@ export const useLayoutStore = defineStore('layout', () => {
                 })
         }
     }
-    return {layoutData, fetchLayoutData, formatMoney}
+    return {layoutData, fetchLayoutData, formatMoney, pageData, computedReady}
 })
 
 

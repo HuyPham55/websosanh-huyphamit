@@ -1,6 +1,6 @@
 <template>
     <main class="main-content product-category">
-        <template v-if="readyStatus">
+        <template v-if="store.pageData.ready">
             <ol class="breadcrumbs">
                 <li>
                     <router-link :to="{name: 'home'}">Homepage</router-link>
@@ -61,15 +61,12 @@
                     </div>
                 </div>
             </div>
-            <div class="desc-wrap">
+            <div class="desc-wrap" v-if="category['content']">
                 <div class="desc-content" v-html="category['content']">
 
                 </div>
             </div>
         </template>
-        <LoadingComponent
-            :useClass="true"
-            :ready="readyStatus"/>
     </main>
 </template>
 <script setup>
@@ -82,7 +79,7 @@ import Pagination from "@/layout/Pagination/index.vue";
 import ProductEmpty from "@/views/Product/components/ProductList/ProductEmpty.vue";
 import PriceFilter from "@/views/Product/components/Filters/PriceFilter.vue";
 import SellerFilter from "@/views/Product/components/Filters/SellerFilter.vue";
-import LoadingComponent from "@/Components/LoadingComponent.vue";
+
 
 const store = useLayoutStore();
 const route = useRoute();
@@ -90,7 +87,6 @@ const computedId = computed(() => route.params.id | 0)
 
 // layout data
 
-const readyStatus = ref(false);
 const total = ref(0);
 const breadcrumb = reactive({
     data: []
@@ -119,13 +115,13 @@ const products = reactive({
 
 
 const fetchCategoryData = function () {
-    readyStatus.value = false;
+    store.pageData.ready = false;
     const id = computedId.value
     axios.post("/api/fetch-product-category", {
         id,
     })
         .then(res => {
-            readyStatus.value = true;
+            store.pageData.ready = true;
             let data = res.data;
             category.value = data['category'];
             children.data = data['children'];
@@ -134,8 +130,9 @@ const fetchCategoryData = function () {
             sellers.data = data['sellers'];
             breadcrumb.data = data['breadcrumb'];
         }).finally(() => {
-        products.ready = true;
-    })
+            store.pageData.ready = true;
+            products.ready = true;
+        })
 }
 
 const filterData = reactive({

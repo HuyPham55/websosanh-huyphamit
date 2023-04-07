@@ -33,13 +33,8 @@
     </ul>
     <LoadingComponent
         :useCircle="false"
-        width="-webkit-fill-available"
-        position="absolute"
-        zIndex="1"
-        :useClass="true"
         :ready="ready"
-        duration="0.75s"
-        top="0"/>
+        :style="preloaderStyle"/>
 </template>
 
 <script>
@@ -54,6 +49,13 @@ import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
 import LoadingComponent from "@/Components/LoadingComponent.vue";
 import {useRouter} from "vue-router";
+
+const preloaderStyle = {
+    width: "-webkit-fill-available",
+    position: "absolute",
+    transition: "all 0.75",
+    'z-index': '1',
+}
 
 const router = useRouter();
 const store = useLayoutStore();

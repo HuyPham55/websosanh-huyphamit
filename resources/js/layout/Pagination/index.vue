@@ -1,5 +1,5 @@
 <template>
-    <ul class="pagination">
+    <ul class="pagination" v-show="componentDisplay">
         <template v-if="!onFirstPage">
             <li><a @click="changePage(1)">«</a></li>
             <li><a @click="changePage(currentPage - 1)">‹</a></li>
@@ -28,10 +28,12 @@ import {computed} from "vue";
 
 const props = defineProps({
     total: {
+        //total number of item
         type: Number,
         required: true,
     },
     perPage: {
+        //number of item per page
         type: Number,
         required: true
     },
@@ -45,6 +47,8 @@ const props = defineProps({
     }
 
 })
+
+const componentDisplay = computed(() => props.total > props.perPage)
 
 const onFirstPage = computed(() => props.currentPage === 1)
 
