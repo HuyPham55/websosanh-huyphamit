@@ -43,7 +43,7 @@
                             products
                         </div>
                         <div class="sort-wrap">
-                            <select class="sorting" title="" v-model="filterData.sorting" @change="filterProduct">
+                            <select class="sorting" title="" v-model="filterData.sorting" @change="filterProduct(1)">
                                 <option value="">Sorting</option>
                                 <option value="price-desc">Highest price first</option>
                                 <option value="price-asc">Lowest price first</option>
