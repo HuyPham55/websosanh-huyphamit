@@ -10,9 +10,9 @@ class ElasticService
 {
     protected array $hosts;
     protected Client $client;
-    private string $index;
+    private string|array $index;
 
-    public function __construct($index)
+    public function __construct(string|array $index)
     {
         $connectionString = env("ELASTIC_HOST", "localhost") . ':' . env("ELASTIC_PORT", '9200');
         $this->hosts = [
@@ -37,7 +37,7 @@ class ElasticService
 
     public function indexExist($index = null)
     {
-        if ($index == null) {
+        if ($index === null) {
             $index = $this->index;
         }
         $params = [
@@ -48,7 +48,7 @@ class ElasticService
 
     public function createIndex($index = null)
     {
-        if ($index == null) {
+        if ($index === null) {
             $index = $this->index;
         }
         $params = ['index' => $index];
@@ -58,7 +58,7 @@ class ElasticService
 
     public function deleteIndex($index = null)
     {
-        if ($index == null) {
+        if ($index === null) {
             $index = $this->index;
         }
         if ($this->indexExist($index)) {
@@ -68,7 +68,7 @@ class ElasticService
 
     public function indexDocument($index, array $document, $document_id = null, $type = null)
     {
-        if ($index == null) {
+        if ($index === null) {
             $index = $this->index;
         }
         $params = [
@@ -83,7 +83,7 @@ class ElasticService
     public function getDocument($document_id, $index = null)
     {
         try {
-            if ($index == null) {
+            if ($index === null) {
                 $index = $this->index;
             }
             return $this->client->get([
@@ -162,10 +162,13 @@ class ElasticService
         }
     }
 
-    public function searchByKeyword(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [])
+    public function search(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [], string|array $index = null)
     {
+        if ($index === null) {
+            $index = $this->index;
+        }
         $params = [
-            'index' => $this->index,
+            'index' => $index,
             'size' => $perPage,
             'body' => [
                 'query' => $query,

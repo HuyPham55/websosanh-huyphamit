@@ -44,7 +44,7 @@
                         </div>
                         <div class="sort-wrap">
                             <select class="sorting" title="" v-model="filterData.sorting" @change="filterProduct">
-                                <option value="_score-asc">Relevance</option>
+                                <option value="">Sorting</option>
                                 <option value="price-desc">Highest price first</option>
                                 <option value="price-asc">Lowest price first</option>
                                 <option value="hits-desc">Most viewed</option>
@@ -142,7 +142,7 @@ const filterData = reactive({
     min_price: 0,
     max_price: 200000000,
     seller: null,
-    sorting: '_score-asc',
+    sorting: '',
     currentPage: 1,
     perPage: 40,
 })

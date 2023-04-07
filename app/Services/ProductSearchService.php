@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Comparison;
 use App\Models\Product;
 
 class ProductSearchService
@@ -13,7 +14,7 @@ class ProductSearchService
         $this->service = (new ElasticService((new Product())->getTable()));
     }
 
-    public function productsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0)
+    public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0)
     {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
@@ -34,7 +35,7 @@ class ProductSearchService
         if ($seller !== 0) {
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
-        $result = $this->service->searchByKeyword($query, 40, $fields, $page, $sort);
+        $result = $this->service->search($query, 40, $fields, $page, $sort);
         return $result;
     }
 
@@ -78,8 +79,7 @@ class ProductSearchService
         if ($seller !== 0) {
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
-        $result = $this->service->searchByKeyword($query, 40, $fields, $page, $sort);
-        return $result;
+        return $this->service->search($query, 40, $fields, $page, $sort);
     }
 
     /**
@@ -88,7 +88,7 @@ class ProductSearchService
      */
     public function validateSort(mixed $sorting): array
     {
-        $sortOptions = ["_score-asc", "price-asc", "price-desc", "hits-desc"];
+        $sortOptions = ["_score-desc", "price-asc", "price-desc", "hits-desc", "sorting-asc"];
         $sort = [];
         if ($sorting !== null && in_array($sorting, $sortOptions)) {
             $explode = explode("-", $sorting);

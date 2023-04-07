@@ -56,7 +56,7 @@ class ProductController extends Controller
         $breadcrumb = ProductCategoryResource::collection(
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
-        $query = $this->productSearchService->productsByCategory($arrCategoryIds);
+        $query = $this->productSearchService->itemsByCategory($arrCategoryIds);
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $total = $query['total'] | 0;
         $children = $category->children ?? [];
@@ -85,7 +85,7 @@ class ProductController extends Controller
         $seller = $request->input('seller') | 0;
         $category = ProductCategory::find($categoryId);
         $arrCategoryIds = $this->getArr($category);
-        $query = $this->productSearchService->productsByCategory($arrCategoryIds, $page, $min_price, $max_price, $sorting, $seller);
+        $query = $this->productSearchService->itemsByCategory($arrCategoryIds, $page, $min_price, $max_price, $sorting, $seller);
         $total = $query['total'] | 0;
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         return response()->json(array_merge([
