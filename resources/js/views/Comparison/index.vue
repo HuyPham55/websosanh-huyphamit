@@ -149,7 +149,7 @@
                         <div class="product-specification" id="specifications" v-html="model['content']">
                         </div>
                     </div>
-                    <div class="product-single-sidebar">
+                    <div class="product-single-sidebar" hidden>
                         <article class="product-sidebar-item">
                             <h5 class="article-sidebar-title">Tin tức về sản phẩm</h5>
                             <div class="article-sidebar-list">
@@ -213,7 +213,6 @@ import {useProductStore} from "@/stores";
 
 
 const productStore = useProductStore();
-const readyStatus = ref(false);
 const store = useLayoutStore();
 const route = useRoute();
 const breadcrumb = reactive({
@@ -226,7 +225,8 @@ const featuredSellers = reactive({
 })
 
 const sellers = reactive({
-    data: []
+    data: [],
+    ready: false,
 })
 
 const computedSellers = computed(() => {
@@ -265,6 +265,7 @@ watch(()=> store.pageData.ready, () => {
 })
 
 const getComparisonSellers = function () {
+    sellers.ready = false;
     const id = computedId.value
     axios.post("/api/get-comparison-sellers", {
         id,
@@ -274,6 +275,7 @@ const getComparisonSellers = function () {
             let data = res.data.data;
             sellers.data = data['sellers'];
         }).finally(() => {
+            sellers.ready = true;
     })
 }
 
