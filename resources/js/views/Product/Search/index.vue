@@ -23,9 +23,10 @@
             <div class="page-container">
                 <div class="page-header" ref="header" v-show="products.ready">
                     <div class="page-text">
-                        <h1 class="title">
-                            There are <transition name="fade-transform"><b class="total">{{total}}</b></transition> products for "{{keyword}}"
-                        </h1>
+                        There {{total>1?'are':'is'}}
+                        <h1 class="title"> </h1>
+                        <b class="total">{{total}}</b>
+                        product{{total>1?'s':''}} for <b>"{{keyword}}"</b> ({{computedTook}})
                     </div>
                     <div class="sort-wrap">
                         <select class="sorting" title="" v-model="filterData.sorting" @change="filterProduct(1)">
@@ -71,6 +72,8 @@ const route = useRoute()
 const store = useLayoutStore()
 const total = ref(0);
 const header = ref(null)
+const took = ref(0);
+const computedTook = computed(() => (took.value / 1000) + 's')
 // end layout data
 
 
@@ -116,6 +119,7 @@ const filterProduct = async function (page = 1) {
             let data = res.data
             total.value = data['total'];
             products.data = data['products']['data'];
+            took.value = data['took'] | 0;
             if (typeof page === 'number' && page !== filterData.currentPage) {
                 filterData.currentPage = page;
             }
