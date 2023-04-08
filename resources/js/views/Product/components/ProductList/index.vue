@@ -3,7 +3,7 @@
         <transition-group name="fade-transform">
             <li class="product-item" v-for="item in computedItems" :key="key(item)">
                 <a target="_blank">
-                    <span class="offer-icon" v-if="item['featured']">Đề xuất</span>
+                    <span class="offer-icon" v-if="item['featured']">Featured</span>
                     <div class="product-item-content">
                     <span class="product-img">
                         <img :src="item.image" :alt="item.title"/>

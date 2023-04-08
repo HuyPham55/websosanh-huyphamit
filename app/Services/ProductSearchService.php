@@ -58,13 +58,12 @@ class ProductSearchService
         $sort = $this->validateSort($sorting);
         $query = [
             'bool' => [
-                'must' => [
-                    ['match' => ['title' => ['query' => $keyword, 'fuzziness'=> 'AUTO']]],
-                ],
                 'should' => [
+                    ['match' => ['title' => ['query' => $keyword, 'fuzziness'=> 'AUTO']]],
                     ['match' => ['slug' => $keyword]],
                     ['match' => ['image' => $keyword]],
                 ],
+                "minimum_should_match" => 1,
                 'filter' => [
                     ['term' => ['status' => 1]],
                 ]

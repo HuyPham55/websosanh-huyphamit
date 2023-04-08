@@ -20,8 +20,8 @@
                     </Form>
                 </div>
             </div>
-            <div class="page-container" v-show="products.ready">
-                <div class="page-header" ref="header">
+            <div class="page-container">
+                <div class="page-header" ref="header" v-show="products.ready">
                     <div class="page-text">
                         <h1 class="title">
                             There are <transition name="fade-transform"><b class="total">{{total}}</b></transition> products for "{{keyword}}"
