@@ -58,6 +58,8 @@ export const useUserStore = defineStore('user', () => {
     const fetchUserData = function () {
         axios.get('/api/user').then(response => {
             user.value = response.data
+        }).catch(e => {
+
         });
     }
 

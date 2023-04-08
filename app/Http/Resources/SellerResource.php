@@ -20,6 +20,7 @@ class SellerResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'image' => $this->image,
+            'icon' => $this->icon,
             'price' => $this->price,
             'product_category' => new ProductCategoryResource($this->whenLoaded('productCategory'))
         ];

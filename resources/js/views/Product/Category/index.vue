@@ -54,7 +54,10 @@
                     <div class="list-product">
                         <template v-if="products.data.length !== 0">
                             <ProductList :items="products.data" :ready="products.ready"/>
-                            <Pagination :total="total" :perPage="filterData.perPage" :currentPage="filterData.currentPage"
+                            <Pagination :total="total"
+                                        :perPage="filterData.perPage"
+                                        :currentPage="filterData.currentPage"
+                                        :ready="products.ready"
                                         @changePage="changePage"/>
                         </template>
                         <ProductEmpty :keyword="category.title" v-else/>

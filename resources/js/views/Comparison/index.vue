@@ -29,7 +29,7 @@
                 <div class="product-info">
                     <div class="product-img-wrap">
                         <a href="" class="images">
-                            <img id="zoom" :src="model['image']" alt="KidsMart">
+                            <img id="zoom" :src="model['image']" alt="">
                         </a>
                         <div class="thumbnails swiper-container">
                             <div class="swiper-wrapper">
@@ -47,7 +47,7 @@
                             <li class="store-suggest-item" v-for="(product) in featuredSellers.data">
                                 <a class="store-item is-trusted">
                                 <span class="store-suggest-logo">
-                                    <img :src="product.seller.icon" alt="">
+                                    <img :src="product.seller.icon || product.seller.image" alt="">
                                 </span>
                                     <span class="store-suggest-price">
                                         {{store.formatMoney(product['price'])}}
@@ -65,25 +65,41 @@
                 </div>
                 <div class="navigation-sticky">
                     <ol class="navigation-sticky-section">
-                        <li><span class="scroll active" data-target="#scroll_2">Price comparison</span></li>
-                        <li><span class="scroll" data-target="#specifications">Specification</span></li>
+                        <li>
+                            <span :class="{'scroll': 1, 'active': activeRef === 'sellerSection'}"
+                                  @click="scrollToRef(sellerSection, 'sellerSection')">
+                                Price comparison
+                            </span>
+                        </li>
+                        <li>
+                            <span :class="{'scroll': 1, 'active': activeRef === 'specificationSection'}"
+                                  @click="scrollToRef(specificationSection, 'specificationSection')">
+                                Specification
+                            </span>
+                        </li>
                     </ol>
                 </div>
                 <div class="product-single">
                     <div class="product-single-wrap">
-                        <div class="compare-action" id="scroll_2">
-                            <div class="compare-action-label">So sánh giá của <span class="total-result">194</span> nơi
-                                bán
+                        <div class="compare-action" ref="sellerSection">
+                            <div class="compare-action-label">Price comparison for <span class="total-result">
+                                {{model['products_count']}}
+                            </span> merchant{{model['product_count']<=1?'':'s'}}
                             </div>
                             <div class="compare-action-wrap">
-                                <div class="compare-action-item compare-sort-inner"><label>Sắp xếp theo:</label>
+                                <div class="compare-action-item compare-sort-inner">
+                                    <label>Sort by:</label>
                                     <ul class="compare-action-parent">
                                         <li>
-                                            <span class="compare-action-text">Nổi bật</span>
-                                            <ul class="compare-action-child" tabindex="3">
-                                                <li data-sort="0" data-text="Nổi bật" class="active">Nổi bật</li>
-                                                <li data-sort="1" data-text="Giá tăng dần">Giá tăng dần</li>
-                                                <li data-sort="2" data-text="Giá giảm dần">Giá giảm dần</li>
+                                            <span class="compare-action-text" @click="toggleSellerSelect(true)">
+                                                {{computedSortingTitle}}
+                                            </span>
+                                            <ul class="compare-action-child" tabindex="3" @blur="toggleSellerSelect(false)" :hidden="!sellerSelectActiveStatus">
+                                                <li v-for="option in sortingOptions"
+                                                    :class="{'active': option.value === sellers.sortBy}"
+                                                    @click="changeSorting(option.value)">
+                                                    {{option.title}}
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -94,35 +110,36 @@
                             <li class="compare-item" v-for="seller in computedSellers">
                                 <div class="compare-merchant">
                                 <span class="compare-logo">
-                                    <img
-                                        src="https://img.websosanh.vn/v2/users/logo/images/owrpstn9b8xrs?compress=85&amp;width=110&amp;height=40"
-                                        alt="galaxydidong.vn">
+                                    <img :src="seller.image" :alt="seller.title">
                                 </span>
-                                    <span class="compare-name">galaxydidong.vn</span>
+                                    <span class="compare-name">
+                                        {{seller.title}}
+                                    </span>
                                 </div>
                                 <div class="compare-item-wrap">
                                     <div class="compare-item-container">
                                         <div class="compare-info">
                                             <h3 class="compare-product-title">
-                                                <a class="store-item is-trusted"
-                                                   href="/iphone-11-pro-64gb-quoc-te-likenew-99-cu-95/7584681155189959185/2495542234818888352/direct.htm"
-                                                   target="_blank" rel="nofollow">
-                                                    Iphone 11 Pro 64Gb Quốc Tế LikeNew 99% Cũ 95%
+                                                <a class="store-item is-trusted" href="#"
+                                                   @click.prevent="sellerClickHandler(seller['product_id'])">
+                                                    {{seller['product_name']}}
                                                 </a>
                                             </h3>
                                             <div class="compare-product-store">Nơi bán: Toàn Quốc, Hà Nội</div>
                                         </div>
                                         <div class="compare-market">
-                                            <div class="compare-product-price">7.650.000 đ</div>
-                                            <div class="compare-product-vat">(+VAT) 8.415.000 đ</div>
+                                            <div class="compare-product-price">
+                                                {{store.formatMoney(seller['price'])}}
+                                            </div>
+                                            <div class="compare-product-vat"></div>
                                             <div class="compare-product-shipping">
-                                                <i class="fa fa-star"></i> Mua ở đây sản phẩm chất lượng
+                                                <i class="fa fa-star"></i>
+                                                Mua ở đây sản phẩm chất lượng
                                             </div>
                                         </div>
                                         <div class="compare-button">
-                                            <a class="compare-product-view"
-                                               href="/iphone-11-pro-64gb-quoc-te-likenew-99-cu-95/7584681155189959185/2495542234818888352/direct.htm"
-                                               target="_blank" rel="nofollow">
+                                            <a class="compare-product-view" rel="nofollow"
+                                               @click="sellerClickHandler(seller['product_id'])">
                                                 To seller
                                             </a>
                                         </div>
@@ -130,23 +147,19 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul class="pagination">
-                            <li><a data-page-index="1" data-page="1" rel="nofollow" class="active">1</a></li>
-                            <li><a data-page-index="2" data-page="2" rel="nofollow">2</a></li>
-                            <li><a data-page-index="3" data-page="3" rel="nofollow">3</a></li>
-                            <li><a data-page-index="4" data-page="4" rel="nofollow">4</a></li>
-                            <li><a data-page-index="5" data-page="5" rel="nofollow">5</a></li>
-                            <li><a data-page-index="2" data-page="2" class="next" title="Trang tiếp"
-                                   rel="nofollow">›</a>
-                            </li>
-                            <li><a data-page-index="20" data-page="20" class="last" title="Trang cuối"
-                                   rel="nofollow">»</a>
-                            </li>
-                        </ul>
+                        <Pagination :total="paginationData.total"
+                                    :perPage="paginationData.per_page"
+                                    :ready="sellers.ready"
+                                    :currentPage="paginationData.current_page"
+                                    @changePage="changePage"/>
                         <h2 class="title-section">
                             <span>Specification for: {{model['title']}}</span>
                         </h2>
-                        <div class="product-specification" id="specifications" v-html="model['content']">
+                        <LoadingComponent
+                            :useCircle="false"
+                            :ready="sellers.ready"
+                            :style="preloaderStyle"/>
+                        <div class="product-specification" ref="specificationSection" v-html="model['content']">
                         </div>
                     </div>
                     <div class="product-single-sidebar" hidden>
@@ -210,8 +223,16 @@ import {useRoute} from 'vue-router';
 import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
+import Pagination from "@/layout/Pagination/index.vue";
+const preloaderStyle = {
+    width: "-webkit-fill-available",
+    position: "absolute",
+    transition: "all 0.75",
+    'z-index': '1',
+}
 
-
+const sellerSection = ref(null);
+const specificationSection = ref(null);
 const productStore = useProductStore();
 const store = useLayoutStore();
 const route = useRoute();
@@ -224,13 +245,68 @@ const featuredSellers = reactive({
     data: []
 })
 
+const activeRef = ref('sellerSection')
+
+const sortingOptions = [
+    {
+        value: 'sorting-asc',
+        title: 'Default'
+    },
+    {
+        value: 'price-asc',
+        title: 'Lowest price first'
+    },
+    {
+        value: 'sorting-desc',
+        title: 'Highest price first'
+    }
+]
+
+const computedSortingTitle = computed(() =>
+    sortingOptions.find(item => item.value === sellers.sortBy).title
+)
+
 const sellers = reactive({
     data: [],
     ready: false,
+    sortBy: sortingOptions[0].value,
 })
+
+const sellerSelectActiveStatus = ref(false)
+function changeSorting(value) {
+    sellers.sortBy = value
+    getComparisonSellers(1);
+    sellerSelectActiveStatus.value = false;
+    scrollToRef(sellerSection.value)
+}
+
+
+function toggleSellerSelect(value) {
+    sellerSelectActiveStatus.value = value;
+}
+
+const paginationData = reactive({
+    current_page: 1,
+    per_page: 0,
+    total: 0,
+})
+
+function changePage(page) {
+    getComparisonSellers(page);
+}
 
 const computedSellers = computed(() => {
     let result = sellers.data;
+    const mapper = (item) => {
+        return {
+            image: item["seller"].icon || item["seller"].image,
+            title: item["seller"].title,
+            price: item["price"],
+            product_name: item['title'],
+            product_id: item['id']
+        };
+    }
+    result = result.map(mapper)
     return result;
 })
 
@@ -264,20 +340,35 @@ watch(()=> store.pageData.ready, () => {
     }
 })
 
-const getComparisonSellers = function () {
+const getComparisonSellers = function (page = 1) {
     sellers.ready = false;
     const id = computedId.value
-    axios.post("/api/get-comparison-sellers", {
+    let data = {
         id,
-    })
+        sortBy: sellers.sortBy
+    }
+
+    if (page !== paginationData.current_page) {
+        data['page'] = page;
+    }
+    axios.post("/api/get-comparison-sellers", data)
         .then(res => {
             store.pageData.ready = true;
             let data = res.data.data;
-            sellers.data = data['sellers'];
+            sellers.data = data['sellers']['data'];
+            let meta = data['sellers']['meta'];
+            paginationData.current_page = meta['current_page'];
+            paginationData.total = meta['total'];
+            paginationData.per_page = meta['per_page'];
         }).finally(() => {
             sellers.ready = true;
     })
 }
+
+function sellerClickHandler(id) {
+    productStore.getProductUrl(id);
+}
+
 
 const initializeSwiper = function () {
     var thumb = new Swiper('.thumbnails', {
@@ -302,6 +393,14 @@ const initializeSwiper = function () {
             }
         })
     })
+}
+
+const scrollToRef = function(ref, refName = null) {
+    let position = ref.scrollHeight;
+    if (refName) {
+        activeRef.value = refName
+    }
+    window.scrollTo({top: position, behavior: 'smooth'});
 }
 onBeforeMount(() => {
     fetchModelData();

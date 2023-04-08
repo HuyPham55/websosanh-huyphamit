@@ -6,10 +6,8 @@ use App\Enums\CommonStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCategoryResource;
 use App\Http\Resources\ProductResource;
-use App\Http\Resources\SellerResource;
 use App\Models\Comparison;
 use App\Models\ProductCategory;
-use App\Models\Seller;
 use App\Services\CategoryService;
 use App\Services\ProductSearchService;
 use App\Traits\HttpResponses;
@@ -43,6 +41,7 @@ class ComparisonController extends Controller
         $id = $request->input('id') | 0;
         $model = Comparison
             ::with(['productCategory', 'products' => $this->productCallback])
+            ->withCount('products')
             ->where([
                 ['status', CommonStatus::Active]
             ])
@@ -55,7 +54,8 @@ class ComparisonController extends Controller
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
 
-        $featuredSellers = ($model->products);
+        $displayLimit = 4;
+        $featuredSellers = ProductResource::collection($model->products->take($displayLimit));
 
         return $this->success([
             'model' => $model,
@@ -67,8 +67,13 @@ class ComparisonController extends Controller
     public function getComparisonSellers(Request $request)
     {
         $id = $request->input('id') | 0;
+
+        $sortBy = $this->validateSortBy($request);
+        $sortField = $sortBy[0];
+        $sortOrder = $sortBy[1];
+
         $model = Comparison
-            ::with(['products' => $this->productCallback])
+            ::query()
             ->where([
                 ['status', CommonStatus::Active]
             ])
@@ -76,10 +81,28 @@ class ComparisonController extends Controller
         if ($model === null) {
             return $this->error([], null, 404);
         }
-        $featuredSellers = ($model->products);
+
+        $layoutLimit = 5;
+        $products = $model->products()->where([
+            ['status', CommonStatus::Active]
+        ])
+            ->with(['seller'])
+            ->orderBy($sortField, $sortOrder)
+            ->paginate($layoutLimit);
+        $featuredSellers = ProductResource::collection($products)->response()->getData(true);
         return $this->success([
             'sellers' => $featuredSellers,
         ]);
 
+    }
+
+    private function validateSortBy(Request $request): array
+    {
+        $sortBy = $request->input('sortBy');
+        $sortingOptions = ['sorting-asc', 'price-asc', 'sorting-desc'];
+        if (!($sortBy && in_array($sortBy, $sortingOptions))) {
+            $sortBy = $sortingOptions[0];
+        }
+        return explode("-", $sortBy);
     }
 }
