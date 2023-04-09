@@ -6,7 +6,7 @@ return [
         'flag' => '',
     ],
 
-    'cn_traditional' => [
+    'zh' => [
         'title' => '繁中',
         'flag' => ''
     ],
