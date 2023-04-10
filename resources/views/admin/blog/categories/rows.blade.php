@@ -28,7 +28,7 @@
                 @includeIf('components.buttons.edit', ['route' => route('blog_categories.edit', $category->id)])
             @endcan
 
-            @can('edit_blog_categories')
+            @can('delete_blog_categories')
                 @includeIf('components.buttons.delete', ['route' => route('blog_categories.delete'), 'id' => $category->id])
             @endcan
         </td>
