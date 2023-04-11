@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\ContactController;
+use App\Http\Controllers\Backend\DashBoardController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\MemberController;
@@ -24,7 +25,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
 
     //Settings
     Route::group(['prefix' => 'settings'], function () {
