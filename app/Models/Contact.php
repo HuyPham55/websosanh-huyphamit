@@ -14,6 +14,7 @@ class Contact extends Model
     use HasFactory;
     use Filterable;
 
+    protected $guarded = [];
     public function getDateFormatAttribute()
     {
         if ($this->created_at) {
