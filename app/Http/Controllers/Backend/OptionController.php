@@ -18,7 +18,9 @@ class OptionController extends BaseController
         ];
 
         $multiLangKeys = [
-            'site_title', 'site_seo_title', 'site_description', 'contact_google_maps', 'contact_address', 'custom_code'
+            'site_title', 'site_seo_title', 'site_description', 'contact_google_maps', 'contact_address', 'custom_code',
+            'contact_email_reply_message',
+
         ];
 
         foreach ($multiLangKeys as $optionKey) {
