@@ -117,6 +117,15 @@
                             >{{ old("site_description_$langKey") ?? option("site_description_$langKey") }}</textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label for="{{ $langKey }}[contact_email_reply_message]"
+                                   class="control-label">{{ __('label.contact_email_reply_message') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
+                            <input type="text" name="contact_email_reply_message_{{ $langKey }}" id="{{ $langKey }}[contact_email_reply_message]"
+                                   value="{{ old("contact_email_reply_message_$langKey") ?? option("contact_email_reply_message_$langKey") }}"
+                                   autocomplete="off"
+                                   placeholder="{{trans('frontend.contact_success_message')}}"
+                                   class="form-control" maxlength="155">
+                        </div>
 
                     </div>
                 @endforeach
