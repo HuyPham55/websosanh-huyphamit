@@ -25,6 +25,11 @@ const routes = [
                 name: 'comparison',
                 component: () => import("@/views/Comparison/index.vue")
             },
+            {
+                path: "/news/:id/:slug",
+                name: 'news_detail',
+                component: () => import("@/views/News/Detail/index.vue")
+            },
         ]
     },
 

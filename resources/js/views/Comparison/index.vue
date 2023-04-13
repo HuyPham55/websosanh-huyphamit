@@ -7,9 +7,9 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li v-for="item in breadcrumb.data">
-                    <router-link :to="{name: 'product_category', params: {id: item['id'], slug: item['slug']}}">
+                    <a href="#">
                         {{ item['title'] }}
-                    </router-link>
+                    </a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -162,50 +162,7 @@
                         <div class="product-specification" ref="specificationSection" v-html="model['content']">
                         </div>
                     </div>
-                    <div class="product-single-sidebar" hidden>
-                        <article class="product-sidebar-item">
-                            <h5 class="article-sidebar-title">Tin tức về sản phẩm</h5>
-                            <div class="article-sidebar-list">
-                                <article class="article-sidebar-item">
-                                    <a href="" title="">
-                                    <span class="article-sidebar-img">
-                                        <img
-                                            src="https://img.websosanh.vn/v2/users/review/images/iphone-11-pro-max-cu-gia-bao/ha7p19c7vpnup.jpg?compress=85&amp;width=200">
-                                    </span>
-                                        <h3>iPhone 11 Pro Max cũ giá bao nhiêu? Có nên mua năm 2022?</h3>
-                                    </a>
-                                </article>
-                                <article class="article-sidebar-item">
-                                    <a href="" title="">
-                                    <span class="article-sidebar-img">
-                                        <img
-                                            src="https://img.websosanh.vn/v2/users/review/images/iphone-11-pro-max-cu-gia-bao/ha7p19c7vpnup.jpg?compress=85&amp;width=200">
-                                    </span>
-                                        <h3>iPhone 11 Pro Max cũ giá bao nhiêu? Có nên mua năm 2022?</h3>
-                                    </a>
-                                </article>
-                                <article class="article-sidebar-item">
-                                    <a href="" title="">
-                                    <span class="article-sidebar-img">
-                                        <img
-                                            src="https://img.websosanh.vn/v2/users/review/images/iphone-11-pro-max-cu-gia-bao/ha7p19c7vpnup.jpg?compress=85&amp;width=200">
-                                    </span>
-                                        <h3>iPhone 11 Pro Max cũ giá bao nhiêu? Có nên mua năm 2022?</h3>
-                                    </a>
-                                </article>
-                                <article class="article-sidebar-item">
-                                    <a href="" title="">
-                                    <span class="article-sidebar-img">
-                                        <img
-                                            src="https://img.websosanh.vn/v2/users/review/images/iphone-11-pro-max-cu-gia-bao/ha7p19c7vpnup.jpg?compress=85&amp;width=200">
-                                    </span>
-                                        <h3>iPhone 11 Pro Max cũ giá bao nhiêu? Có nên mua năm 2022?</h3>
-                                    </a>
-                                </article>
-                            </div>
-                        </article>
-
-                    </div>
+                    <AsideNews/>
                 </div>
             </div>
         </template>
@@ -221,9 +178,10 @@ export default {
 <script setup>
 import {useRoute} from 'vue-router';
 import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
-import {useLayoutStore} from "@/stores";
+    import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
 import Pagination from "@/layout/Pagination/index.vue";
+import AsideNews from "@/Components/AsideNews/index.vue";
 const preloaderStyle = {
     width: "-webkit-fill-available",
     position: "absolute",

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CommonStatus;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\PostResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\Http\Resources\SlideResource;
 use App\Models\BlogPost;
@@ -118,23 +119,26 @@ class HomeController extends Controller
 
     private function getFeaturedNews()
     {
-        return BlogPost::where([
+        $collection = BlogPost::where([
             ['status', CommonStatus::Active],
             ['is_popular']
         ])
             ->orderBy('sorting')
             ->take(10)
             ->get();
+
+        return PostResource::collection($collection)->response()->getData(true);
     }
 
     private function getAsideNews()
     {
-        return BlogPost::where([
+        $collection =  BlogPost::where([
             ['status', CommonStatus::Active],
         ])
             ->orderBy('created_at', 'DESC')
             ->take(5)
             ->get();
+        return PostResource::collection($collection)->response()->getData(true);
     }
 
 }

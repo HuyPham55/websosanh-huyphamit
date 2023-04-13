@@ -108,6 +108,13 @@
        'label' => __('label.status.status'),
        'name' => 'status',
    ])
+
+        @include('components.form_elements.mono_radio',
+        [
+        'value' => $post->is_popular ?? true,
+        'label' => __('backend.is_popular'),
+        'name' => 'is_popular',
+        ])
     </div>
 </div>
 

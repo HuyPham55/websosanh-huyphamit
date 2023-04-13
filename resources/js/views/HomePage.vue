@@ -6,7 +6,7 @@
                     <router-link :to="{name: 'product_category', params: {id: category.id, slug: category.slug}}">
                         <img :src="category['icon']" alt=""/>
                         <span>
-                            {{category['title']}}
+                            {{ category['title'] }}
                         </span>
                     </router-link>
                 </li>
@@ -68,12 +68,13 @@
             <div class="article-wrap">
                 <div class="article-list">
                     <article class="article-item" v-for="item in featuredNews.data">
-                        <a href="#" title="">
+                        <router-link :to="{name: 'news_detail', params: {id: item.id, slug: item.slug}}"
+                                     :title="item.title">
                             <span class="article-img">
                                 <img :src="item['image']" alt="">
                             </span>
                             <h3 class="article-title">{{ item.title }}</h3>
-                        </a>
+                        </router-link>
                         <p class="article-desc">
                             {{ item['short_description'] }}
                         </p>
@@ -82,12 +83,13 @@
                 <div class="article-aside">
                     <div class="article-aside-container">
                         <article class="article-item" v-for="item in asideNews.data">
-                            <a href="#" title="">
-                        <span class="article-img">
-                            <img :src="item.image" alt="">
-                        </span>
+                            <router-link :to="{name: 'news_detail', params: {id: item.id, slug: item.slug}}"
+                                         :title="item.title">
+                                <span class="article-img">
+                                    <img :src="item.image" alt="">
+                                </span>
                                 <h3 class="article-title">{{ item.title }}</h3>
-                            </a>
+                            </router-link>
                             <p class="article-desc">
                                 {{ item['short_description'] }}
                             </p>
@@ -135,8 +137,8 @@ const asideNews = reactive({
 
 let callback = (callbackData) => {
     slides.data = callbackData['slides'];
-    featuredCategories.data = callbackData['featured_categories']
-    asideNews.data = callbackData['aside_news']
+    featuredCategories.data = callbackData['featured_categories'].data
+    asideNews.data = callbackData['aside_news'].data
     store.pageData.ready = true;
 }
 
