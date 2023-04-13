@@ -341,7 +341,7 @@ return [
         [
             'text' => 'static_pages',
             'icon' => 'far fa-fw fa-file',
-            'can' => ['update_home_page', 'update_about_page', 'update_blog_index', 'update_404_page'],
+            'can' => ['update_home_page', 'update_about_page', 'update_blog_index', 'update_404_page', 'update_contact_page'],
             'submenu' => [
                 [
                     'text' => 'homepage',
@@ -352,7 +352,7 @@ return [
                 ],
                 [
                     'text' => 'about_page',
-                    'route' => ['backend.static_page', ['key' => 'about_page', 'title' => 'label.home_page']],
+                    'route' => ['backend.static_page', ['key' => 'about_page', 'title' => 'frontend.about_us']],
                     'icon' => 'far fa-fw',
                     'active' => ['admin/static-pages/about_page*'],
                     'can' => 'update_about_page'
@@ -363,6 +363,20 @@ return [
                     'icon' => 'far fa-fw',
                     'active' => ['admin/static-pages/blog_index*'],
                     'can' => 'update_blog_index'
+                ],
+                [
+                    'text' => 'Contact us',
+                    'route' => ['backend.static_page', ['key' => 'contact_page', 'title' => 'frontend.contact_us']],
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/static-pages/contact_page*'],
+                    'can' => 'update_contact_page'
+                ],
+                [
+                    'text' => '404',
+                    'route' => ['backend.static_page', ['key' => '404_page', 'title' => '404']],
+                    'icon' => 'far fa-fw',
+                    'active' => ['admin/static-pages/404_page*'],
+                    'can' => 'update_404_page'
                 ],
             ],
         ],

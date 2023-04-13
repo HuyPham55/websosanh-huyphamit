@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\ComparisonController;
 use App\Http\Controllers\Backend\ContactController;
+use App\Http\Controllers\Backend\DashBoardController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HomeSlideController;
 use App\Http\Controllers\Backend\MemberController;
@@ -30,7 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
 
     //Settings
     Route::group(['prefix' => 'settings'], function () {
@@ -165,9 +166,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
     //Static pages
     Route::group([
         'prefix' => 'static-pages',
-        'middleware' => 'permission:update_home_page|update_about_page|update_blog_index|update_404_page'
+        'middleware' => 'permission:update_home_page|update_about_page|update_contact_page|update_blog_index|update_404_page'
     ], function () {
-        $arrKey = 'home_page|about_page|blog_index|404_page';
+        $arrKey = 'home_page|about_page|update_contact_page|blog_index|404_page';
         Route::get('/{key}', [StaticPageController::class, 'getEdit'])
             ->where('key', $arrKey)
             ->name('backend.static_page');
