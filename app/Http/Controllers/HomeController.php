@@ -121,10 +121,9 @@ class HomeController extends Controller
     {
         $collection = BlogPost::where([
             ['status', CommonStatus::Active],
-            ['is_popular']
         ])
             ->orderBy('sorting')
-            ->take(10)
+            ->take(4)
             ->get();
 
         return PostResource::collection($collection)->response()->getData(true);
@@ -134,6 +133,7 @@ class HomeController extends Controller
     {
         $collection =  BlogPost::where([
             ['status', CommonStatus::Active],
+            ['is_popular', CommonStatus::Active]
         ])
             ->orderBy('created_at', 'DESC')
             ->take(5)

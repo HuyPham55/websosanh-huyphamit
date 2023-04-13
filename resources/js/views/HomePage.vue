@@ -137,8 +137,9 @@ const asideNews = reactive({
 
 let callback = (callbackData) => {
     slides.data = callbackData['slides'];
-    featuredCategories.data = callbackData['featured_categories'].data
+    featuredCategories.data = callbackData['featured_categories']
     asideNews.data = callbackData['aside_news'].data
+    featuredNews.data = callbackData['featured_news'].data
     store.pageData.ready = true;
 }
 
