@@ -22,6 +22,15 @@
                 </label>
             </div>
         </div>
+
+        <div class="auth-social">
+            <a class="social-button" href="#">
+                <i class="fa fa-google"></i>
+            </a>
+            <a class="social-button"  href="#">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </div>
         <div class="auth-action">
             <button class="register" @click="registerClickHandler" type="button" :disabled="isSubmitting">
                 Register

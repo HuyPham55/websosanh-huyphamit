@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="/css/swiper.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
 
     <script src="/js/swiper.min.js "></script>
     @vite(['resources/sass/style.scss'])

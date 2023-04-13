@@ -69,6 +69,10 @@ footer {
 
             a {
                 img {
+                    padding: 20px;
+                    @media only screen and (min-width: 768px) {
+                        padding: 40px;
+                    }
                     width: 100%;
                 }
             }
@@ -78,7 +82,6 @@ footer {
             display: block;
             width: 100%;
             max-width: 370px;
-            margin-x: auto;
             li {
                 display: inline-block;
                 width: 100%;

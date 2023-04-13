@@ -114,7 +114,8 @@
         align-items: center;
         padding: 15px 0;
         justify-content: space-between;
-
+        position: relative;
+        z-index: 1;
         @media only screen and (max-width: 768px) {
             flex-direction: column;
         }
@@ -196,6 +197,54 @@
 
                 &:hover {
                     color: $main-color;
+                }
+            }
+
+            .search-result {
+                padding: 25px 0 0;
+                list-style: none;
+                position: absolute;
+                top: 25px;
+                left: 0;
+                display: none;
+                background: $white-color;
+                -webkit-box-shadow: 4px 4px 4px rgba(0,0,0,.15), -4px 4px 4px rgba(0,0,0,.15);
+                box-shadow: 4px 4px 4px rgba(0,0,0,.15), -4px 4px 4px rgba(0,0,0,.15);
+                width: 100%;
+                z-index: -1;
+                border-radius: 0 0 3px 3px;
+                font-size: 14px;
+                border: 1px solid $border-color;
+                ol#resultFilter {
+                    list-style-type: none;
+                    margin: 0 0 10px;
+                    li {
+                        display: flex;
+                        line-height: 19px;
+                        padding: 8px 32px;
+
+                        &.has-store {
+                            display: block;
+                            a {
+                                display: -ms-flexbox;
+                                display: flex;
+                                -webkit-justify-content: space-between;
+                                justify-content: space-between;
+
+                                .search-store {
+                                    max-width: 192px;
+                                    -webkit-box-flex: 0;
+                                    -ms-flex: 0 0 192px;
+                                    flex: 0 0 192px;
+                                    margin: 0 0 0 16px;
+                                    .price {
+                                        color: $dark-red;
+                                        font-weight: 700;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -528,6 +577,28 @@
                     color: $main-color;
                     text-decoration: none;
                 }
+            }
+        }
+
+        .auth-social {
+            display: flex;
+            justify-content: space-evenly;
+            margin: auto;
+            margin-top: 20px;
+            max-width: 75%;
+            .social-button {
+                background: $main-color;
+                border-radius: 5px;
+                display: inline-flex;
+                width: 30px;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                font-size: 16px;
+                margin: 5px;
+                padding: 20px 20px;
+                text-decoration: none;
+                color: white;
             }
         }
 
