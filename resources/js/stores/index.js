@@ -72,11 +72,14 @@ export const useUserStore = defineStore('user', () => {
 
 export const useProductStore = defineStore('products', () => {
     const getProductUrl = function (id) {
-        axios.post('/api/get-product-url', {id})
+        useLayoutStore().layoutData.ready = false;
+        return axios.post('/api/get-product-url', {id})
             .then(res => {
                 let data = res.data
                 let url = data['data'];
                 window.open(url);
+            }).finally(() => {
+                useLayoutStore().layoutData.ready = true;
             })
     }
     return {getProductUrl}

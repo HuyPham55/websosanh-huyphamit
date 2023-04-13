@@ -11,7 +11,15 @@ class ProductSearchService
 
     public function __construct()
     {
-        $this->service = (new ElasticService([(new Product())->getTable(), (new Comparison())->getTable()]));
+        $productIndex = (new Product())->getTable();
+        $comparisonIndex = (new Comparison())->getTable();
+        $this->service = (new ElasticService([$comparisonIndex, $productIndex]));
+        if (!$this->service->indexExist($productIndex)) {
+            $this->service->createIndex($productIndex);
+        }
+        if (!$this->service->indexExist($comparisonIndex)) {
+            $this->service->createIndex($comparisonIndex);
+        }
     }
 
     public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0)
