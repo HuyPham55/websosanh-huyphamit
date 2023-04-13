@@ -131,5 +131,6 @@
         </div>
     </div>
 </div>
+@include('components.tinymce')
 
 @include('components.Select2')

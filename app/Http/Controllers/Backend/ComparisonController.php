@@ -342,4 +342,32 @@ class ComparisonController extends BaseController
         }
         $comparison->save();
     }
+
+    public function getShowActive(Request $request, $id)
+    {
+        $model = $this->model->findOrFail($id);
+        return view("{$this->pathView}.list_active_products", compact('model'));
+    }
+    public function activeProductsDatatables(Request $request, $id)
+    {
+        $posts = $this->model->findOrFail($id);
+        $productCollection = $posts->products()->with(['seller']);
+        $data = DataTables::eloquent($productCollection)
+            ->editColumn('image', function ($item) {
+                return either($item->image, '/images/no-image.png');
+            })
+            ->editColumn('title', function ($item) {
+                return $item->title;
+            })
+            ->editColumn('created_at', function ($item) {
+                return $item->date_format;
+            })
+            ->addColumn('seller', function ($item) {
+                return $item->seller->title;
+            })
+            ->setRowId(function ($item) {
+                return 'row-id-' . $item->id;
+            });
+        return $data->toJson();
+    }
 }

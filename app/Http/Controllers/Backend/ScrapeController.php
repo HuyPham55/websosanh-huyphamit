@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Enums\CommonStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ScrapeRequest;
 use App\Models\Product;
@@ -147,7 +148,7 @@ class ScrapeController extends BaseController
     public function ApiFetchModelData(Request $request)
     {
         $categories = (new CategoryService(new ProductCategory()))->dropdown_associated();
-        $sellers = Seller::select('id', 'title', 'status')->get();
+        $sellers = Seller::select('id', 'title', 'status')->where('status', CommonStatus::Active)->get();
         $model = $this->model->find($request->input('id'));
         //$model can be null
         $products = $model === null

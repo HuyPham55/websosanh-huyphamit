@@ -292,6 +292,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
             Route::group(['prefix' => 'view'], function() {
                 Route::get('show/{id}', [ComparisonController::class, 'getShow'])->name('comparisons.show');
                 Route::get('datatables/{id}', [ComparisonController::class, 'productDatatables'])->name('comparison_products.datatables');
+                Route::get('show-active/{id}', [ComparisonController::class, 'getShowActive'])->name('comparisons.show_active');
+                Route::get('datatables/active-products/{id}', [ComparisonController::class, 'activeProductsDatatables'])->name('comparison_active_products.datatables');
                 Route::post('change-relationship/{id}', [ComparisonController::class, 'productChangeRelationship'])->name('comparison_products.change_relationship');
             });
         });

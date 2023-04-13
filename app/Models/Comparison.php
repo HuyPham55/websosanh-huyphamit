@@ -26,7 +26,11 @@ class Comparison extends BaseModel
 {
     use HasFactory;
     use Filterable;
-
+    protected $casts = [
+        'featured' => 'integer',
+        'is_popular' => 'integer',
+        'status' => 'integer',
+    ];
 
     public static function boot()
     {

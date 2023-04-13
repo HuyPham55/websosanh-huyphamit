@@ -97,7 +97,7 @@ class Product extends BaseModel
     }
     public function getDateFormatAttribute()
     {
-        return date_format($this->created_at, 'Y/m/d');
+        return $this->created_at ? date_format($this->created_at, 'Y/m/d') : null;
     }
     protected $appends = ['seller_image'];
     protected function sellerImage(): Attribute
