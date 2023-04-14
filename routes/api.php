@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\Auth\Api\RegisterController;
 use App\Http\Controllers\Frontend\ComparisonController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +44,6 @@ Route::post('/fetch-comparison-data', [ComparisonController::class, 'fetchCompar
 Route::post('/get-comparison-sellers', [ComparisonController::class, 'getComparisonSellers']);
 Route::post('/fetch-aside-news', [NewsController::class, 'fetchAsideNews']);
 Route::post('/fetch-news-detail', [NewsController::class, 'fetchModelData']);
+
+Route::get('/search', [SearchController::class, 'search']);
 

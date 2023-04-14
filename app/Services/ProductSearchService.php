@@ -9,16 +9,18 @@ class ProductSearchService
 {
     protected ElasticService $service;
 
-    public function __construct()
+    public function __construct(array $index = [])
     {
         $productIndex = (new Product())->getTable();
         $comparisonIndex = (new Comparison())->getTable();
-        $this->service = (new ElasticService([$comparisonIndex, $productIndex]));
-        if (!$this->service->indexExist($productIndex)) {
-            $this->service->createIndex($productIndex);
+        if (empty($index)) {
+            $index = [$productIndex, $comparisonIndex];
         }
-        if (!$this->service->indexExist($comparisonIndex)) {
-            $this->service->createIndex($comparisonIndex);
+        $this->service = (new ElasticService([$comparisonIndex, $productIndex]));
+        foreach ($index as $item) {
+            if (!$this->service->indexExist($item)) {
+                $this->service->createIndex($item);
+            }
         }
     }
 
@@ -89,6 +91,37 @@ class ProductSearchService
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
         return $this->service->search($query, 40, $fields, $page, $sort);
+    }
+
+    public function suggestByKeyword(string $keyword)
+    {
+        $query = [
+            'keyword' => [
+                'text' => $keyword,
+                'term' => [
+                    'field' => 'title',
+                ]
+            ]
+        ];
+        $searchQuery = [
+            'bool' => [
+                'should' => [
+                    ['match' => ['title' => ['query' => $keyword, 'fuzziness' => 'AUTO']]],
+                ],
+                "minimum_should_match" => 1,
+                'filter' => [
+                    ['term' => ['status' => 1]],
+                ]
+            ],
+        ];
+        $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image'];
+        $response = $this->service->suggest($query, $searchQuery, $fields);
+        $options = $response['suggest']['keyword'][0]['options'];
+        $options = array_map(function ($item) {
+            return $item['text'];
+        }, $options);
+        $hits = $response['hits'];
+        return compact('options', 'hits');
     }
 
     /**

@@ -23,10 +23,10 @@
             <div class="page-container">
                 <div class="page-header" ref="header" v-show="products.ready">
                     <div class="page-text">
-                        There {{total>1?'are':'is'}}
-                        <h1 class="title"> </h1>
-                        <b class="total">{{total}}</b>
-                        product{{total>1?'s':''}} for <b>"{{keyword}}"</b> ({{computedTook}})
+                        There {{ total > 1 ? 'are' : 'is' }}
+                        <h1 class="title"></h1>
+                        <b class="total">{{ total }}</b>
+                        product{{ total > 1 ? 's' : '' }} for <b>"{{ keyword }}"</b> ({{ computedTook }})
                     </div>
                     <div class="sort-wrap">
                         <select class="sorting" title="" v-model="filterData.sorting" @change="filterProduct(1)">
@@ -40,7 +40,8 @@
                 <div class="list-product">
                     <template v-if="products.data.length !== 0">
                         <ProductList :items="products.data" :ready="products.ready"/>
-                        <Pagination :total="total" :perPage="filterData.perPage" :currentPage="filterData.currentPage" @changePage="changePage"/>
+                        <Pagination :total="total" :perPage="filterData.perPage" :currentPage="filterData.currentPage"
+                                    @changePage="changePage"/>
                     </template>
                     <ProductEmpty :keyword="keyword" v-else/>
                 </div>
@@ -101,6 +102,10 @@ const products = reactive({
 const filterProduct = async function (page = 1) {
     products.ready = false;
 
+    if (products.data.length === 0) {
+        store.layoutData.ready = false;
+    }
+
     let data = {}
     if (filterData.min_price) {
         data.min_price = filterData.min_price;
@@ -125,6 +130,9 @@ const filterProduct = async function (page = 1) {
             }
         }).finally(() => {
             products.ready = true;
+            if (!store.layoutData.ready) {
+                store.layoutData.ready = true;
+            }
         })
     return await delay(callback, 200)
 }
@@ -136,14 +144,14 @@ const changePage = function (pageNumber) {
 
 onBeforeMount(async () => {
     await filterProduct()
-    store.pageData.ready = true;
 })
 
 onMounted(() => {
+    store.pageData.ready = true;
 })
 
 //utilities functions
-const scrollToPageHeader = function() {
+const scrollToPageHeader = function () {
     let headerPosition = header.value.scrollHeight;
     window.scrollTo({top: headerPosition, behavior: 'smooth'});
 }

@@ -188,4 +188,27 @@ class ElasticService
         $hits = $response['hits']['hits']; //can be null
         return compact('hits', 'total', 'response');
     }
+
+    public function suggest(array $query, array $searchQuery = [], array $fields = [], string|array $index = null)
+    {
+        if ($index === null) {
+            $index = $this->index;
+        }
+        $params = [
+            'index' => $index,
+            'body' => [
+                'suggest' => $query,
+            ],
+        ];
+        if (!empty($searchQuery)) {
+            $params['body']['query'] = $searchQuery;
+        }
+        if ($fields !== []) {
+            $params['_source'] = $fields;
+        }
+        $response = $this->client->search($params);
+        $hits = $response['hits']['hits']; //always
+        $suggest = $response['suggest'];
+        return compact('hits', 'suggest');
+    }
 }

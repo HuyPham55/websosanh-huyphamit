@@ -63,9 +63,10 @@ const productStore = useProductStore();
 const itemTypes = {
     'products': 0,
     'comparisons': 1
-}
+} //also used in search form
 
 const getItemType = function(item) {
+    //also used in search form
     let index = item['index'];
     return itemTypes[index]
 }
@@ -90,6 +91,7 @@ const computedItems = computed(() => {
 })
 
 const clickHandler = function(item) {
+    //also used in search form
     let itemType = getItemType(item);
     let id = item.id;
     if (itemType === 0) {
@@ -99,7 +101,6 @@ const clickHandler = function(item) {
     if (itemType === 1) {
         router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
     }
-
 }
 </script>
 
