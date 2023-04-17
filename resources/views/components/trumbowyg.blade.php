@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/editor/trumbowyg/plugins/colors/ui/trumbowyg.colors.css">
 @endpush
 @push('js')
-    <script src="{{url('/plugins/trumbowyg/trumbowyg.min.js')}}"></script>
+    <script src="{{url('/editor/trumbowyg/trumbowyg.min.js')}}"></script>
     <script src="/editor/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>
     <script src="/editor/trumbowyg/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
     <script>
