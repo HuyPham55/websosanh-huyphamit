@@ -71,7 +71,7 @@
 
     <div class="col-md-4">
         <div class="form-group">
-            <label for="gender" class="control-label">{{ __('label.gender') }}</label>
+            <label for="gender" class="control-label">{{ __('label.gender.gender') }}</label>
             <select id="gender" class="form-control select2" name="gender" required>
                 @foreach($genders as $key => $gender)
                     <option value="{{$key}}">
