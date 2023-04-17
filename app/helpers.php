@@ -61,4 +61,23 @@ function cachedOption($key)
         return option($key);
     });
 }
+/**
+ * check if url is valid
+ * @param string $url
+ * @return bool
+ */
+function isValidUrl($url)
+{
+    $pattern = '%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu';
 
+    if (preg_match($pattern, $url)){
+        return true;
+    }
+
+    return false;
+}
+
+function normalizeImageUrl($url)
+{
+    return isValidUrl($url) ? $url : asset($url);
+}
