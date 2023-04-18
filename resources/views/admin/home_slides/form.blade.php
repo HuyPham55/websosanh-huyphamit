@@ -91,12 +91,15 @@
             </div>
         </div>
 
-        @include('components.form_elements.mono_radio',
-   [
-       'value' => $slide->status ?? true,
-       'label' => __('label.status.status'),
-       'name' => 'status',
-   ])
+
+        @php
+            $options = [
+                'value' => $slide->status ?? true,
+               'label' => __('label.status.status'),
+               'name' => 'status',
+                ];
+        @endphp
+        @include('components.form_elements.mono_radio', $options)
     </div>
 </div>
 

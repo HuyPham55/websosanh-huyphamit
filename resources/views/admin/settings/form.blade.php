@@ -218,6 +218,15 @@
                            class="form-control tags" autocomplete="off">
                 </div>
             </div>
+
+            @php
+                $options = [
+                    'value' => old('send_customer_email') ?? option('send_customer_email'),
+                    'label' => __('backend.send_customer_email'),
+                    'name' => 'send_customer_email',
+                    ];
+            @endphp
+            @include('components.form_elements.mono_radio', $options)
         </div>
     </div>
 @endcan

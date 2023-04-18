@@ -33,6 +33,8 @@ return array (
     'save' => 'Save',
     'select' => 'Select',
     'clear' => 'Clear',
+    'import' => 'Import',
+    'export' => 'Export',
   ),
   'home' => 'Home',
   'blog' => 'Blog',
@@ -74,4 +76,5 @@ return array (
   'username' => 'Username',
   'logo' => 'Logo',
   'tags' => 'Tags',
+  'contact_email_reply_message' => 'Contact email reply message',
 );

@@ -26,7 +26,8 @@
                     <div id="tab_lang_{{ $langKey }}" class="tab-pane container p-0 {{ $loop->first ? 'active' : '' }}">
 
                         <div class="form-group">
-                            <label class="control-label">{{ __('label.image') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
+                            <label
+                                class="control-label">{{ __('label.image') }} {{ count($lang) > 1 ? "($langTitle)" : '' }}</label>
                             @includeIf('components.select_file', [
                                 'keyId' => "image-{$langKey}",
                                 'inputName' => "{$langKey}[image]",
@@ -101,13 +102,19 @@
                        class="form-control" min="0" max="e9" placeholder="0">
             </div>
         </div>
+    </div>
+</div>
 
-        @include('components.form_elements.mono_radio',
-   [
-       'value' => $post->status ?? true,
-       'label' => __('label.status.status'),
-       'name' => 'status',
-   ])
+<div class="card-body">
+    <div class="row">
+        @php
+            $options = [
+                'value' => $post->status ?? true,
+                'label' => __('label.status.status'),
+                'name' => 'status',
+            ];
+        @endphp
+        @include('components.form_elements.mono_radio', $options)
     </div>
 </div>
 

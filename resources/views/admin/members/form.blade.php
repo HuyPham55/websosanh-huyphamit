@@ -85,12 +85,15 @@
         </div>
     </div>
 
-    @include('components.form_elements.mono_radio',
-    [
-        'value' => $member->status ?? true,
-        'label' => __('label.status.status'),
-        'name' => 'status',
-    ])
+    @php
+        $options = [
+            'value' => $member->status ?? true,
+            'label' => __('label.status.status'),
+            'name' => 'status',
+            ];
+    @endphp
+    @include('components.form_elements.mono_radio', $options)
+
 </div>
 <hr>
 <div class="card-footer">

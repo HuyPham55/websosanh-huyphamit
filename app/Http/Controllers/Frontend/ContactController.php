@@ -69,14 +69,17 @@ class ContactController extends BaseController
                 }
             }
         }
-        $customerEmail = $data['email'];
-        $data['subject'] = __('frontend.contact_success_message');
-        $data['message'] = either(
-            cachedOption('contact_email_reply_message_' . app()->getLocale()),
-            __('frontend.contact_success_message')
-        );
-        if (isValidEmail($customerEmail)) {
-            Mail::to($customerEmail)->send(new CustomerContactMail($data));
+
+        if (option('send_customer_email')) {
+            $customerEmail = $data['email'];
+            $data['subject'] = __('frontend.contact_success_message');
+            $data['message'] = either(
+                cachedOption('contact_email_reply_message_' . app()->getLocale()),
+                __('frontend.contact_success_message')
+            );
+            if (isValidEmail($customerEmail)) {
+                Mail::to($customerEmail)->send(new CustomerContactMail($data));
+            }
         }
     }
 }
