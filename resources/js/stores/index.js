@@ -16,6 +16,10 @@ export const useLayoutStore = defineStore('layout', () => {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency:'VND' }).format(value)
     }
 
+    function setDocumentTitle(string) {
+        document.title = string
+    }
+
     const computedReady = computed(() => pageData.ready && layoutData.ready)
 
     const fetchLayoutData = function () {
@@ -41,7 +45,7 @@ export const useLayoutStore = defineStore('layout', () => {
                 })
         }
     }
-    return {layoutData, fetchLayoutData, formatMoney, pageData, computedReady}
+    return {layoutData, fetchLayoutData, formatMoney, pageData, computedReady, setDocumentTitle}
 })
 
 

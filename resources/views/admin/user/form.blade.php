@@ -1,4 +1,3 @@
-
 <div class="card-body">
     <div class="form-group row">
         <label for="name"
@@ -71,12 +70,15 @@
         </div>
     </div>
 
-    @include('components.form_elements.mono_radio',
-    [
-        'value' => $data->status ?? true,
-        'label' => __('label.status.status'),
-        'name' => 'status',
-    ])
+    @php
+        $options = [
+            'value' => $data->status ?? true,
+            'label' => __('label.status.status'),
+            'name' => 'status',
+        ];
+    @endphp
+    @include('components.form_elements.mono_radio', $options)
+
 </div>
 <hr>
 <div class="card-footer">

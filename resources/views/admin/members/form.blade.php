@@ -71,7 +71,7 @@
 
     <div class="col-md-4">
         <div class="form-group">
-            <label for="gender" class="control-label">{{ __('label.gender') }}</label>
+            <label for="gender" class="control-label">{{ __('label.gender.gender') }}</label>
             <select id="gender" class="form-control select2" name="gender" required>
                 @foreach($genders as $key => $gender)
                     <option value="{{$key}}">
@@ -85,12 +85,15 @@
         </div>
     </div>
 
-    @include('components.form_elements.mono_radio',
-    [
-        'value' => $member->status ?? true,
-        'label' => __('label.status.status'),
-        'name' => 'status',
-    ])
+    @php
+        $options = [
+            'value' => $member->status ?? true,
+            'label' => __('label.status.status'),
+            'name' => 'status',
+            ];
+    @endphp
+    @include('components.form_elements.mono_radio', $options)
+
 </div>
 <hr>
 <div class="card-footer">

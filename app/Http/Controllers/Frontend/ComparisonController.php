@@ -54,13 +54,20 @@ class ComparisonController extends Controller
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
 
+        $arrParentId = $this->categoryService->getArrayParentId($category->lft, $category->rgt);
+        $arrChildrenId = $this->categoryService->getArrayChildrenId($category->lft, $category->rgt);
+        $arrCategories = array_merge($arrParentId, $arrChildrenId);
+        $related = $this->productSearchService->itemsByCategory(
+            $arrCategories, 0, 0, 0, 0, 0, 10
+        );
+        $related = $this->productSearchService->resultMapper($related['hits']);
         $displayLimit = 4;
         $featuredSellers = ProductResource::collection($model->products->take($displayLimit));
-
         return $this->success([
             'model' => $model,
             'breadcrumb' => $breadcrumb,
             'featuredSellers' => $featuredSellers,
+            'related' => $related
         ]);
     }
 

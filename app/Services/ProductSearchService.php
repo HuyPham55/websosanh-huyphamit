@@ -24,7 +24,7 @@ class ProductSearchService
         }
     }
 
-    public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0)
+    public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0, int $perPage = 40)
     {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
@@ -45,8 +45,7 @@ class ProductSearchService
         if ($seller !== 0) {
             $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
         }
-        $result = $this->service->search($query, 40, $fields, $page, $sort);
-        return $result;
+        return $this->service->search($query, $perPage, $fields, $page, $sort);
     }
 
     public function resultMapper($array)

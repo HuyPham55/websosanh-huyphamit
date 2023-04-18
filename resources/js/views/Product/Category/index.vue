@@ -132,6 +132,8 @@ const fetchCategoryData = function () {
             total.value = data['total'];
             sellers.data = data['sellers'];
             breadcrumb.data = data['breadcrumb'];
+
+            store.setDocumentTitle(category.value.title)
         }).finally(() => {
             store.pageData.ready = true;
             products.ready = true;

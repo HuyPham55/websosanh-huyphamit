@@ -186,7 +186,7 @@ class ElasticService
         $response = $this->client->search($params);
         $total = $response['hits']['total']['value'];
         $hits = $response['hits']['hits']; //can be null
-        return compact('hits', 'total', 'response');
+        return compact('hits', 'total');
     }
 
     public function suggest(array $query, array $searchQuery = [], array $fields = [], string|array $index = null)

@@ -52,7 +52,7 @@
                                     <span class="store-suggest-price">
                                         {{store.formatMoney(product['price'])}}
                                     </span>
-                                    <span class="store-suggest-view" @click="clickHandler(product)">
+                                    <span class="store-suggest-view" @click="toSeller(product)">
                                         To seller
                                     </span>
                                 </a>
@@ -152,6 +152,39 @@
                                     :ready="sellers.ready"
                                     :currentPage="paginationData.current_page"
                                     @changePage="changePage"/>
+                        <template v-if="related.data.length">
+                            <div class="title-section">
+                                Related
+                            </div>
+                            <div class="slider-related swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div v-for="item in related.data"
+                                        class="swiper-slide product-item">
+                                        <a href="#" @click.prevent="clickHandler(item)">
+                                            <span class="product-img">
+                                                <img :src="item.image"/>
+                                            </span>
+                                            <span class="product-action">
+                                                {{ getItemType(item) === 0 ? "To seller" : "Let's compare" }}
+                                            </span>
+                                            <h3>{{item.title}}</h3>
+                                            <span class="product-meta">
+                                                <span class="product-price">
+                                                    {{ store.formatMoney(item.price) }}
+                                                </span>
+                                            </span>
+                                            <span class="product-bottom">
+                                                <span class="product-store">
+                                                    {{item['featured']?"Featured":''}}
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </div>
+                               </div>
+                            </div>
+                        </template>
+
+
                         <h2 class="title-section">
                             <span>Specification for: {{model['title']}}</span>
                         </h2>
@@ -176,9 +209,9 @@ export default {
 </script>
 
 <script setup>
-import {useRoute} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
-    import {useLayoutStore} from "@/stores";
+import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
 import Pagination from "@/layout/Pagination/index.vue";
 import AsideNews from "@/Components/AsideNews/index.vue";
@@ -202,6 +235,40 @@ const model = ref({})
 const featuredSellers = reactive({
     data: []
 })
+const router = useRouter();
+
+const related = reactive({
+    data: [],
+    ready: false,
+})
+watch(() => related.ready, (newValue, oldValue) => {
+    if (related.ready) {
+        nextTick(initializeRelatedSlide)
+    }
+}, {immediate: true})
+const itemTypes = {
+    'products': 0,
+    'comparisons': 1
+} //also used in search form, product list
+
+const getItemType = function(item) {
+    //also used in search form, product list
+    let index = item['index'];
+    return itemTypes[index]
+}
+
+const clickHandler = function(item) {
+    //also used in search form, comparison
+    let itemType = getItemType(item);
+    let id = item.id;
+    if (itemType === 0) {
+        productStore.getProductUrl(id);
+        return;
+    }
+    if (itemType === 1) {
+        router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
+    }
+}
 
 const activeRef = ref('sellerSection')
 
@@ -278,14 +345,18 @@ const fetchModelData = function () {
             let data = res.data.data;
             model.value = data['model'];
             breadcrumb.data = data['breadcrumb'];
+            related.data = data['related'];
             let allSellers = data['featuredSellers'];
             featuredSellers.data = allSellers.slice(0, 4);
+
+            store.setDocumentTitle(model.value['title'])
         }).finally(() => {
         store.pageData.ready = true;
+        related.ready = true;
     })
 }
 
-const clickHandler = function(item) {
+const toSeller = function(item) {
     let id = item.id;
     productStore.getProductUrl(id);
 }
@@ -366,6 +437,46 @@ onBeforeMount(() => {
 onMounted(() => {
     getComparisonSellers()
 })
+
+const initializeRelatedSlide = function() {
+    let related = new Swiper('.slider-related', {
+        slidesPerView: 4,
+        spaceBetween: 20,
+        autoplay: {
+            delay: 4000,
+        },
+        speed: 1000,
+        rewind: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        // Responsive breakpoints
+        breakpoints: {
+
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+
+            },
+            // when window width is <= 768px
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+            },
+            // when window width is <= 960px
+            960: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+            },
+            // when window width is <= 1080px
+            1080: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            }
+        }
+    });
+}
 </script>
 
 <style scoped>

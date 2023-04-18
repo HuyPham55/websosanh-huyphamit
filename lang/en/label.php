@@ -2,11 +2,11 @@
 
 return array (
   'faqs' => 'FAQs',
-  'notification' => 
+  'notification' =>
   array (
     'success' => 'Success',
   ),
-  'status' => 
+  'status' =>
   array (
     'active' => 'Active',
     'inactive' => 'Inactive',
@@ -18,7 +18,7 @@ return array (
   'deleted' => 'Delete success',
   'error' => 'Error',
   'category' => 'Category',
-  'action' => 
+  'action' =>
   array (
     'add' => 'Add',
     'edit' => 'Edit',
@@ -33,6 +33,8 @@ return array (
     'save' => 'Save',
     'select' => 'Select',
     'clear' => 'Clear',
+    'import' => 'Import',
+    'export' => 'Export',
   ),
   'home' => 'Home',
   'blog' => 'Blog',
@@ -65,10 +67,16 @@ return array (
   'password_confirmation' => 'Password confirmation',
   'old_password' => 'Old password',
   'new_password' => 'New password',
-  'gender' => 'Gender',
+  'gender' =>
+  array (
+    'male' => 'Male',
+    'female' => 'Female',
+    'gender' => 'Gender',
+  ),
   'username' => 'Username',
   'logo' => 'Logo',
   'tags' => 'Tags',
+  'contact_email_reply_message' => 'Contact email reply message',
   'scrapes' => 'Scrapes',
   'products' => 'Products',
   'banner' => 'Banner',

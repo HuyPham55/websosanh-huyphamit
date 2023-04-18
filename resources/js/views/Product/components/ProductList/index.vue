@@ -2,7 +2,7 @@
     <ul class="product-wrap">
         <transition-group name="fade-transform">
             <li class="product-item" v-for="item in computedItems" :key="key(item)">
-                <a target="_blank">
+                <a target="_blank" @click.prevent="clickHandler(item)">
                     <span class="offer-icon" v-if="item['featured']">Featured</span>
                     <div class="product-item-content">
                     <span class="product-img">
@@ -63,10 +63,10 @@ const productStore = useProductStore();
 const itemTypes = {
     'products': 0,
     'comparisons': 1
-} //also used in search form
+} //also used in search form, comparison
 
 const getItemType = function(item) {
-    //also used in search form
+    //also used in search form, comparison
     let index = item['index'];
     return itemTypes[index]
 }
@@ -91,7 +91,7 @@ const computedItems = computed(() => {
 })
 
 const clickHandler = function(item) {
-    //also used in search form
+    //also used in search form, product list
     let itemType = getItemType(item);
     let id = item.id;
     if (itemType === 0) {

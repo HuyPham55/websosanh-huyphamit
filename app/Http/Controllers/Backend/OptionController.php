@@ -16,7 +16,8 @@ class OptionController extends BaseController
             'contact_hotline', 'contact_phone', 'contact_whatsapp_phone', 'contact_email',
             'social_facebook', 'social_twitter', 'social_instagram', 'emails_receive_notification',
 
-            'footer_logo'
+            'footer_logo',
+            'send_customer_email'
         ];
 
         $multiLangKeys = [

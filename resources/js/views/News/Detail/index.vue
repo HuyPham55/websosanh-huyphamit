@@ -192,6 +192,7 @@ const fetchModelData = function () {
             let data = res.data.data;
             model.value = data['model'];
             breadcrumb.data = data['breadcrumb'];
+            store.setDocumentTitle(model.value['title'])
         }).finally(() => {
         store.pageData.ready = true;
     })
