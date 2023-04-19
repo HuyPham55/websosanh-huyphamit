@@ -74,7 +74,7 @@
 </template>
 <script setup>
 import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
-import {useRoute} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {useLayoutStore} from "@/stores";
 import ProductList from "@/views/Product/components/ProductList/index.vue";
 import {Form} from "vee-validate";
@@ -86,6 +86,7 @@ import SellerFilter from "@/views/Product/components/Filters/SellerFilter.vue";
 
 const store = useLayoutStore();
 const route = useRoute();
+const router = useRouter();
 const computedId = computed(() => route.params.id | 0)
 
 // layout data
@@ -120,9 +121,11 @@ const products = reactive({
 const fetchCategoryData = function () {
     store.pageData.ready = false;
     const id = computedId.value
-    axios.post("/api/fetch-product-category", {
+    let data = {
         id,
-    })
+    }
+
+    axios.post("/api/fetch-product-category", data)
         .then(res => {
             store.pageData.ready = true;
             let data = res.data;

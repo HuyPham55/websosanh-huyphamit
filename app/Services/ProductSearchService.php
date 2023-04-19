@@ -24,10 +24,11 @@ class ProductSearchService
         }
     }
 
-    public function itemsByCategory(array $categories, $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0, int $perPage = 40)
+    public function itemsByCategory(array $categories, $page = 1, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0, int $perPage = 40)
     {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
+        $page = $this->getPageNumber($page);
         $sort = $this->validateSort($sorting);
         $query = [
             'bool' => [
@@ -61,9 +62,10 @@ class ProductSearchService
         );
     }
 
-    public function searchByKeyword($keyword, array $categories = [], $page = 0, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0) {
+    public function searchByKeyword($keyword, array $categories = [], $page = 1, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0) {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
+        $page = $this->getPageNumber($page);
         $sort = $this->validateSort($sorting);
         $query = [
             'bool' => [
@@ -136,5 +138,16 @@ class ProductSearchService
             $sort = [$explode[0] => $explode[1]];
         }
         return $sort;
+    }
+
+    /**
+     * @param mixed $page
+     * @return int
+     */
+    public function getPageNumber(mixed $page): int
+    {
+        //page is display number, starting from 1
+        return ($page | 0) - 1;
+        //page is now index number, starting from 0
     }
 }

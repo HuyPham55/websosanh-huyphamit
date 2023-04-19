@@ -56,7 +56,10 @@ class ProductController extends Controller
         $breadcrumb = ProductCategoryResource::collection(
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
-        $query = $this->productSearchService->itemsByCategory($arrCategoryIds);
+
+        $page = $request->integer('page', 1);
+
+        $query = $this->productSearchService->itemsByCategory($arrCategoryIds, $page);
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $total = $query['total'] | 0;
         $children = $category->children ?? [];
@@ -75,13 +78,8 @@ class ProductController extends Controller
         $sorting = $request->input('sorting');
         $max_price = $request->input('max_price') | 0;
         $min_price = $request->input('min_price') | 0;
-        $page = ($request->input('page') | 0);
-        if ($page !== 0) {
-            $page -= 1;
-        }
-        if ($page < 0) {
-            $page = 0;
-        }
+        $page = $request->integer('page', 1);
+
         $seller = $request->input('seller') | 0;
         $category = ProductCategory::find($categoryId);
         $arrCategoryIds = $this->getArr($category);
@@ -140,15 +138,9 @@ class ProductController extends Controller
         $sorting = $request->input('sorting');
         $max_price = $request->input('max_price') | 0;
         $min_price = $request->input('min_price') | 0;
-        $page = ($request->input('page') | 0);
+        $page = ($request->integer('page', 1));
 
         $keyword = $request->input('keyword');
-        if ($page !== 0) {
-            $page -= 1;
-        }
-        if ($page < 0) {
-            $page = 0;
-        }
         $seller = $request->input('seller') | 0;
 
         $query = $this->productSearchService->searchByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
