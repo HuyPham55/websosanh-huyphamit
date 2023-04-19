@@ -19,4 +19,5 @@ return array (
   'contact_email' => 'Contact email',
   'custom_code' => 'Custom code',
   'email_notification' => 'Email notification',
+  'send_customer_email' => 'Send customer email',
 );
