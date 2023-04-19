@@ -22,7 +22,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <iframe src="/admin/laravel-filemanager?type=all" style="width: 100%; height: 80vh; min-height: 500px; overflow: hidden; border: none;"></iframe>
+                <iframe src="/admin/laravel-filemanager?type=image" style="width: 100%; height: 80vh; min-height: 500px; overflow: hidden; border: none;"></iframe>
             </div>
         </div>
     </div>
