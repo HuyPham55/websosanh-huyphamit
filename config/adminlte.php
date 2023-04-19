@@ -283,6 +283,12 @@ return [
             ],
         ],
         [
+            'text' => 'media',
+            'icon' => 'fa fa-fw fa-play-circle',
+            'route' => 'media.list',
+            'active' => ['admin/media/*'],
+        ],
+        [
             'text' => 'static_pages',
             'icon' => 'far fa-fw fa-file',
             'can' => ['update_home_page', 'update_about_page', 'update_blog_index', 'update_404_page', 'update_contact_page'],
