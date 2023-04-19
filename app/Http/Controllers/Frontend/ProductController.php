@@ -53,12 +53,17 @@ class ProductController extends Controller
 
         $sellers = $category->sellers;
         $arrCategoryIds = $this->getArr($category);
-        $breadcrumb = ProductCategoryResource::collection(
-            $this->categoryService->breadcrumb($category->lft, $category->rgt)
-        );
+        $parentCollection = $this->categoryService->breadcrumb($category->lft, $category->rgt);
+        $breadcrumb = ProductCategoryResource::collection($parentCollection);
+        if (empty(strip_tags($category->content))) {
+            foreach ($parentCollection as $parent) {
+                if (strip_tags($parent->content)) {
+                    $category->content = $parent->content;
+                }
+            }
+        }
 
         $page = $request->integer('page', 1);
-
         $query = $this->productSearchService->itemsByCategory($arrCategoryIds, $page);
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $total = $query['total'] | 0;
