@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\DashBoardController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\FileController;
 use App\Http\Controllers\Backend\HomeSlideController;
+use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\MemberController;
 use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\ProductCategoryController;
@@ -30,6 +31,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:web']], function () {
     */
     Route::group(['prefix' => 'laravel-filemanager'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+
+
+    Route::group(['prefix' => 'media'], function () {
+        Route::get('/', [MediaController::class, 'getList'])->name('media.list');
     });
 
     Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');

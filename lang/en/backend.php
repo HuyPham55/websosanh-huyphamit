@@ -7,7 +7,7 @@ return array (
   'banners' => 'Banners',
   'user' => 'Users',
   'captcha' => 'Captcha',
-  'seo' => 
+  'seo' =>
   array (
     'title' => 'SEO - Title',
     'description' => 'SEO - Description',
@@ -23,4 +23,6 @@ return array (
   'featured' => 'Featured',
   'is_popular' => 'Popular',
   'recommended' => 'Recommended',
+  'send_customer_email' => 'Send customer email',
+  'media' => 'Media',
 );
