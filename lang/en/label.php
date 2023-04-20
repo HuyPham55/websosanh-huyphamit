@@ -77,4 +77,5 @@ return array (
   'logo' => 'Logo',
   'tags' => 'Tags',
   'contact_email_reply_message' => 'Contact email reply message',
+  'publish_date' => 'Publish date',
 );
