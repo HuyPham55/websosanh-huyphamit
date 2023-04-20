@@ -22,4 +22,5 @@ return array (
   'static_pages' => 'Static pages',
   'website_settings' => 'WEBSITE SETTINGS',
   'users' => 'Users',
+  'content' => 'Content',
 );
