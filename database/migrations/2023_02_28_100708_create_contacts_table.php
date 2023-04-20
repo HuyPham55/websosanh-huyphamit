@@ -22,6 +22,8 @@ return new class extends Migration {
             $table->text('address')->nullable();
             $table->text('message')->nullable();
 
+            $table->string('ip_address')->nullable();
+
             $table->boolean('is_read')->default(false);
             $table->boolean('favourite')->default(false);
             $table->timestamps();

@@ -28,6 +28,7 @@ class ContactController extends BaseController
         ]);
         $subject = $request->input('subject', 'New Contact');
         $data['subject'] = $subject;
+        $data['ip_address'] = $request->ip();
 
         try {
             //insert contact to database

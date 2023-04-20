@@ -21,4 +21,5 @@ return array (
   'email_notification' => 'Email notification',
   'send_customer_email' => 'Send customer email',
   'media' => 'Media',
+  'ip_address' => 'IP address',
 );
