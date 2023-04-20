@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\ProductObserver;
+use App\Services\ScrapeService;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,7 +66,7 @@ class Product extends BaseModel
         return $this->belongsTo(Scrape::class);
     }
 
-    public static function saveModel(self $model, Request $request)
+    public static function saveModel(self $model, Request $request, $normalizeImage = true)
     {
         DB::beginTransaction();
         try {
@@ -73,7 +74,12 @@ class Product extends BaseModel
                 $title = trim($request->input("$langKey.title"));
                 $slug = simple_slug($title);
 
-                $model->image = $request->input("$langKey.image");
+                $image = $request->input("$langKey.image");
+                $image = $normalizeImage
+                    ? (new ScrapeService())->saveImage($image, $model->getTable())
+                    : $image;
+
+                $model->image = $image;
                 $model->title = $title;
                 $model->slug = !empty($slug) ? $slug : 'post-detail';
             }
