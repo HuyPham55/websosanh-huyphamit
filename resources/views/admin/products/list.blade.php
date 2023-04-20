@@ -53,6 +53,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">{{ __('label.image') }}</th>
                             <th scope="col">{{ __('label.title') }}</th>
+                            <th scope="col">{{ __('label.scrapes') }}</th>
                             <th scope="col">{{ __('label.price') }}</th>
                             <th scope="col">{{ __('backend.sorting') }}</th>
                             <th scope="col">{{ __('label.status.status') }}</th>
@@ -94,6 +95,7 @@
                     {data: 'id', name: 'id'},
                     {data: 'image', name: 'image', orderable: false, render: imageContainer},
                     {data: 'title', name: 'title'},
+                    {data: 'scrape_id', name: 'scrape_id'},
                     {data: 'price', name: 'price', render: formatMoney},
                     {data: 'sorting', name: 'sorting', render: sortingContainer},
                     {data: 'status', name: 'status'},

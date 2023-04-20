@@ -20,15 +20,28 @@ class ScrapeService
     public function saveImage($url, $subFolderName)
     {
         $fallback = '/images/no-image.png';
+
+        if ($this->relativeExists($url)) {
+            $fallback = $url;
+        }
+
         if (!isValidUrl($url)) {
-            if ($this->relativeExists($url)) {
-                return $url;
-            }
             return $fallback;
         }
+
+        //Validate MIME
+        if (!isImage($url)) {
+            return $url;
+        }
+
         try {
             $request = Http::get($url);
+            if ($request->status() !== 200) {
+                return $fallback;
+            }
             $fileName = substr($url, strrpos($url, '/') + 1);
+            $fileName = $this->sanitizeFileName($fileName);
+
             $file = $request->body();
             $disk = 'public_relative';
             $diskPrefix = config("filesystems.disks.$disk.url");
@@ -48,5 +61,14 @@ class ScrapeService
     public function relativeExists($url): bool
     {
         return File::exists(public_path($url));
+    }
+
+    /**
+     * @param string $fileName
+     * @return array|string|string[]|null
+     */
+    public function sanitizeFileName(string $fileName): string|array|null
+    {
+        return preg_replace('/[^a-z0-9.]+/', '-', strtolower($fileName));
     }
 }
