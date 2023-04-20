@@ -13,6 +13,8 @@ use App\Services\CategoryService;
 use App\Services\ScrapeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ScrapeController extends BaseController
@@ -153,7 +155,7 @@ class ScrapeController extends BaseController
         //$model can be null
         $products = $model === null
             ? []
-            : $model->products()->get();
+            : data_get(json_decode($model->result), 'products', []);
         return response()->json([
             'model' => $model,
             'categories' => $categories,

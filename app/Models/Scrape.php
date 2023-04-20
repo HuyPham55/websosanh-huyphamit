@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\ScrapeObserver;
 use App\Services\CategoryService;
+use App\Services\ScrapeService;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,6 +56,15 @@ class Scrape extends BaseModel
         return $product;
     }
 
+    /**
+     * @param $price
+     * @return int
+     */
+    public static function extractPrice($price): int
+    {
+        return (int)preg_replace("/[^0-9]/", '', $price);
+    }
+
     public function seller()
     {
         //Determine seller of the scrape, can NOT be null
@@ -68,7 +78,6 @@ class Scrape extends BaseModel
 
     public static function saveModel(self $model, Request $request, $editFlag)
     {
-
         DB::beginTransaction();
         try {
             $model->url = $request->input('url_seed', 0);
@@ -90,8 +99,10 @@ class Scrape extends BaseModel
             }
 
             $products = $request->input('products') ?? [];
-
-            $model->result = json_encode($products);
+            $result = [
+                'products' => array_values($products) ?? []
+            ];
+            $model->result = json_encode($result);
             $data = [
                 'sample' => [
                     'title' => $request->input('title'),
@@ -111,16 +122,19 @@ class Scrape extends BaseModel
             $model->children = json_encode(array_values($children) ?? []);
             $model->save();
             $productData = [];
+
+            $scrapeService = new ScrapeService();
+
             foreach ($products as $item) {
                 $productData[] = [
                     'id' => $item['id'] | 0,
                     'product_category_id' => $model->product_category_id,
                     'title' => $item['title'],
                     'slug' => simple_slug($item['title']),
-                    'image' => $item['image'],
+                    'image' => $scrapeService->saveImage($item['image'], $model->id),
                     'url' => $item['url'],
-                    'price' => (int)preg_replace("/[^0-9]/", '', $item['price']),
-                    'original_price' => (int)preg_replace("/[^0-9]/", '', $item['original_price']),
+                    'price' => self::extractPrice($item['price']),
+                    'original_price' => self::extractPrice($item['original_price']),
                     'seller_id' => $model->seller_id | 0,
                 ];
             }
