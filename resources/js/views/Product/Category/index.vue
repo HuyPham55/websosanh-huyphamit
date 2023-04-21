@@ -30,7 +30,7 @@
                     <div class="sidebar-filter">
                         <div class="sidebar-filter-title">Filter</div>
                         <Form class="filter-wrap" @submit="">
-                            <FilterItem v-model="filterData.seller" :options="sellers.data" @change="filterProduct"/>
+                            <FilterItem v-model="filterData.seller" :options="sellers.data" @change="filterProduct" inputName="seller"/>
                             <PriceFilter :filterData="filterData" @change="filterProduct"/>
                         </Form>
                     </div>

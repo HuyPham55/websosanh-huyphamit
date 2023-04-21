@@ -18,7 +18,7 @@
                     class="filter-list-item filter-list-merchant-item merchant-filter">
                     <label class="filter-label">
                         <input type="radio" autocomplete="off"
-                               name="seller" v-model.number="selectedValue" :value="option.id"
+                               :name="inputName" v-model.number="selectedValue" :value="option.id"
                                @change="onChange"/>
                         <span class="filter-radio"></span>
                         <span class="filter-name">{{ option['title'] }}</span>
@@ -47,6 +47,9 @@ const props = defineProps({
     },
     modelValue: {
         required: true
+    },
+    inputName: {
+        required: true,
     }
 })
 const emit = defineEmits(['change', 'update:modelValue'])
