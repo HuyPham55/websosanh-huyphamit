@@ -232,10 +232,13 @@ return [
             'topnav_right' => true,
         ],
         [
+            'type' => 'darkmode-widget',
+            'topnav_right' => true, // Or "topnav => true" to place on the left.
+        ],
+        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -323,14 +326,14 @@ return [
             'can' => ['show_list_blog_categories', 'show_list_blog_posts'],
             'submenu' => [
                 [
-                    'text' => 'Categories',
+                    'text' => 'categories',
                     'route' => 'blog_categories.list',
                     'icon' => 'far fa-fw',
                     'active' => ['admin/blog/categories/*'],
                     'can' => 'show_list_blog_categories'
                 ],
                 [
-                    'text'    => 'Posts',
+                    'text'    => 'posts',
                     'route'     => 'blog_posts.list',
                     'icon' => 'far fa-fw',
                     'active' => ['admin/blog/posts/*'],
@@ -371,7 +374,7 @@ return [
                     'can' => 'update_blog_index'
                 ],
                 [
-                    'text' => 'Contact us',
+                    'text' => 'contact_us',
                     'route' => ['backend.static_page', ['key' => 'contact_page', 'title' => 'frontend.contact_us']],
                     'icon' => 'far fa-fw',
                     'active' => ['admin/static-pages/contact_page*'],

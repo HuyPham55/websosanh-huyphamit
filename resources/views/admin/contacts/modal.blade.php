@@ -24,5 +24,9 @@
         <th scope="row">{{ __('backend.content') }}</th>
         <td>{{ $contact->message }}</td>
     </tr>
+    <tr>
+        <th scope="row">{{ __('backend.ip_address') }}</th>
+        <td>{{ $contact->ip_address }}</td>
+    </tr>
     </tbody>
 </table>

@@ -32,6 +32,7 @@ return new class extends Migration
             $table->json('seo_title')->nullable();
             $table->json('seo_description')->nullable();
 
+            $table->timestamp('publish_date')->nullable();
             $table->timestamps();
         });
     }

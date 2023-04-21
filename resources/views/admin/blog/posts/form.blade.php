@@ -95,6 +95,21 @@
             </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="publish_date" class="control-label">{{ __('label.publish_date') }}</label>
+                <div>
+                    <input type="text" name="publish_date" id="publish_date"
+                           placeholder="YYYY-MM-DD"
+                           class="form-control datepicker"
+                           value="{{date('Y-m-d', strtotime($post->publish_date??now()))}}"/>
+                    @error('publish_date')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-2">
             <div class="form-group">
                 <label class="control-label" for="sorting">{{ __('backend.sorting') }}</label>
@@ -135,3 +150,15 @@
 
 @include('components.tinymce')
 @include('components.Select2')
+@include('components.BootstrapDatePicker')
+
+@push('js')
+    <script type="text/javascript">
+        jQuery(() => {
+            jQuery(".datepicker").datepicker({
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+            });
+        })
+    </script>
+@endpush

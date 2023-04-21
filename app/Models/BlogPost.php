@@ -16,6 +16,7 @@ use Spatie\Translatable\HasTranslations;
  * @property bool|mixed $is_popular
  * @property bool|mixed $status
  * @property mixed $created_at
+ * @property \Illuminate\Support\Carbon|mixed|null $publish_date
  */
 class BlogPost extends BaseModel
 {
@@ -61,6 +62,9 @@ class BlogPost extends BaseModel
             $model->sorting = $request->input('sorting') | 0;
 
             $model->is_popular = $request->boolean('is_popular', true);
+
+            $model->publish_date = $request->date('publish_date', 'Y-m-d', now());
+
             $model->status = $request->boolean('status', true);
             $model->save();
             DB::commit();
@@ -73,6 +77,11 @@ class BlogPost extends BaseModel
 
     public function getDateFormatAttribute()
     {
-        return $this->created_at ? date_format($this->created_at, 'Y/m/d') : null;
+        return $this->created_at ? date_format($this->created_at, 'Y-m-d') : null;
+    }
+
+    public function getPublishFormatAttribute()
+    {
+        return date_format($this->publish_date, 'Y-m-d');
     }
 }

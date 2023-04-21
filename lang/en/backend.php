@@ -25,4 +25,5 @@ return array (
   'recommended' => 'Recommended',
   'send_customer_email' => 'Send customer email',
   'media' => 'Media',
+  'ip_address' => 'IP address',
 );

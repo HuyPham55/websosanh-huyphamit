@@ -85,4 +85,5 @@ return array (
   'price' => 'Price',
   'original_price' => 'Original price',
   'comparisons' => 'Comparisons',
+  'publish_date' => 'Publish date',
 );
