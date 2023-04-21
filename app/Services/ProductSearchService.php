@@ -94,7 +94,8 @@ class ProductSearchService
         $maxPrice = 0,
         $sorting = null,
         $seller = 0,
-        bool $useScore = true
+        bool $useScore = true,
+        $useAggregation = true,
     )
     {
         $minPrice = $minPrice | 0;
@@ -158,7 +159,29 @@ class ProductSearchService
             ];
         }
         $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image', 'featured', 'seller_image'];
-        return $this->service->search($query, 40, $fields, $page, $sort);
+        $aggregations = [];
+        if ($useAggregation) {
+            $aggregations = [
+                'by_category' => ['terms' => ['field' => 'product_category_id']],
+                'by_seller' => ['terms' => ['field' => 'seller_id']],
+            ];
+        }
+        $result = $this->service->search(
+            $query,
+            40,
+            $fields,
+            $page,
+            $sort,
+            null,
+            $aggregations
+        );
+        if ($useAggregation) {
+            //re-mapping
+            $result['aggregations'] = array_map(function ($item) {
+                return $item['buckets'];
+            }, $result['aggregations']);
+        }
+        return $result;
     }
 
     public function suggestByKeyword(string $keyword)

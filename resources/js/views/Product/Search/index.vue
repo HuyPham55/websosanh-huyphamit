@@ -16,6 +16,10 @@
                 <div class="sidebar-filter">
                     <div class="sidebar-filter-title">Filter</div>
                     <Form class="filter-wrap" @submit="">
+                        <FilterItem v-model="filterData.category" :options="categories.data" @change="filterProduct">
+                            Category
+                        </FilterItem>
+                        <FilterItem v-model="filterData.seller" :options="sellers.data" @change="filterProduct"/>
                         <PriceFilter :filter-data="filterData" @change="filterProduct"/>
                     </Form>
                 </div>
@@ -66,6 +70,7 @@ import Pagination from "@/layout/Pagination/index.vue";
 import PriceFilter from "@/views/Product/components/Filters/PriceFilter.vue";
 import {Form} from "vee-validate";
 import {useLayoutStore} from "@/stores";
+import FilterItem from "@/views/Product/components/Filters/FilterItem.vue";
 
 const route = useRoute()
 
@@ -86,14 +91,18 @@ const filterData = reactive({
     sorting: '_score-desc',
     currentPage: 1,
     perPage: 40,
+    category: null,
 })
 
 
 const sellers = reactive({
     data: [],
-    keyword: '',
-    submit: 0
 })
+
+const categories = reactive({
+    data: [],
+})
+
 const products = reactive({
     data: [],
     ready: false,
@@ -114,6 +123,17 @@ const filterProduct = async function (page = 1) {
         data.max_price = filterData.max_price;
     }
     data.sorting = filterData.sorting
+
+    if (filterData.seller !== null) {
+        data.seller = filterData.seller
+    }
+    if (filterData.category !== null) {
+        data.category = filterData.category
+    }
+    if (!store.pageData.ready) {
+        data['onFirstLoad'] = true;
+    }
+
     if (typeof page === 'number' && page !== filterData.currentPage) {
         data.page = page;
     }
@@ -124,6 +144,10 @@ const filterProduct = async function (page = 1) {
             let data = res.data
             total.value = data['total'];
             products.data = data['products']['data'];
+            if (!store.pageData.ready) {
+                sellers.data = data['sellers'];
+                categories.data = data['categories'];
+            }
             took.value = data['took'] | 0;
             if (typeof page === 'number' && page !== filterData.currentPage) {
                 filterData.currentPage = page;
@@ -143,11 +167,12 @@ const changePage = function (pageNumber) {
 }
 
 onBeforeMount(async () => {
+    store.pageData.ready = false;
     await filterProduct()
+    store.pageData.ready = true;
 })
 
 onMounted(() => {
-    store.pageData.ready = true;
 })
 
 //utilities functions

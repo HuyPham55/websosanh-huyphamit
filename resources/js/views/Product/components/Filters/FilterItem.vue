@@ -1,25 +1,29 @@
 <template>
-    <div class="filter-item" v-if="sellers.data.length">
-        <div class="filter-title">Seller</div>
+    <div class="filter-item" v-if="options.length">
+        <div class="filter-title">
+            <slot>
+                Seller
+            </slot>
+        </div>
         <div class="filter-choose">
             <div class="filter-search">
                 <input class="filter-box-input" name="li-merchant-list" placeholder="Store"
-                       v-model="sellers.keyword" @change="filterSeller">
-                <span class="filter-search-icon" @click="filterSeller">
+                       v-model="keyword" @change="filterOptions">
+                <span class="filter-search-icon" @click="filterOptions">
                     <i class="fa fa-search"></i>
                 </span>
             </div>
             <ol class="filter-list li-merchant-list">
-                <li v-for="seller in computedSellers"
+                <li v-for="option in computedOptions"
                     class="filter-list-item filter-list-merchant-item merchant-filter">
                     <label class="filter-label">
                         <input type="radio" autocomplete="off"
-                               name="seller" v-model.number="filterData.seller" :value="seller.id"
+                               name="seller" v-model.number="selectedValue" :value="option.id"
                                @change="onChange"/>
                         <span class="filter-radio"></span>
-                        <span class="filter-name">{{ seller['title'] }}</span>
+                        <span class="filter-name">{{ option['title'] }}</span>
                     </label>
-                    <span class="filter-count">{{ seller['products_count'] }}</span>
+                    <span class="filter-count">{{ option['products_count'] }}</span>
                 </li>
             </ol>
         </div>
@@ -28,7 +32,7 @@
 
 <script>
 export default {
-    name: "SellerFilter"
+    name: "FilterItem"
 }
 </script>
 
@@ -37,35 +41,41 @@ export default {
 import {computed, ref} from "vue";
 
 const props = defineProps({
-    sellers: {
-        required: true
+    options: {
+        required: true,
+
     },
-    filterData: {
+    modelValue: {
         required: true
-    },
+    }
 })
-const emit = defineEmits(['change'])
+const emit = defineEmits(['change', 'update:modelValue'])
 
 const triggerChange = ref(0);
 
+const keyword = ref('');
+
+const selectedValue = ref(props.modelValue);
+
 const onChange = function () {
+    emit('update:modelValue', selectedValue.value);
     emit('change');
 }
-const sellers = props.sellers;
-const computedSellers = computed(() => {
+const options = props.options;
+const computedOptions = computed(() => {
     triggerChange.value //reactivity
-    let keyword = sellers.keyword.toUpperCase().trim();
-    let result = sellers.data;
-    if (keyword.length) {
+    let sanitized = keyword.value.toUpperCase().trim();
+    let result = options;
+    if (sanitized.length) {
         let callback = function (item) {
-            return (item['title'].toUpperCase().indexOf(keyword) > -1) || (item['url'].toUpperCase().indexOf(keyword) > -1)
+            return (item['title'].toUpperCase().indexOf(sanitized) > -1)
         }
         result = result.filter(item => callback(item))
     }
     return result;
 })
 
-const filterSeller = function () {
+const filterOptions = function () {
     triggerChange.value++;
 }
 </script>

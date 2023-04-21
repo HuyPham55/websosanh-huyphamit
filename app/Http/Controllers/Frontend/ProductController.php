@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\Seller;
 use App\Services\CategoryService;
 use App\Services\ElasticService;
 use App\Services\ProductSearchService;
@@ -43,10 +44,7 @@ class ProductController extends Controller
                     return $query
                         ->where([
                             ['status', CommonStatus::Active],
-                        ])
-                        ->withCount(['products' => function ($query) use ($id) {
-                            return $query;
-                        }]);
+                        ]);
                 }
             ])
             ->find($id);
@@ -62,16 +60,13 @@ class ProductController extends Controller
                 }
             }
         }
-
         $page = $request->integer('page', 1);
         $query = $this->productSearchService->itemsByCategory($arrCategoryIds, $page);
-        $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $total = $query['total'] | 0;
         $children = $category->children ?? [];
         $staticData = compact('category', 'children', 'sellers', 'breadcrumb');
         return response()->json(array_merge($staticData,
             [
-                'products' => $products,
                 'total' => $total,
             ]
         ));
@@ -138,8 +133,16 @@ class ProductController extends Controller
         ]);
     }
 
-    public function searchByKeyword(Request $request) {
-        $categoryId = $request->input("category") | 0;
+    public function searchByKeyword(Request $request)
+    {
+        $category = $request->input("category") | 0;
+        if ($category === 0) {
+            $category = [];
+        } else {
+            $category = [$category];
+        }
+
+        $onFirstLoad = $request->has('onFirstLoad');
         $sorting = $request->input('sorting');
         $max_price = $request->input('max_price') | 0;
         $min_price = $request->input('min_price') | 0;
@@ -148,15 +151,57 @@ class ProductController extends Controller
         $keyword = $request->input('keyword');
         $seller = $request->input('seller') | 0;
 
-        $query = $this->productSearchService->searchByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
+        $query = $this->productSearchService->searchByKeyword(
+            $keyword,
+            $category,
+            $page,
+            $min_price,
+            $max_price,
+            $sorting,
+            $seller,
+            true,
+            true
+        );
+
         $took = $query['took']; //ms
         $total = $query['total'] | 0;
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
-        $sellers = null;
+
+        if (!$onFirstLoad) {
+            return response()->json(array_merge([
+                    'products' => $products,
+                    'total' => $total,
+                    'took' => $took
+                ]
+            ));
+        }
+
+        //layout data for first load
+        $aggregations = $query['aggregations'];
+        $arrCategoryId = array_column($aggregations['by_category'], 'key');
+        $categoryCollection = ProductCategory::find($arrCategoryId);
+
+        $categories = array_map(function ($item) use ($categoryCollection) {
+            $result = $categoryCollection->find($item['key']);
+            $result->products_count = $item['doc_count'];
+            return $result;
+        },
+            $aggregations['by_category']);
+
+        $arrSellerId = array_column($aggregations['by_seller'], 'key');
+        $sellerCollection = Seller::find($arrSellerId);
+        $sellers = array_map(function ($item) use ($sellerCollection) {
+            $result = $sellerCollection->find($item['key']);
+            $result->products_count = $item['doc_count'];
+            return $result;
+        },
+            $aggregations['by_seller']);
         return response()->json(array_merge([
                 'products' => $products,
                 'total' => $total,
                 'took' => $took,
+                'categories' => $categories,
+                'sellers' => $sellers
             ]
         ));
     }

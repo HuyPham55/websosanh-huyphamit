@@ -86,6 +86,18 @@ export const useProductStore = defineStore('products', () => {
                 useLayoutStore().layoutData.ready = true;
             })
     }
-    return {getProductUrl}
+
+    function calcSale(item) {
+        if (!item.hasOwnProperty('original_price') || !item.hasOwnProperty('price')) {
+            return
+        }
+        if ((item.original_price === 0) || (item.original_price < item.price)) {
+            return
+        }
+        let percent = ((1 - (item.original_price / item.price)) * 100).toFixed(0);
+        return `${percent}%`
+    }
+
+    return {getProductUrl, calcSale}
 })
 

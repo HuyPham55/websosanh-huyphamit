@@ -162,7 +162,15 @@ class ElasticService
         }
     }
 
-    public function search(array $query, $perPage = 15, array $fields = [], $page = 0, array $sort = [], string|array $index = null)
+    public function search(
+        array        $query,
+                     $perPage = 15,
+        array        $fields = [],
+                     $page = 0,
+        array        $sort = [],
+        string|array $index = null,
+        array        $aggregation = []
+    )
     {
         if ($index === null) {
             $index = $this->index;
@@ -183,11 +191,20 @@ class ElasticService
         if ($sort !== []) {
             $params['body']['sort'] = $sort;
         }
+        if ($aggregation !== []) {
+            $params['body']['aggs'] = $aggregation;
+        }
         $response = $this->client->search($params);
         $total = $response['hits']['total']['value'];
         $hits = $response['hits']['hits']; //can be null
         $took = $response['took'];
-        return compact('hits', 'total', 'took');
+        $result = compact('hits', 'total', 'took');
+        if ($aggregation !== []) {
+            $result = array_merge($result, [
+                'aggregations' => $response['aggregations']]
+            );
+        }
+        return $result;
     }
 
     public function suggest(array $query, array $searchQuery = [], array $fields = [], string|array $index = null)

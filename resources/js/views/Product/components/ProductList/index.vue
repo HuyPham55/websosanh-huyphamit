@@ -13,8 +13,12 @@
                     </span>
                     <h3>{{ item.title }}</h3>
                     <span class="product-meta">
-                    <span class="product-price">{{ store.formatMoney(item.price) }}</span>
-                    <span class="product-percent">-27 %</span>
+                        <span class="product-price">
+                            {{ store.formatMoney(item.price) }}
+                        </span>
+                        <span class="product-percent">
+                            {{ productStore.calcSale(item) }}
+                        </span>
                     </span>
                         <span class="product-shipping blue-light">
                         <i class="ico-happy-smiley"></i>

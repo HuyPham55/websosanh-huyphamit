@@ -30,7 +30,7 @@
                     <div class="sidebar-filter">
                         <div class="sidebar-filter-title">Filter</div>
                         <Form class="filter-wrap" @submit="">
-                            <SellerFilter :filter-data="filterData" :sellers="sellers" @change="filterProduct"/>
+                            <FilterItem v-model="filterData.seller" :options="sellers.data" @change="filterProduct"/>
                             <PriceFilter :filterData="filterData" @change="filterProduct"/>
                         </Form>
                     </div>
@@ -81,7 +81,7 @@ import {Form} from "vee-validate";
 import Pagination from "@/layout/Pagination/index.vue";
 import ProductEmpty from "@/views/Product/components/ProductList/ProductEmpty.vue";
 import PriceFilter from "@/views/Product/components/Filters/PriceFilter.vue";
-import SellerFilter from "@/views/Product/components/Filters/SellerFilter.vue";
+import FilterItem from "@/views/Product/components/Filters/FilterItem.vue";
 
 
 const store = useLayoutStore();
@@ -108,8 +108,6 @@ const children = reactive({
 
 const sellers = reactive({
     data: [],
-    keyword: '',
-    submit: 0
 })
 
 const products = reactive({
@@ -131,16 +129,14 @@ const fetchCategoryData = function () {
             let data = res.data;
             category.value = data['category'];
             children.data = data['children'];
-            products.data = data['products']['data'];
             total.value = data['total'];
             sellers.data = data['sellers'];
             breadcrumb.data = data['breadcrumb'];
 
             store.setDocumentTitle(category.value.title)
         }).finally(() => {
-            store.pageData.ready = true;
-            products.ready = true;
-        })
+        store.pageData.ready = true;
+    })
 }
 
 const filterData = reactive({
@@ -201,6 +197,7 @@ const changePage = function (pageNumber) {
 
 onBeforeMount(() => {
     fetchCategoryData();
+    filterProduct();
 })
 onMounted(() => {
 })
