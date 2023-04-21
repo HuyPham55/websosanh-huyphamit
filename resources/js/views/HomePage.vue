@@ -48,7 +48,7 @@
                 <ul class="product-list">
                     <template v-for="(item, index) in category['products']">
                         <li class="list-item" v-if="index < 8">
-                            <a href="#">
+                            <a href="#" @click.prevent="onClick(item)">
                                 <div class="item-image__container">
                                     <img :src="item['image']" :title="item['title']"/>
                                 </div>
@@ -111,7 +111,11 @@ import {computed, nextTick, onBeforeMount, onMounted, reactive, ref, watch} from
 import {useLayoutStore} from "@/stores";
 
 import {sessionCache} from "@/API/sessionCache";
+import {useProductStore} from "@/stores";
+
 const store = useLayoutStore()
+
+const productStore = useProductStore();
 
 const headerData = computed(() => store.layoutData.headerData);
 
@@ -144,6 +148,11 @@ let callback = (callbackData) => {
 }
 
 let useCache = true;
+
+function onClick(item) {
+    let id = item.id;
+    productStore.getProductUrl(id);
+}
 
 onBeforeMount(() => {
     fetchHomePage()

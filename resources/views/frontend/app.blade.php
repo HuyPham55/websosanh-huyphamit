@@ -9,8 +9,10 @@
     <link href="/css/swiper.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
-
+    <link rel="shortcut icon" href="{{ asset(cachedOption('site_favicon')) }}"/>
     <script src="/js/swiper.min.js "></script>
+
+
     @vite(['resources/sass/style.scss'])
 </head>
 <body id="app">

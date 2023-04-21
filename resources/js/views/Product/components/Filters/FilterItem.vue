@@ -7,7 +7,7 @@
         </div>
         <div class="filter-choose">
             <div class="filter-search">
-                <input class="filter-box-input" name="li-merchant-list" placeholder="Store"
+                <input class="filter-box-input" name="li-merchant-list" placeholder="Search..."
                        v-model="keyword" @change="filterOptions">
                 <span class="filter-search-icon" @click="filterOptions">
                     <i class="fa fa-search"></i>
