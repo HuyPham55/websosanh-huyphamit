@@ -254,7 +254,6 @@ return [
             'text' => 'homepage',
             'icon' => 'fa fa-fw fa-home',
             'can' => ['show_list_home_slides'],
-            'topnav' => true,
             'submenu' => [
                 [
                     'text' => 'slides',
