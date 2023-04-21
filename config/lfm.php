@@ -89,6 +89,7 @@ return [
                 'application/x-7z-compressed',
                 'video/mp4',
                 'application/octet-stream',
+                'image/x-icon',
 
             ],
         ],
@@ -106,6 +107,8 @@ return [
                 'image/gif',
                 'image/svg',
                 'image/svg+xml',
+                'image/x-icon',
+
             ],
         ],
     ],
