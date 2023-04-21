@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Spatie\Translatable\HasTranslations;
 
@@ -63,7 +64,7 @@ class BlogPost extends BaseModel
 
             $model->is_popular = $request->boolean('is_popular', true);
 
-            $model->publish_date = $request->date('publish_date', 'Y-m-d', now());
+            $model->publish_date = $request->date('publish_date', 'Y-m-d');
 
             $model->status = $request->boolean('status', true);
             $model->save();
@@ -77,11 +78,11 @@ class BlogPost extends BaseModel
 
     public function getDateFormatAttribute()
     {
-        return date_format($this->created_at, 'Y-m-d');
+        return $this->created_at ? date_format($this->created_at, 'Y-m-d') : null;
     }
 
     public function getPublishFormatAttribute()
     {
-        return date_format($this->publish_date, 'Y-m-d');
+        return $this->publish_date ? date_format(Carbon::parse($this->publish_date), 'Y-m-d') : null;
     }
 }
