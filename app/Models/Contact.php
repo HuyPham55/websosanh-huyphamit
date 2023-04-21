@@ -17,9 +17,7 @@ class Contact extends Model
     protected $guarded = [];
     public function getDateFormatAttribute()
     {
-        if ($this->created_at) {
-            return date_format($this->created_at, 'Y/m/d');
-        }
+        return $this->created_at ? date_format($this->created_at, 'Y-m-d') : null;
     }
 
 }
