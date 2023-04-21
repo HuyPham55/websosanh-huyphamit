@@ -85,7 +85,7 @@ class Product extends BaseModel
             }
             $model->product_category_id = $request->input('category', 0);
             $model->sorting = $request->input('sorting') | 0;
-            $model->price = $request->integer('sorting') | 0;
+            $model->price = $request->integer('price') | 0;
             $model->original_price = $request->integer('original_price') | 0;
 
             $model->featured = $request->boolean('featured', true);

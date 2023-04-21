@@ -126,17 +126,22 @@ class Scrape extends BaseModel
             $scrapeService = new ScrapeService();
 
             foreach ($products as $item) {
-                $productData[] = [
-                    'id' => $item['id'] | 0,
-                    'product_category_id' => $model->product_category_id,
-                    'title' => $item['title'],
-                    'slug' => simple_slug($item['title']),
-                    'image' => $scrapeService->saveImage($item['image'], $model->id),
-                    'url' => $item['url'],
-                    'price' => self::extractPrice($item['price']),
-                    'original_price' => self::extractPrice($item['original_price']),
-                    'seller_id' => $model->seller_id | 0,
+                $custom = [
+                    'featured' => 0,
                 ];
+                $productData[] = array_merge(
+                    [
+                        'id' => $item['id'] | 0,
+                        'product_category_id' => $model->product_category_id,
+                        'title' => $item['title'],
+                        'slug' => simple_slug($item['title']),
+                        'image' => $scrapeService->saveImage($item['image'], $model->id),
+                        'url' => $item['url'],
+                        'price' => self::extractPrice($item['price']),
+                        'original_price' => self::extractPrice($item['original_price']),
+                        'seller_id' => $model->seller_id | 0,
+                    ],
+                    $custom);
             }
             $arrayItemId = array_map(function ($item) {
                 return $item['id'];
@@ -152,7 +157,7 @@ class Scrape extends BaseModel
                     if ($product == null) {
                         self::createProduct($newItemData, $model);
                     } else {
-                        $product->update($itemData);
+                        $product->update(Arr::except($itemData, ['featured']));
                     }
                 } else {
                     self::createProduct($newItemData, $model);

@@ -135,7 +135,7 @@
 
         @php
             $options = [
-                'value' => $post->status ?? true,
+                'value' => $post->is_popular ?? true,
                 'label' => __('backend.is_popular'),
                 'name' => 'is_popular',
                 ];

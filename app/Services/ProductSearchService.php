@@ -24,28 +24,52 @@ class ProductSearchService
         }
     }
 
-    public function itemsByCategory(array $categories, $page = 1, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0, int $perPage = 40)
+    public function itemsByCategory(
+        array $categories,
+              $page = 1,
+              $minPrice = 0,
+              $maxPrice = 0,
+              $sorting = null,
+              $seller = 0,
+        int   $perPage = 40,
+        bool  $useScore = true
+    )
     {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
         $page = $this->getPageNumber($page);
         $sort = $this->validateSort($sorting);
-        $query = [
-            'bool' => [
-                'filter' => [
-                    ['term' => ['status' => 1]],
-                    ['terms' => ['product_category_id' => $categories]],
-                ]
-            ],
+        $filter = [
+            ['term' => ['status' => 1]],
+            ['terms' => ['product_category_id' => $categories]],
         ];
-        $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image', 'featured', 'seller_image'];
         if (($minPrice || $maxPrice) && ($minPrice <= $maxPrice)) {
-            $query['bool']['filter'][] = ['range' => ['price' => ['gte' => $minPrice, 'lte' => $maxPrice]]];
+            $filter[] = ['range' => ['price' => ['gte' => $minPrice, 'lte' => $maxPrice]]];
         }
-
         if ($seller !== 0) {
-            $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
+            $filter[] = ['term' => ['seller_id' => $seller]];
         }
+        $query = [
+            'function_score' => [
+                'query' => [
+                    'bool' => [
+                        'filter' => $filter
+                    ],
+                ],
+                'functions' => [
+                ],
+                'boost_mode' => 'sum',
+            ]
+        ];
+        if ($useScore) {
+            $query['function_score']['functions'][] = [
+                'filter' => [
+                    ['term' => ['featured' => 1]]
+                ],
+                'weight' => 2
+            ];
+        }
+        $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image', 'featured', 'seller_image'];
         return $this->service->search($query, $perPage, $fields, $page, $sort);
     }
 
@@ -62,35 +86,78 @@ class ProductSearchService
         );
     }
 
-    public function searchByKeyword($keyword, array $categories = [], $page = 1, $minPrice = 0, $maxPrice = 0, $sorting = null, $seller = 0) {
+    public function searchByKeyword(
+        $keyword,
+        array $categories = [],
+        $page = 1,
+        $minPrice = 0,
+        $maxPrice = 0,
+        $sorting = null,
+        $seller = 0,
+        bool $useScore = true
+    )
+    {
         $minPrice = $minPrice | 0;
         $maxPrice = $maxPrice | 0;
         $page = $this->getPageNumber($page);
         $sort = $this->validateSort($sorting);
-        $query = [
-            'bool' => [
-                'should' => [
-                    ['match' => ['title' => ['query' => $keyword, 'fuzziness'=> 'AUTO']]],
-                    ['match' => ['slug' => $keyword]],
-                    ['match' => ['image' => $keyword]],
-                ],
-                "minimum_should_match" => 1,
-                'filter' => [
-                    ['term' => ['status' => 1]],
-                ]
-            ],
+
+
+        $filter = [
+            ['term' => ['status' => 1]],
         ];
-        $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image', 'featured', 'seller_image'];
+
         if (($minPrice || $maxPrice) && ($minPrice <= $maxPrice)) {
-            $query['bool']['filter'][] = ['range' => ['price' => ['gte' => $minPrice, 'lte' => $maxPrice]]];
+            $filter[] = ['range' => ['price' => ['gte' => $minPrice, 'lte' => $maxPrice]]];
+        }
+
+        if ($seller !== 0) {
+            $filter[] = ['term' => ['seller_id' => $seller]];
         }
 
         if (!empty($categories)) {
-            $query['bool']['field'][] = ['terms' => ['product_category_id' => $categories]];
+            $filter[] = ['terms' => ['product_category_id' => $categories]];
         }
-        if ($seller !== 0) {
-            $query['bool']['filter'][] = ['term' => ['seller_id' => $seller]];
+
+        $query = [
+            'function_score' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            ['multi_match' =>
+                                [
+                                    'query' => $keyword,
+                                    'fuzziness' => 'AUTO',
+                                    'fields' => ['title^2', 'slug', 'image'],
+                                ],
+
+                            ]
+                        ],
+                        'filter' => $filter
+                    ],
+                ],
+                'boost_mode' => 'multiply',
+            ]
+        ];
+
+        $fallbackQuery = [
+            'should' => [
+                ['match' => ['title' => ['query' => $keyword, 'fuzziness' => 'AUTO']]],
+                ['match' => ['slug' => $keyword]],
+                ['match' => ['image' => $keyword]],
+            ],
+            "minimum_should_match" => 1,
+        ];
+
+        if ($useScore) {
+            $query['function_score']['functions'][] = [
+                'filter' => [
+                    ['term' => ['featured' => 1]]
+                ],
+                'weight' => 1.5
+            ];
         }
+        $fields = ['id', 'title', 'slug', 'price', 'original_price', 'image', 'featured', 'seller_image'];
         return $this->service->search($query, 40, $fields, $page, $sort);
     }
 

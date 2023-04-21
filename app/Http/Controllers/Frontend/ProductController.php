@@ -149,7 +149,7 @@ class ProductController extends Controller
         $seller = $request->input('seller') | 0;
 
         $query = $this->productSearchService->searchByKeyword($keyword, [], $page, $min_price, $max_price, $sorting, $seller);
-        $took = $query['response']['took']; //ms
+        $took = $query['took']; //ms
         $total = $query['total'] | 0;
         $products['data'] = $this->productSearchService->resultMapper($query['hits']);
         $sellers = null;
