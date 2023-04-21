@@ -232,10 +232,13 @@ return [
             'topnav_right' => true,
         ],
         [
+            'type' => 'darkmode-widget',
+            'topnav_right' => true, // Or "topnav => true" to place on the left.
+        ],
+        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -251,6 +254,7 @@ return [
             'text' => 'homepage',
             'icon' => 'fa fa-fw fa-home',
             'can' => ['show_list_home_slides'],
+            'topnav' => true,
             'submenu' => [
                 [
                     'text' => 'slides',
