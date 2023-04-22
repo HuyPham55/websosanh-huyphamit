@@ -35,6 +35,7 @@ return array (
     'clear' => 'Clear',
     'import' => 'Import',
     'export' => 'Export',
+    'copy' => 'Copy',
   ),
   'home' => 'Home',
   'blog' => 'Blog',

@@ -7,6 +7,7 @@
             cancel: '{{trans('label.action.cancel')}}',
             status: {
                 canceled: '{{trans('label.status.canceled')}}',
+                success: '{{trans('label.notification.success')}}',
             },
             action: {
                 confirm_action: '{{trans('label.action.confirm_action')}}',
