@@ -26,8 +26,9 @@ class FileController extends BaseController
 
         $fileName = $file->getClientOriginalName();
 
-
-        $directory = "photos/shares";
+        $directory = $request->has('path')
+            ? $request->input('path')
+            : "photos/shares";
         $path = Storage::disk($disk)
             ->putFileAs(
                 $directory, $file, $fileName
