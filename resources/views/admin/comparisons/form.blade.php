@@ -130,6 +130,17 @@
             </div>
         @endforeach
     </div>
+
+    <div class="form-group">
+        <label class="control-label">{{ __('label.image') }}</label>
+        @includeIf('components.select_file', [
+            'keyId' => "slides_string",
+            'inputName' => "slides_string",
+            'inputValue' => old("slides_string"),
+            'lfmType' => 'image',
+            'note' => 'height x width',
+        ])
+    </div>
 </div>
 
 <div class="card-body">

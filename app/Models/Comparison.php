@@ -74,7 +74,22 @@ class Comparison extends BaseModel
             $model->status = $request->boolean('status', true);
 
 
-            $model->slide = $request->input('slides');
+            $model->slide = $request->input('slides') ?? [];
+
+            if (!empty($request->input('slides_string'))) {
+                $array = explode(',', $request->input('slides_string'));
+                $array = array_merge($array, $model->slide);
+                $trimmed = array_map(function ($item) {
+                    return trim($item);
+                }, $array);
+                $filtered = array_filter($trimmed, function ($item) {
+                    return !empty($item);
+                });
+                if (!empty($filtered)) {
+                    $model->slide = $filtered;
+                }
+            }
+
             $model->save();
             DB::commit();
             return $model;
