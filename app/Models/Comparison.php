@@ -30,6 +30,7 @@ class Comparison extends BaseModel
         'featured' => 'integer',
         'is_popular' => 'integer',
         'status' => 'integer',
+        'slide' => 'array',
     ];
 
     public static function boot()
@@ -73,7 +74,7 @@ class Comparison extends BaseModel
             $model->status = $request->boolean('status', true);
 
 
-            $model->slide = $request->input('slide');
+            $model->slide = $request->input('slides');
             $model->save();
             DB::commit();
             return $model;

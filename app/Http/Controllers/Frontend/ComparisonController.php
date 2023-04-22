@@ -58,7 +58,7 @@ class ComparisonController extends Controller
         $arrChildrenId = $this->categoryService->getArrayChildrenId($category->lft, $category->rgt);
         $arrCategories = array_merge($arrParentId, $arrChildrenId);
         $related = $this->productSearchService->itemsByCategory(
-            $arrCategories, 0, 0, 0, 0, 0, 10
+            $arrCategories, 1, 0, 0, 0, 0, 10
         );
         $related = $this->productSearchService->resultMapper($related['hits']);
         $displayLimit = 4;
