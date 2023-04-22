@@ -20,7 +20,9 @@ export const useLayoutStore = defineStore('layout', () => {
     }
 
     function setDocumentTitle(string) {
-        document.title = string
+        if (typeof string === "string" && string) {
+            document.title = string
+        }
     }
 
     const computedReady = computed(() => pageData.ready && layoutData.ready)

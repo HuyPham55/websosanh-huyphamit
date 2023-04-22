@@ -23,6 +23,7 @@ class PostResource extends JsonResource
             'short_description' => $this->short_description,
             'content' => $this->content,
             'created_at' => $this->date_format,
+            'seo_description' => $this->seo_description
         ];
     }
 }

@@ -26,7 +26,9 @@
                     </span>
                     </div>
                     <span class="product-bottom">
-                    <span class="product-store"></span>
+                    <span class="product-store" v-if="item['is_popular']">
+                        Popular product
+                    </span>
                     <span class="product-store-logo">
                         <img v-if="item['seller_image']" :src="item['seller_image']">
                     </span>

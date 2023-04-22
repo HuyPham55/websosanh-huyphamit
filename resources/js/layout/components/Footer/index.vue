@@ -48,7 +48,7 @@
                         <a href="#">Khiếu nại</a>
                     </li>
                     <li>
-                        <a href="">Giới thiệu</a>
+                        <router-link :to="{name: 'about'}">About us</router-link>
                     </li>
                     <li>
                         <a href="#">Tin tức</a>

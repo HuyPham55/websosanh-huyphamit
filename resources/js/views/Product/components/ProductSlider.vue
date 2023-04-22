@@ -20,6 +20,9 @@
                         <span class="product-store">
                             {{ getItemMeta(item) }}
                         </span>
+                        <span v-if="item.hasOwnProperty('seller_image')" class="product-store-logo">
+                           <img :src="item.seller_image">
+                        </span>
                     </span>
                 </a>
             </div>

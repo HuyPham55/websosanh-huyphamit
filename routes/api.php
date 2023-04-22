@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\ComparisonController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Frontend\StaticPageController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +47,6 @@ Route::post('/fetch-aside-news', [NewsController::class, 'fetchAsideNews']);
 Route::post('/fetch-news-detail', [NewsController::class, 'fetchModelData']);
 
 Route::get('/search', [SearchController::class, 'search']);
+
+Route::post('/get-about-page', [StaticPageController::class, 'getAboutPage']);
 

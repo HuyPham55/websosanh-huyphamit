@@ -238,9 +238,11 @@ const computedSortingTitle = computed(() =>
     sortingOptions.find(item => item.value === sellers.sortBy).title
 )
 
-let computedSlides = computed(() => {
-    return [model.value["image"], ...model.value["slide"]];
-})
+let computedSlides = computed(() =>
+    model.value.hasOwnProperty('slide') && Array.isArray(model.value["slide"])
+        ? [model.value["image"], ...model.value["slide"]]
+        : [model.value["image"]]
+)
 
 const sellers = reactive({
     data: [],

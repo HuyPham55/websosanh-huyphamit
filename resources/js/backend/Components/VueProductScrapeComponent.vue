@@ -7,8 +7,12 @@
                         <label for="category" class="control-label">
                             Category
                         </label>
-                        <Select2Vue name="category" class="form-control" v-model="selectedCategory"
-                                    :options="computedProductCategories" required></Select2Vue>
+                        <Select2Vue name="category"
+                                    class="form-control"
+                                    v-model="selectedCategory"
+                                    :options="computedProductCategories"
+                                    required>
+                        </Select2Vue>
                     </div>
                 </div>
 
@@ -17,8 +21,13 @@
                         <label for="category" class="control-label">
                             Seller
                         </label>
-                        <Select2Vue name="seller" class="form-control" v-model="selectedSeller"
-                                    :options="computedSellers"></Select2Vue>
+                        <Select2Vue
+                            name="seller"
+                            class="form-control"
+                            v-model="selectedSeller"
+                            :options="computedSellers"
+                            required>
+                        </Select2Vue>
                     </div>
                 </div>
 
@@ -67,54 +76,53 @@
                                     <Field type="text" v-model="sample.title" name="title"
                                            :rules="validateSampleTitle"
                                            v-slot="{field, errors, meta}"
-                                           :validateOnMount="true"
+                                           :validateOnMount="false"
                                            :validateOnInput="true">
                                         <input autocomplete="off" v-bind="field"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid && sample.title}"/>
+                                               :class="{'form-control': 1, 'is-invalid': errors.length && meta.touched,'is-valid': meta.valid && sample.title}"/>
                                     </Field>
                                     <ErrorMessage name="title" class="text-danger small" as="p"/>
                                 </div>
                                 <div class="col-md-3">
                                     <Field type="text" v-model="sample.image" name="image"
                                            :rules="validateSampleImage" v-slot="{field, errors, meta}"
-                                           :validateOnMount="true"
+                                           :validateOnMount="false"
                                            :validateOnInput="true">
                                         <input autocomplete="off" v-bind="field" :disabled="!sample.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid && sample.image}"/>
+                                               :class="{'form-control': 1, 'is-invalid': errors.length && meta.touched,'is-valid': meta.valid && sample.image}"/>
                                     </Field>
                                     <ErrorMessage name="image" class="text-danger small" as="p"/>
                                 </div>
                                 <div class="col-md-2">
                                     <Field type="text" v-model="sample.url" name="url" :rules="validateSampleUrl"
                                            v-slot="{field, errors, meta}"
-                                           :validateOnMount="true"
+                                           :validateOnMount="false"
                                            :validateOnInput="true">
                                         <input autocomplete="off" v-bind="field" :disabled="!sample.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid && sample.url}"/>
+                                               :class="{'form-control': 1, 'is-invalid': errors.length && meta.touched,'is-valid': meta.valid && sample.url}"/>
                                     </Field>
                                     <ErrorMessage name="url" class="text-danger small" as="p"/>
                                 </div>
                                 <div class="col-md-2">
                                     <Field type="text" v-model="sample.price" name="price"
                                            :rules="validateSamplePrice"
-                                           :validateOnMount="true"
+                                           :validateOnMount="false"
                                            :validateOnInput="true"
                                            v-slot="{field, errors, meta}">
                                         <input autocomplete="off" v-bind="field" :disabled="!sample.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid && sample.price}"/>
+                                               :class="{'form-control': 1, 'is-invalid': errors.length && meta.touched,'is-valid': meta.valid && sample.price}"/>
                                     </Field>
                                     <ErrorMessage name="price" class="text-danger small" as="p"/>
                                 </div>
                                 <div class="col-md-2">
                                     <Field type="text" v-model="sample.original_price" name="original_price"
+                                           :validateOnMount="false"
                                            :validateOnInput="true"
-                                           :validateOnMount="true"
                                            :rules="validateSampleOriginalPrice" v-slot="{field, errors, meta}">
                                         <input autocomplete="off" v-bind="field" :disabled="!sample.title"
-                                               :class="{'form-control': 1, 'is-invalid': errors.length,'is-valid': meta.valid && sample.original_price}"/>
+                                               :class="{'form-control': 1, 'is-invalid': errors.length && meta.touched,'is-valid': meta.valid && sample.original_price}"/>
                                     </Field>
-                                    <ErrorMessage name="original_price" class="text-danger small"
-                                                  as="p"/>
+                                    <ErrorMessage name="original_price" class="text-danger small" as="p"/>
                                 </div>
 
                             </div>
@@ -131,7 +139,7 @@
             </Form>
 
             <template v-if="products.data.length">
-                <Form class="col-md-12 rounded mb-3" as="div" id="paginationForm">
+                <Form class="col-md-12 rounded mb-3" as="div" id="paginationForm" v-show="false">
                     <div class="col-md-12" hidden>
                         <input name="htmlTextContent" :value="iframeInnerText"/>
                         <input name="htmlContent" :value="iframeInnerHTML"/>

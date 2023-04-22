@@ -30,19 +30,25 @@
     line-height: 23px;
     font-weight: 700;
 }
+
 .article-wrap {
     .page-wrap {
         display: flex;
-        margin: 24px -12px 0;
+        //margin: 24px -12px 0;
+        @media only screen and (max-width: 768px) {
+            flex-direction: column;
+        }
+
         .article-container {
             position: relative;
             width: 100%;
-            padding: 0 12px;
+            //padding: 0 12px;
             @media only screen and (min-width: 768px) {
                 -ms-flex: 0 0 73.53%;
                 flex: 0 0 73.53%;
                 max-width: 73.53%;
             }
+
             article {
                 .title {
                     font-size: 28px;
@@ -50,6 +56,7 @@
                     font-weight: 700;
                     color: $main-color;
                 }
+
                 .article-meta {
                     font-size: 12px;
                     line-height: 14px;
@@ -57,22 +64,29 @@
                     margin: 8px 0 0;
                     font-style: italic;
                 }
+
                 .article-description {
                     font-size: 18px;
                     line-height: 21px;
                     font-weight: 700;
                     margin: 24px 0 0;
                 }
+
                 .article-content {
                     margin: 24px 0 0;
                     font-size: 15px;
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
                 }
-
             }
         }
     }
 }
 
+
+//comparison
 .products {
     .page-wrap {
         .product-title {
@@ -389,7 +403,6 @@
                                 .compare-action-child {
                                     position: absolute;
                                     top: 34px;
-                                    left: -50%;
                                     background: #fff none;
                                     box-shadow: 2px 2px 4px rgba(0, 0, 0, .15), -2px 0 4px rgba(0, 0, 0, .15);
                                     width: 100%;
@@ -400,6 +413,12 @@
                                     margin: 0;
                                     padding: 0;
                                     list-style: none;
+                                    @media only screen and (min-width: 768px) {
+                                        left: -50%;
+                                    }
+                                    @media only screen and (max-width: 768px) {
+                                        right: 0;
+                                    }
 
                                     li {
                                         padding: 8px 22px 8px 16px;
@@ -597,6 +616,7 @@
 
                 .product-specification {
                     position: relative;
+
                     img {
                         width: 100%;
                     }
@@ -1079,7 +1099,7 @@
                                 }
 
                                 .product-shipping {
-                                    padding: 0 0 0 20px;
+                                    padding: 0 0 0 0;
                                     font-size: 11px;
                                     line-height: 15px;
                                     display: block;
@@ -1090,15 +1110,7 @@
 
                             .product-bottom {
                                 .product-store-logo {
-                                    -ms-flex: 0 0 45%;
-                                    flex: 0 0 45%;
-                                    max-width: 45%;
-                                    padding: 0 6px;
-                                    display: block;
-                                    line-height: 0;
-
                                     img {
-                                        max-height: 30px;
                                     }
                                 }
                             }
@@ -1248,6 +1260,7 @@
             -ms-flex-wrap: wrap;
             flex-wrap: wrap;
             align-items: center;
+            justify-content: center;
 
             .product-store {
                 -ms-flex: 0 0 55%;
@@ -1263,6 +1276,23 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 min-height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .product-store-logo {
+                -ms-flex: 0 0 45%;
+                flex: 0 0 45%;
+                max-width: 45%;
+                padding: 0 6px;
+                display: block;
+                line-height: 0;
+                text-align: center;
+                min-height: 30px;
+                img {
+                    max-height: 30px;
+                }
             }
         }
     }
@@ -1296,6 +1326,7 @@
         }
     }
 }
+
 //comparison & news detail
 
 .article-sidebar {
@@ -1375,6 +1406,53 @@
                         text-overflow: ellipsis;
                     }
                 }
+            }
+        }
+    }
+}
+
+.article-related {
+    margin: 32px 0 32px;
+
+    & > h5 {
+        font-size: 30px;
+        line-height: 35px;
+        margin: 0;
+        font-weight: 400;
+    }
+    .article-related-wrap {
+        margin: 16px 0 0;
+        .article-related-img {
+            width: 100%;
+            height: 155px;
+            position: relative;
+            line-height: 0;
+            display: block;
+            overflow: hidden;
+            img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                height: 100%;
+                width: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+                -o-object-position: center;
+                object-position: center;
+                -webkit-transform: translate(-50%,-50%);
+                -ms-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+            }
+        }
+        h3 {
+            color: #333;
+            font-size: 18px;
+            line-height: 21px;
+            margin: 16px 0 0;
+            font-weight: 700;
+            transition: all 0.3s;
+            &:hover {
+                color: $main-color;
             }
         }
     }
