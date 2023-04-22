@@ -2,14 +2,14 @@
     <ul class="product-wrap">
         <transition-group name="fade-transform">
             <li class="product-item" v-for="item in computedItems" :key="key(item)">
-                <a target="_blank" @click.prevent="clickHandler(item)">
+                <a target="_blank" @click.prevent="productStore.onClick(item)">
                     <span class="offer-icon" v-if="item['featured']">Featured</span>
                     <div class="product-item-content">
                     <span class="product-img">
                         <img :src="item.image" :alt="item.title"/>
                     </span>
-                    <span class="product-action" @click="clickHandler(item)">
-                        {{ getItemType(item) === 0 ? "To seller" : "Let's compare" }}
+                    <span class="product-action" @click="productStore.onClick(item)">
+                        {{ item.index === 'products' ? "To seller" : "Let's compare" }}
                     </span>
                     <h3>{{ item.title }}</h3>
                     <span class="product-meta">
@@ -21,8 +21,8 @@
                         </span>
                     </span>
                         <span class="product-shipping blue-light">
-                        <i class="ico-happy-smiley"></i>
-                        Mua ở đây hỗ trợ trả góp
+                            <i class="ico-happy-smiley"></i>
+                            Mua ở đây hỗ trợ trả góp
                     </span>
                     </div>
                     <span class="product-bottom">
@@ -64,16 +64,7 @@ const preloaderStyle = {
 const router = useRouter();
 const store = useLayoutStore();
 const productStore = useProductStore();
-const itemTypes = {
-    'products': 0,
-    'comparisons': 1
-} //also used in search form, comparison
 
-const getItemType = function(item) {
-    //also used in search form, comparison
-    let index = item['index'];
-    return itemTypes[index]
-}
 
 const key = (item) => item.index + item.id;
 const props = defineProps({
@@ -94,18 +85,6 @@ const computedItems = computed(() => {
     return props.items
 })
 
-const clickHandler = function(item) {
-    //also used in search form, product list
-    let itemType = getItemType(item);
-    let id = item.id;
-    if (itemType === 0) {
-        productStore.getProductUrl(id);
-        return;
-    }
-    if (itemType === 1) {
-        router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
-    }
-}
 </script>
 
 <style scoped>

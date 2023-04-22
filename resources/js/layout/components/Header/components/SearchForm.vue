@@ -18,7 +18,7 @@
                     </router-link>
                 </li>
                 <li class="has-store" v-for="item in searchResult.items">
-                    <a href="" @click.prevent="clickHandler(item)">
+                    <a href="" @click.prevent="productStore.onClick(item)">
                         {{ item.title }}
                         <span class="search-store"> Price:
                             <span class="price">
@@ -121,29 +121,6 @@ const callback = function () {
     })
 }
 const onInput = delay(callback, 100)
-
-const itemTypes = {
-    //also used in product list component
-    'products': 0,
-    'comparisons': 1
-}
-const getItemType = function(item) {
-    //also used in product list component
-    let index = item['index'];
-    return itemTypes[index]
-}
-const clickHandler = function(item) {
-    //also used in product list component
-    let itemType = getItemType(item);
-    let id = item.id;
-    if (itemType === 0) {
-        productStore.getProductUrl(id);
-        return;
-    }
-    if (itemType === 1) {
-        router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
-    }
-}
 
 function hideSearchResult() {
     formData.onBlur = true;

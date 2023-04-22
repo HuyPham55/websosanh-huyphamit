@@ -1,6 +1,9 @@
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
 import {sessionCache} from "@/API/sessionCache";
+import {useRouter} from "vue-router";
+
+
 export const useLayoutStore = defineStore('layout', () => {
     const layoutData = reactive({
         ready: false,
@@ -75,9 +78,11 @@ export const useUserStore = defineStore('user', () => {
 })
 
 export const useProductStore = defineStore('products', () => {
-    const getProductUrl = function (id) {
+    const router = useRouter();
+
+    const getProductUrl = async function (id) {
         useLayoutStore().layoutData.ready = false;
-        return axios.post('/api/get-product-url', {id})
+        return await axios.post('/api/get-product-url', {id})
             .then(res => {
                 let data = res.data
                 let url = data['data'];
@@ -98,6 +103,26 @@ export const useProductStore = defineStore('products', () => {
         return `${percent}%`
     }
 
-    return {getProductUrl, calcSale}
+    const getItemType = function (item) {
+        const itemTypes = {
+            'products': 0,
+            'comparisons': 1
+        }
+        let index = item['index'];
+        return itemTypes[index]
+    }
+    const onClick = function (item) {
+        //also used in search form, comparison
+        let itemType = getItemType(item);
+        let id = item.id;
+        if (itemType === 0) {
+            return getProductUrl(id);
+        }
+        if (itemType === 1) {
+            router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
+        }
+    }
+
+    return {getProductUrl, calcSale, onClick}
 })
 

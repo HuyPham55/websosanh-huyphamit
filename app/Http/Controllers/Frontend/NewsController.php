@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Enums\CommonStatus;
+use App\Http\Resources\ComparisonResource;
 use App\Http\Resources\PostCategoryResource;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\ProductResource;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Models\Comparison;
+use App\Models\Product;
 use App\Services\CategoryService;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -45,9 +49,25 @@ class NewsController extends BaseController
         $breadcrumb = PostCategoryResource::collection(
             $this->categoryService->breadcrumb($category->lft, $category->rgt)
         );
+
+        $relatedProduct = $this->getRelatedProducts();
         return $this->success([
             'model' => new PostResource($model),
             'breadcrumb' => $breadcrumb,
+            'related' => $relatedProduct
         ]);
+    }
+
+    private function getRelatedProducts()
+    {
+        return ComparisonResource::collection(
+            Comparison::withCount('products')
+                ->where([
+                    ['status', CommonStatus::Active],
+                    ['featured', CommonStatus::Active]
+                ])
+                ->take(10)
+                ->get()
+        );
     }
 }

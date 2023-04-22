@@ -29,13 +29,13 @@
                 <div class="product-info">
                     <div class="product-img-wrap">
                         <a href="" class="images">
-                            <img id="zoom" :src="model['image']" alt="">
+                            <img id="zoom" :src="computedSlides[0]" alt="">
                         </a>
                         <div class="thumbnails swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="thumbnail active" :data-image="model['image']">
-                                        <img :src="model['image']" alt=""></div>
+                                <div class="swiper-slide" v-for="photo in computedSlides">
+                                    <div class="thumbnail active" :data-image="photo">
+                                        <img :src="photo" alt=""></div>
                                 </div>
                             </div>
                             <div class="nav-swiper swiper-button-next"></div>
@@ -156,32 +156,7 @@
                             <div class="title-section">
                                 Related
                             </div>
-                            <div class="slider-related swiper-container">
-                                <div class="swiper-wrapper">
-                                    <div v-for="item in related.data"
-                                        class="swiper-slide product-item">
-                                        <a href="#" @click.prevent="clickHandler(item)">
-                                            <span class="product-img">
-                                                <img :src="item.image"/>
-                                            </span>
-                                            <span class="product-action">
-                                                {{ getItemType(item) === 0 ? "To seller" : "Let's compare" }}
-                                            </span>
-                                            <h3>{{item.title}}</h3>
-                                            <span class="product-meta">
-                                                <span class="product-price">
-                                                    {{ store.formatMoney(item.price) }}
-                                                </span>
-                                            </span>
-                                            <span class="product-bottom">
-                                                <span class="product-store">
-                                                    {{item['featured']?"Featured":''}}
-                                                </span>
-                                            </span>
-                                        </a>
-                                    </div>
-                               </div>
-                            </div>
+                            <ProductSlider :items="related.data" :ready="related.ready"></ProductSlider>
                         </template>
 
 
@@ -215,6 +190,7 @@ import {useLayoutStore} from "@/stores";
 import {useProductStore} from "@/stores";
 import Pagination from "@/layout/Pagination/index.vue";
 import AsideNews from "@/Components/AsideNews/index.vue";
+import ProductSlider from "@/views/Product/components/ProductSlider.vue";
 const preloaderStyle = {
     width: "-webkit-fill-available",
     position: "absolute",
@@ -235,40 +211,11 @@ const model = ref({})
 const featuredSellers = reactive({
     data: []
 })
-const router = useRouter();
 
 const related = reactive({
     data: [],
     ready: false,
 })
-watch(() => related.ready, (newValue, oldValue) => {
-    if (related.ready) {
-        nextTick(initializeRelatedSlide)
-    }
-}, {immediate: true})
-const itemTypes = {
-    'products': 0,
-    'comparisons': 1
-} //also used in search form, product list
-
-const getItemType = function(item) {
-    //also used in search form, product list
-    let index = item['index'];
-    return itemTypes[index]
-}
-
-const clickHandler = function(item) {
-    //also used in search form, comparison
-    let itemType = getItemType(item);
-    let id = item.id;
-    if (itemType === 0) {
-        productStore.getProductUrl(id);
-        return;
-    }
-    if (itemType === 1) {
-        router.push({name: 'comparison', params: {id: item.id, slug: item.slug}})
-    }
-}
 
 const activeRef = ref('sellerSection')
 
@@ -290,6 +237,10 @@ const sortingOptions = [
 const computedSortingTitle = computed(() =>
     sortingOptions.find(item => item.value === sellers.sortBy).title
 )
+
+let computedSlides = computed(() => {
+    return [model.value["image"], ...model.value["slide"]];
+})
 
 const sellers = reactive({
     data: [],
@@ -360,7 +311,7 @@ const toSeller = function(item) {
     let id = item.id;
     productStore.getProductUrl(id);
 }
-watch(()=> store.pageData.ready, () => {
+watch(() => store.pageData.ready, () => {
     if (store.pageData.ready) {
         nextTick(() => {
             //wait for Vue to render tags
@@ -437,46 +388,6 @@ onBeforeMount(() => {
 onMounted(() => {
     getComparisonSellers()
 })
-
-const initializeRelatedSlide = function() {
-    let related = new Swiper('.slider-related', {
-        slidesPerView: 4,
-        spaceBetween: 20,
-        autoplay: {
-            delay: 4000,
-        },
-        speed: 1000,
-        rewind: true,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        // Responsive breakpoints
-        breakpoints: {
-
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 10,
-
-            },
-            // when window width is <= 768px
-            768: {
-                slidesPerView: 3,
-                spaceBetween: 10,
-            },
-            // when window width is <= 960px
-            960: {
-                slidesPerView: 3,
-                spaceBetween: 10,
-            },
-            // when window width is <= 1080px
-            1080: {
-                slidesPerView: 4,
-                spaceBetween: 10,
-            }
-        }
-    });
-}
 </script>
 
 <style scoped>
