@@ -18,7 +18,7 @@ class ElasticObserver
     {
         try {
             $data = $item->toArray();
-            $this->client->indexDocument(null, $data);
+            $this->client->indexDocument(null, $data, $item->id | 0);
         } catch (\Exception $exception) {
             throw ($exception);
         }

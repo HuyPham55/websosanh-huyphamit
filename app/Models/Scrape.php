@@ -86,11 +86,8 @@ class Scrape extends BaseModel
             $product_category_id = $request->input('category') | 0;
             $model->product_category_id = $product_category_id;
 
-            $seller = Seller::find($seller_id);
-            $category = ProductCategory::find($product_category_id);
-            if ($seller == null || $category == null) {
-                throw new NotFoundException();
-            }
+            $seller = Seller::findOrFail($seller_id);
+            $category = ProductCategory::findOrFail($product_category_id);
             $categoryService = (new CategoryService(new ProductCategory()));
             $arrayParentCategories = $categoryService
                 ->getArrayParentId($category->lft | 0, $category->rgt | 0) ?? [];

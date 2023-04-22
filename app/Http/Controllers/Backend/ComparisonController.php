@@ -332,7 +332,7 @@ class ComparisonController extends BaseController
 
     protected function updateModelData(mixed $comparison)
     {
-        $product = $comparison->products->sortBy('price')->first();
+        $product = $comparison->products()->orderBy('price')->take(1)->first();
         if ($product === null) {
             return;
         }
