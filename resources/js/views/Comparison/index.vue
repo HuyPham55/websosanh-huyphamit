@@ -33,8 +33,8 @@
                         </a>
                         <div class="thumbnails swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide" v-for="photo in computedSlides">
-                                    <div class="thumbnail active" :data-image="photo">
+                                <div class="swiper-slide" v-for="(photo, index) in computedSlides">
+                                    <div :class="{'thumbnail': 1, 'active': index===0}" :data-image="photo">
                                         <img :src="photo" alt=""></div>
                                 </div>
                             </div>
