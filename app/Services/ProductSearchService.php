@@ -129,7 +129,7 @@ class ProductSearchService
                                 [
                                     'query' => $keyword,
                                     'fuzziness' => 'AUTO',
-                                    'fields' => ['title^2', 'slug', 'image'],
+                                    'fields' => ['title^2', 'content'],
                                 ],
 
                             ]
