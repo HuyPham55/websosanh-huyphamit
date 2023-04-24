@@ -364,6 +364,10 @@
                     background-color: $white-color;
                     border: 1px solid $border-color;
 
+                    @media only screen and (min-width: 768px) {
+                        top: 42px;
+                    }
+
                     & > li.menu-item {
                         border-bottom: 1px solid $border-color;
                         display: block;
