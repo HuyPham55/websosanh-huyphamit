@@ -79,7 +79,8 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
+            //z-index: -1;
+            z-index: 1;
         }
 
         .header-drop .nav-wrap .nav-left .nav-list {
@@ -206,14 +207,18 @@
                 position: absolute;
                 top: 25px;
                 left: 0;
+
                 background: $white-color;
                 -webkit-box-shadow: 4px 4px 4px rgba(0,0,0,.15), -4px 4px 4px rgba(0,0,0,.15);
                 box-shadow: 4px 4px 4px rgba(0,0,0,.15), -4px 4px 4px rgba(0,0,0,.15);
-                width: 100%;
+                //width: 100%;
                 z-index: -1;
                 border-radius: 0 0 3px 3px;
                 font-size: 14px;
                 border: 1px solid $border-color;
+
+                right: 0;
+                margin: 0 6px;
                 ol#resultFilter {
                     list-style-type: none;
                     margin: 0 0 10px;
@@ -292,6 +297,7 @@
                 justify-content: unset;
 
                 background-color: $white-color;
+                z-index: 10;
 
                 &::before {
                     display: none;
